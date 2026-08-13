@@ -66,6 +66,17 @@ export default function Home() {
                 <span className="text-accent group-hover:underline">{">"} Binary Calculation</span>
                 <span className="text-xs text-slate-500">[8/13/26]</span>
               </div>
+              <p className="text-sm text-slate-400 mt-2">Calculating binary numbers.</p>
+            </Link>
+
+            <Link
+              href="/bits-nibbles-bytes"
+              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-accent group-hover:underline">{">"} Bits, Nibbles, and Bytes</span>
+                <span className="text-xs text-slate-500">[8/13/26]</span>
+              </div>
               <p className="text-sm text-slate-400 mt-2">Bits, nibbles, bytes, calculating binary.</p>
             </Link>
           </nav>
