@@ -181,3 +181,17 @@ c. `00010110`
 d. `01001010`  
 
 You know B has to be correct because a, c, and d are all even numbers, and 27 is odd. 
+
+## Connection Types
+
+### Simplex
+Simplex is a type of connection that only allows **one** direction of communication.   
+Example: Radio stations, megaphone
+
+### Half-Duplex
+Half-Duplex is a type of connection that allows **both** directions of communication, but **only one at a time**.  
+Example: Humans, CB Radio, Walkie talkies, hubs
+
+### Full Duplex
+Full Duplex is a type of connection that allows **both** directions of communication **at the same time**.  
+Example: Computer networks, switches, phone lines
