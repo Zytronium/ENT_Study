@@ -36,3 +36,28 @@ This layer handles translation and encryption of the data.
 
 ### Application Layer
 Provides network services directly to applications. This is the layer closest to the end user.
+
+## Networking Tools
+The following are the main tools used in networking:
+- Cable Stripper
+  - Strips the outer plastic of a cable
+- Wire Crimper
+  - Crimps ends of twisted pair cables
+- Cable Tester
+  - Tests netowrk cables by testing continuity across every pin on both ends
+- Tone Generator
+  - Finds the other end of a cable by generating a tone when near the other end of the cable plugged into it.
+- TDR (Time Domain Reflectometer)
+  - Finds breaks in copper cables by sending electrical pluses and measuring how far they go
+- OTDR (Optical Time Domain Reflectometer)
+  - Finds breaks in fiber optic cables by sending light pulses and measuring how far they go
+- Light Meter
+  - Measures light in optical cables. Requires a light source device on one end. Fiber optic cables only.
+- Loopback Adapter
+  - Tests physical ports
+- Butt Set
+  - Used to test and monitor phone lines
+- Punch Down Tool 
+  - Seats wires down into a block and cuts off excess wire automatically
+- Multimeter
+  - Measures electricity in a wire
