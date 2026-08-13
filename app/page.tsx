@@ -57,6 +57,17 @@ export default function Home() {
               </div>
               <p className="text-sm text-slate-400 mt-2">Order of the colored wires in a CAT5/CAT6 cable plug.</p>
             </Link>
+
+            <Link
+              href="/bits-and-bytes"
+              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-accent group-hover:underline">{">"} Bits and Bytes</span>
+                <span className="text-xs text-slate-500">[8/13/26]</span>
+              </div>
+              <p className="text-sm text-slate-400 mt-2">Bits, nibbles, bytes, calculating binary.</p>
+            </Link>
           </nav>
         </section>
       </main>
