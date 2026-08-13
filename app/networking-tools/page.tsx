@@ -166,10 +166,6 @@ export default function NetworkingToolsQuiz() {
           )}
         </div>
       </main>
-
-      <footer className="mt-12 text-xs text-slate-500 italic">
-        * Based on STUDY_GUIDE.md for TTC ENT 2026
-      </footer>
     </div>
   );
 }
