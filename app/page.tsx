@@ -4,7 +4,12 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center p-8">
       <header className="w-full max-w-4xl mb-12 border-b border-border pb-4">
-        <h1 className="text-3xl font-bold text-accent">ENT_ROUTER_V1 | Hub</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold text-accent">ENT_ROUTER_V1 | Hub</h1>
+          <Link href="/study-guide" className="text-accent hover:underline">
+            {">"} Study Guide
+          </Link>
+        </div>
         <p className="text-sm text-slate-400">System Uptime: 2026-08-12 17:53:00</p>
       </header>
 

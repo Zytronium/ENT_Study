@@ -1,14 +1,16 @@
 # ENT Study Guide for TTC ENT 2026
 
+[< Back to Hub](/)
+
 ## OSI Model
-OSI Model stands for Open Systems Interconnection Model. It has 7 layers, normally referenced from 7 down to 1:
-7. [Application](#application-layer)
-6. [Presentation](#presentation-layer)
-5. [Session](#session-layer)
-4. [Transport](#transport-layer)
-3. [Network](#network-layer)
-2. [Data-Link](#data-link-layer)
-1. [Physical](#physical-layer)
+OSI Model stands for Open Systems Interconnection Model. It has 7 layers, normally referenced from 7 down to 1:  
+​7. [Application](#application-layer)  
+​6. [Presentation](#presentation-layer)  
+​5. [Session](#session-layer)  
+​4. [Transport](#transport-layer)  
+​3. [Network](#network-layer)  
+​2. [Data-Link](#data-link-layer)  
+​1. [Physical](#physical-layer)  
 
 ### Physical Layer
 This layer is what happens physically - it's where raw bits of information are sent across a physical medium like a 
@@ -180,7 +182,7 @@ b. `00011011`
 c. `00010110`  
 d. `01001010`  
 
-You know B has to be correct because a, c, and d are all even numbers, and 27 is odd. 
+You know B has to be correct just from looking at the last digit because a, c, and d are all even numbers, and 27 is odd. 
 
 ## Connection Types
 
