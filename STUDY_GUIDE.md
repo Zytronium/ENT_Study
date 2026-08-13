@@ -61,3 +61,20 @@ The following are the main tools used in networking:
   - Seats wires down into a block and cuts off excess wire automatically
 - Multimeter
   - Measures electricity in a wire
+
+## Modems VS Routers
+
+### Modems
+Modems are devices that provide the **physical connection** to the ISP (Internet Service Provider). They demodulate
+incoming analog signals into digital singals and modulate outgoing digital signals into analog signals.
+
+There are 2 types of modems:
+- Cable Modems - Use coaxial cables
+- DSL Modems - Use phone lines
+
+You can remember the difference this way: *Cable* modems use ***cables*** and DSL (Digital Subscriber _Line_) modems use 
+**phone *lines***.
+
+### Routers
+Routers are devices that provide the **logical connection** to the ISP and connect all your devices on the network to 
+the ISP.
