@@ -142,7 +142,7 @@ export default function BinaryCalculation() {
                         <button
                           key={opt}
                           onClick={() => handleOptionClick(idx, opt)}
-                          disabled={validationResults.some(r => r === true)}
+                          disabled={validationResults[idx] === true}
                           className={`p-2 border border-border rounded font-mono text-lg transition-colors disabled:opacity-50 ${
                             userInputs[idx] === opt.toString() ? 'bg-accent text-slate-900' : 'bg-slate-800 hover:bg-slate-700'
                           }`}
