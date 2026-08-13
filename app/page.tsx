@@ -60,10 +60,6 @@ export default function Home() {
           </nav>
         </section>
       </main>
-
-      <footer className="mt-auto pt-12 text-xs text-slate-500">
-        &copy; 2026 Enterprise Networking Technologies Study Hub
-      </footer>
     </div>
   );
 }
