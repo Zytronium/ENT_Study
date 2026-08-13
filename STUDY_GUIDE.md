@@ -78,3 +78,18 @@ You can remember the difference this way: *Cable* modems use ***cables*** and DS
 ### Routers
 Routers are devices that provide the **logical connection** to the ISP and connect all your devices on the network to 
 the ISP.
+
+## EIA/TIA 568B Standard Specification
+The EIA/TIA 568B standard specifies the order of wires in a CAT5/CAT6 cable connector. This order is, from top to 
+bottom, 8 to 1:
+
+| Wire Color          | Mnemonic       |
+|---------------------|----------------|
+| Orange/white stripe | Sun rays       |
+| Orange              | Sun            |
+| Green/white stripe  | Aliens!!       |
+| Blue                | Sky            |
+| Blue/white stripe   | Water/rain     |
+| Green               | Plants         |
+| Brown/white         | Tilled dirt    |
+| Brown               | Dirt           |
