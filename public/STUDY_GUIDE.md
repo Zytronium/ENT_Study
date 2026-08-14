@@ -197,3 +197,47 @@ Example: Humans, CB Radio, Walkie talkies, hubs
 ### Full Duplex
 Full Duplex is a type of connection that allows **both** directions of communication **at the same time**.  
 Example: Computer networks, switches, phone lines
+
+## Network Topologies
+Topology is the layout of the network. There are four main network topologies:
+- [Star](#star)
+- [Ring](#ring)
+- [Bus](#bus)
+- [Mesh](#mesh)
+
+### Star
+In a Star topology, all computers are connected to a central point. 
+
+A star topology uses hubs/switches at the center and uses twisted pair cables with RJ45 connectors.
+
+### Ring
+A ring topology is where all computers are connected in a ring. THey use a token to talk on the network.
+
+A ring topology uses thinknet (10base5) and thinnet (10base2) cables.
+
+### Bus
+The bus topology has its computers connected in a line with a single coaxial cable, terminated on both ends. They
+use BNC connectors and terminators.
+
+A bus topology, just like the ring topology, uses thinknet (10base5) and thinnet (10base2) cables.
+
+### Mesh
+A mesh topology is where all the computers are connected to all every other computer. This is the topology of the 
+internet, and is extremely redundant (in a good way).
+
+---
+
+## Wired Ethernet Standards
+
+![10base5 breakdown](study_guide_images/base_picture_thing.webp)
+
+### Chart
+
+| IEEE Standard | T-Standard | Max Distance                           | Speed    | Cable Type                    | Connectors                                | notes                                                |
+|---------------|------------|----------------------------------------|----------|-------------------------------|-------------------------------------------|------------------------------------------------------|
+| 802.3         | 10base2    | 200m                                   | 10 Mb/s  | Thinnet (thin coax)           | T-connectors, BNC connectors, terminators |                                                      |
+| 802.3         | 10base5    | 500m                                   | 10 Mb/s  | Thicknet (thick coax)         | Vampire Taps                              |                                                      |
+| 802.3i        | 10baseT    | 100m                                   | 10 Mb/s  | Twisted pair, Cat3 or better  | RJ45/RJ11                                 | cheaper, started being called ethernet at this point |
+| 802.3u        | 100baseT   | 100m                                   | 100 Mb/s | Twisted pair, Cat5 or better  | RJ45                                      |                                                      |
+| 802.3z        | 1000baseT  | 100m                                   | 1 Gb/s   | Twisted pair, Cat5e or better | RJ45                                      | also called Gigabit ethernet                         |
+| 802.3an       | 10GbaseT   | Cat5e/Cat6: 55m; Cat6a or better: 100m | 10 Gb/s  | Twisted pair                  | RJ45                                      |                                                      |
