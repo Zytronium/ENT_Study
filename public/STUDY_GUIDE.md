@@ -176,7 +176,7 @@ So the answer to the 3 numbers above is 8, 12, and 14.
 
 Finally, if you have more random looking sequences like 01101001 on a test, you can eliminate the wrong answers quickly
 because a binary sequence ending in a 1 will always be an odd number, and ending in a 0 will always be even. For example,
-say you have to find which binary sequence equals 27. These are your choices:
+say you have to find which binary sequence equals 27. These are your choices:  
 a. `00101110`  
 b. `00011011`  
 c. `00010110`  
