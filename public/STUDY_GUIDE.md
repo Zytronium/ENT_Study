@@ -262,6 +262,52 @@ ends. They are used to connect two dissimilar devices, such as a PC and a router
 These are ethernet cables that use both standards - 568A on one end and 568B on the other. These less common cables
 are used to connect 2 similar devices, such as a PC to another PC.
 
+Modern Ethernet equipment usually supports Auto-MDI/MDIX, which automatically detects and compensates for crossed pairs.
+As a result, crossover cables are much less commonly needed today.
+
 **Important miscellanous note**: Shielded twisted pair cables should be used in industrial areas, while unshielded
 twisted pair cables belong everywhere else. The difference between the two is that shielded twisted pair cables have 
-another layer of shielding around the twisted pair wires underneath the outer plastic shielding.
+another layer of shielding around the twisted pair wires underneath the outer jacket plastic.
+
+## Cable Ratings
+
+PVC is the outer jacket plastic of a cable. 
+
+Ethernet cable materials come in 3 forms:
+- Plenum
+- Riser
+- CM (communications multipurpose)
+
+### Plenum Cables
+These are used in plenum areas. Plenum areas are the spaces in buildings used for air circulation in HVAC systems, 
+typically found above drop ceilings or below raised floors, where smoke and fire can spread rapidly through the building's 
+air-handling space. Plenum-rated cables are made with fire-resistant materials that produce less smoke and toxic fumes 
+when burned, meeting strict fire safety codes required for installation in plenum areas. Plenum cables are also known
+as CMP: Communications Multipurpose Plenum. 
+
+Non-plenum cables are not as fire-resistant and should not be used in plenum areas.
+
+### Riser (CMR) Cables
+
+Riser cables are designed to run vertically between floors in non-plenum spaces, such as within walls or elevator
+shafts. These cables are specifically rated to prevent the vertical spread of fire from one floor to another. They have
+flame-retardant properties that are less stringent than plenum cables but more robust than standard CM cables, making
+them ideal for multi-story buildings where cables need to traverse between floors. Riser cables must meet certain fire
+safety standards. You can remember that CMR is called "riser" because CMR cables run vertically up and between floors.
+
+## CM (general use) Cables
+Communications Multipurpose (or CM) cables have minimal fire restrictions and are the cheapest cables, but can produce
+very toxic fumes when burnt. They are designed for general everyday use.
+
+## ESD, EMI, & EMP
+
+### ESD
+ESD stands for electrostatic discharge. ESD is essentially a static electricity zap and can be destructive to electronics.
+
+### EMI
+EMI stands for electromagnetic interference. EMIs are (sometimes) temporary disturbances that may take out or interfere 
+with your Wi-Fi or disrupt electronics breifly. They can be caused by things like storms, generators, power lines, etc.
+
+### EMP
+EMP stands for electromagnetic pulse. These are very destructive. They can be caused by lightning strikes (very small 
+area of effect) or nuclear explosions (extremely large area of effect). 
