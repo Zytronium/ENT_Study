@@ -206,26 +206,34 @@ Topology is the layout of the network. There are four main network topologies:
 - [Mesh](#mesh)
 
 ### Star
-In a Star topology, all computers are connected to a central point. 
+In a Star topology, all computers are connected to a central point.  
+Here's a couple examples of what a Star layout would look like:  
+![star1](study_guide_images/topology_star_1.webp)  
+![star2](study_guide_images/topology_star_2.webp)
 
 A star topology uses hubs/switches at the center and uses twisted pair cables with RJ45 connectors.
 
 ### Ring
-A ring topology is where all computers are connected in a ring. THey use a token to talk on the network.
+A ring topology is where all computers are connected in a ring. THey use a token to talk on the network.  
+Here's an example of what a Ring layout would look like:  
+![ring](study_guide_images/topology_ring.webp)
 
 A ring topology uses thinknet (10base5) and thinnet (10base2) cables.
 
 ### Bus
 The bus topology has its computers connected in a line with a single coaxial cable, terminated on both ends. They
-use BNC connectors and terminators.
+use BNC connectors and terminators.  
+Here's an example of what a Bus layout would look like:  
+![bus](study_guide_images/topology_bus.webp)
 
 A bus topology, just like the ring topology, uses thinknet (10base5) and thinnet (10base2) cables.
 
 ### Mesh
 A mesh topology is where all the computers are connected to all every other computer. This is the topology of the 
-internet, and is extremely redundant (in a good way).
-
----
+internet, and is extremely redundant (in a good way).  
+Here's a couple examples of what a Mesh layout would look like:  
+![mesh1](study_guide_images/topology_mesh_1.webp)
+![mesh2](study_guide_images/topology_mesh_2.webp)
 
 ## Wired Ethernet Standards
 
