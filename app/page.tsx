@@ -46,7 +46,8 @@ export default function Home() {
               className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
             >
               <div className="flex justify-between items-center">
-                <span className="text-accent group-hover:underline">{">"} Modems VS Routers</span>
+                <span className="text-accent group-hover:underline">{">"} Modems VS Routers <span
+                  className="text-red-500 text-xs ml-2">[OFFLINE]</span></span>
                 <span className="text-xs text-slate-500">[8/11/26]</span>
               </div>
               <p className="text-sm text-slate-400 mt-2">Difference between modems and routers.</p>
@@ -83,6 +84,80 @@ export default function Home() {
                 <span className="text-xs text-slate-500">[8/13/26]</span>
               </div>
               <p className="text-sm text-slate-400 mt-2">Calculating binary numbers.</p>
+            </Link>
+
+            <Link
+              href="/communication-types"
+              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-accent group-hover:underline">{">"} Communication Types <span
+                  className="text-red-500 text-xs ml-2">[OFFLINE]</span></span>
+                <span className="text-xs text-slate-500">[8/13/26]</span>
+              </div>
+              <p className="text-sm text-slate-400 mt-2">Simplex, Half-Duplex, Full Duplex.</p>
+            </Link>
+
+            <Link
+              href="/network-topologies"
+              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-accent group-hover:underline">{">"} Wired Network Topologies <span
+                  className="text-red-500 text-xs ml-2">[OFFLINE]</span></span>
+                <span className="text-xs text-slate-500">[8/14/26]</span>
+              </div>
+              <p className="text-sm text-slate-400 mt-2">Network layouts; Star, ring, bus, mesh.</p>
+            </Link>
+
+            <Link
+              href="/802.3-ethernet-standards"
+              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-accent group-hover:underline">{">"} Wired Ethernet Standards <span
+                  className="text-red-500 text-xs ml-2">[OFFLINE]</span></span>
+                <span className="text-xs text-slate-500">[8/14/26]</span>
+              </div>
+              <p className="text-sm text-slate-400 mt-2">802.3 wired ethernet IEEE standards chart.</p>
+            </Link>
+
+            <Link
+              href="/patch-vs-crossover-cables"
+              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-accent group-hover:underline">{">"} Patch VS Crossover Cables <span
+                  className="text-red-500 text-xs ml-2">[OFFLINE]</span></span>
+                <span className="text-xs text-slate-500">[8/14/26]</span>
+              </div>
+              <p className="text-sm text-slate-400 mt-2">Patch (aka straight) cables VS crossover cables.</p>
+            </Link>
+
+            <Link
+              href="/pvc-rated-cables"
+              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-accent group-hover:underline">{">"} PVC Rated Cables <span
+                  className="text-red-500 text-xs ml-2">[OFFLINE]</span></span>
+                <span className="text-xs text-slate-500">[8/14/26]</span>
+              </div>
+              <p className="text-sm text-slate-400 mt-2">PVC vs Plenum-rated cable specifications
+                and fire safety ratings.</p>
+            </Link>
+
+            <Link
+              href="/esd-emi-emp"
+              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
+            >
+              <div className="flex justify-between items-center">
+                <span className="text-accent group-hover:underline">{">"} ESD, EMI, & EMP <span
+                  className="text-red-500 text-xs ml-2">[OFFLINE]</span></span>
+                <span className="text-xs text-slate-500">[8/14/26]</span>
+              </div>
+              <p className="text-sm text-slate-400 mt-2">Electrostatic discharges, electromagnetic interfearance, and
+              electromagnetic pulses.</p>
             </Link>
           </nav>
         </section>

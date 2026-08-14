@@ -199,7 +199,7 @@ Full Duplex is a type of connection that allows **both** directions of communica
 Example: Computer networks, switches, phone lines
 
 ## Network Topologies
-Topology is the layout of the network. There are four main network topologies:
+Topology is the layout of the network. There are four main wired network topologies:
 - [Star](#star)
 - [Ring](#ring)
 - [Bus](#bus)
@@ -234,6 +234,8 @@ internet, and is extremely redundant (in a good way).
 Here's a couple examples of what a Mesh layout would look like:  
 ![mesh1](study_guide_images/topology_mesh_1.webp)
 ![mesh2](study_guide_images/topology_mesh_2.webp)
+
+A mesh network can be either wired or wireless.
 
 ## Wired Ethernet Standards
 
