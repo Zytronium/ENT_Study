@@ -139,7 +139,7 @@ export default function Home() {
               className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
             >
               <div className="flex justify-between items-center">
-                <span className="text-accent group-hover:underline">{">"} PVC Rated Cables <span
+                <span className="text-accent group-hover:underline">{">"} Cable Ratings <span
                   className="text-red-500 text-xs ml-2">[OFFLINE]</span></span>
                 <span className="text-xs text-slate-500">[8/14/26]</span>
               </div>

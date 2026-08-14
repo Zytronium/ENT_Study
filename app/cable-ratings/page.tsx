@@ -1,11 +1,11 @@
 import Link from "next/link";
 
-export default function PVCRatedCables() {
+export default function CableRatings() {
   return (
     <div className="min-h-screen flex flex-col items-center p-8">
       <header className="w-full max-w-4xl mb-8 border-b border-border pb-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-accent">ENT_ROUTER_V1 | PVC Rated Cables</h1>
+          <h1 className="text-3xl font-bold text-accent">ENT_ROUTER_V1 | Cable Ratings</h1>
           <Link href="/" className="text-sm text-accent hover:underline">{"<"} BACK TO HUB</Link>
         </div>
       </header>
