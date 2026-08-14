@@ -251,3 +251,17 @@ A mesh network can be either wired or wireless.
 | 802.3u        | 100baseT   | 100m                                   | 100 Mb/s | Twisted pair, Cat5 or better  | RJ45                                      |                                                      |
 | 802.3z        | 1000baseT  | 100m                                   | 1 Gb/s   | Twisted pair, Cat5e or better | RJ45                                      | also called Gigabit ethernet                         |
 | 802.3an       | 10GbaseT   | Cat5e/Cat6: 55m; Cat6a or better: 100m | 10 Gb/s  | Twisted pair                  | RJ45                                      |                                                      |
+
+## Patch Cables vs Crossover Cables
+
+### Patch Cables
+Also known as straight cables, these are ethernet cables that follow the same 568A or 568B standard on both terminated 
+ends. They are used to connect two dissimilar devices, such as a PC and a router, router and switch, etc.
+
+### Crossover Cables
+These are ethernet cables that use both standards - 568A on one end and 568B on the other. These less common cables
+are used to connect 2 similar devices, such as a PC to another PC.
+
+**Important miscellanous note**: Shielded twisted pair cables should be used in industrial areas, while unshielded
+twisted pair cables belong everywhere else. The difference between the two is that shielded twisted pair cables have 
+another layer of shielding around the twisted pair wires underneath the outer plastic shielding.
