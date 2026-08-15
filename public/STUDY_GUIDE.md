@@ -14,7 +14,7 @@ OSI Model stands for Open Systems Interconnection Model. It has 7 layers, normal
 
 ### Physical Layer
 This layer is what happens physically - it's where raw bits of information are sent across a physical medium like a 
-copper/fiber wire or a radio signal. This happens on cables, antennas, and hubs.
+copper/fiber wire or a radio signal. This happens on cables, antennas, and hubs; remember that those are layer 1 devices.
 
 ### Data-Link Layer
 This layer handles communication between devices over a local network and connects the physical layer to the 
@@ -22,13 +22,16 @@ Network layer. Switches typically operate at this layer. This layer has 2 parts:
 - LLC: Logical Link Control - More on this later.
 - MAC - Media Access Control - Handles Layer 2 addressing using MAC addresses, AKA physical addresses; involves NIC cards, NIC drivers, and switches. NIC stands for Network Interface Card.
 
+Switches primarily perform switching at this layer. Remember that switches are layer 2 devices.
+
 ### Network Layer
 This layer deals with routing and logical addresses. Involves routers and IP addresses (IPV4/IPV6). Routers perform 
-routing and switches perform switching in this layer.
+routing in this layer. Remember that routers are layer 3 devices.
 
 ### Transport Layer
 This layer provides reliable end-to-end flow control and error correction/detection. It manages communication between applications
-running on different devices using TCP/UDP protocols.
+running on different devices using TCP/UDP protocols. TCP provides reliable, ordered delivery, while UDP provides faster 
+connectionless communication without TCP's reliability guarantees.
 
 ### Session Layer
 Manages (starts, stops, maintains) connections.
@@ -83,7 +86,7 @@ the ISP.
 
 ## EIA/TIA 568B Standard Specification
 The EIA/TIA 568B standard specifies the order of wires in a CAT5/CAT6 cable connector. This order is, from top to 
-bottom, 8 to 1:
+bottom, pins 1 to 8:
 
 | Wire Color          | Mnemonic       |
 |---------------------|----------------|
@@ -96,6 +99,8 @@ bottom, 8 to 1:
 | Brown/white         | Tilled dirt    |
 | Brown               | Dirt           |
 
+It should be noted that while we memorize it bottom to top, the top is pin 1 and bottom is pin 8.
+
 ## Physical Layer in depth - Bits, Nibbles, and Bytes
 
 ### Bits
@@ -106,7 +111,9 @@ or more simply but less accurately put, data speed, is measured in bits per seco
 After that is gigabits (Gb), then terrabits (Tb), petabits (Pb), exabits (Eb), and so on.
 
 ### Nibbles
-Nibbles are made of 4 bits.
+Nibbles are made of 4 bits. There isn't a standard abbreviation for nibbles, but you may sometimes see "nib," "nybble", 
+or "N" used informally. You won't normally see anything like kN or kilonibble ever used, and there's no standard for 
+this.
 
 ### Bytes
 Bytes are made of 8 bits or 2 nibbles. Abbreviated as uppercase `B`, bytes are what data storage is measured in.
@@ -115,7 +122,10 @@ Bytes are made of 8 bits or 2 nibbles. Abbreviated as uppercase `B`, bytes are w
 After that is gigabytes (GB), then terabytes (TB), petabytes (PB), exabytes (EB), etc.
 
 > **Fun Fact**:
-> There's also kibibytes, mebibytes, etc, which are 1,000 instead of 1,024, but these are rarely used and we don't care about them in this class.
+> There's also kibibytes (KiB), mebibytes (MiB), etc. It is actually a common misconception (and often accepted as true, including in this class) that KB, MB, etc. are 1,024, but in reality they are actually 1,000, while KiB, MiB, etc. are 1,024. However, these distinctions are rarely used in everyday networking, and we don't care about them in this class. Therefore, for this class, you should ignore this fact and treat the above info as true instead.
+
+> **Another Fun Fact**:
+> A lowercase `k` for 'kilo' is technically more correct in "kb" and "kB" instead of "Kb" and "KB", but it doesn't matter much. This only applies to 'kilo.'
 
 ### Counting Bits / Calculating Binary
 
@@ -218,15 +228,13 @@ A ring topology is where all computers are connected in a ring. THey use a token
 Here's an example of what a Ring layout would look like:  
 ![ring](study_guide_images/topology_ring.webp)
 
-A ring topology uses thinknet (10base5) and thinnet (10base2) cables.
-
 ### Bus
 The bus topology has its computers connected in a line with a single coaxial cable, terminated on both ends. They
 use BNC connectors and terminators.  
 Here's an example of what a Bus layout would look like:  
 ![bus](study_guide_images/topology_bus.webp)
 
-A bus topology, just like the ring topology, uses thinknet (10base5) and thinnet (10base2) cables.
+A bus topology uses thicknet (10base5) and thinnet (10base2) cables.
 
 ### Mesh
 A mesh topology is where all the computers are connected to all every other computer. This is the topology of the 
@@ -306,7 +314,7 @@ ESD stands for electrostatic discharge. ESD is essentially a static electricity 
 
 ### EMI
 EMI stands for electromagnetic interference. EMIs are (sometimes) temporary disturbances that may take out or interfere 
-with your Wi-Fi or disrupt electronics breifly. They can be caused by things like storms, generators, power lines, etc.
+with your Wi-Fi or disrupt electronics briefly. They can be caused by things like storms, generators, power lines, etc.
 
 ### EMP
 EMP stands for electromagnetic pulse. These are very destructive. They can be caused by lightning strikes (very small 
