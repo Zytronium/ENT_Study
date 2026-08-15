@@ -441,7 +441,7 @@ export default function WiredNetworkTopologiesQuiz() {
                         [{String(index + 1).padStart(2, "0")}]
                       </span>
                       <div>
-                        <p className="text-sm text-slate-200 font-medium italic">&ldquo;{def.definition}&rdquo;</p>
+                        <p className="text-sm text-slate-200 font-medium italic">{def.definition}</p>
                         <p className="text-xs text-slate-400 mt-1">{def.detailHint}</p>
                       </div>
                     </div>
