@@ -1,4 +1,10 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Hub | ENT Study",
+  description: "Daniel's Interactive Study Guide for the Enterprise Networking Technologies (ENT) course at TTC.",
+};
 
 export default function Home() {
   return (
@@ -150,7 +156,7 @@ export default function Home() {
                 <span className="text-accent group-hover:underline">{">"} ESD, EMI, & EMP</span>
                 <span className="text-xs text-slate-500">[8/14/26]</span>
               </div>
-              <p className="text-sm text-slate-400 mt-2">Electrostatic discharges, electromagnetic interfearance, and
+              <p className="text-sm text-slate-400 mt-2">Electrostatic discharges, electromagnetic interference, and
               electromagnetic pulses.</p>
             </Link>
           </nav>

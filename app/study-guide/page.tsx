@@ -6,6 +6,12 @@ import remarkGfm from 'remark-gfm';
 import remarkRehype from 'remark-rehype';
 import rehypeSlug from 'rehype-slug';
 import rehypeStringify from 'rehype-stringify';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Study Guide | ENT Study",
+  description: "Daniel's Interactive Study Guide for the Enterprise Networking Technologies (ENT) course at TTC.",
+};
 
 export default async function StudyGuidePage() {
   const filePath = path.join(process.cwd(), 'public', 'STUDY_GUIDE.md');
