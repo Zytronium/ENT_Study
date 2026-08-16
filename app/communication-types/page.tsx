@@ -150,11 +150,16 @@ export default function CommunicationTypesQuiz() {
   return (
     <div className="min-h-screen flex flex-col items-center p-8">
       <header className="w-full max-w-4xl mb-8 border-b border-border pb-4">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-wrap justify-between items-center gap-4">
           <h1 className="text-3xl font-bold text-accent">ENT_ROUTER_V1 | Communication Types</h1>
-          <Link href="/" className="text-sm text-accent hover:underline">
-            {"<"} BACK TO HUB
-          </Link>
+          <div className="flex items-center gap-4 text-sm font-mono">
+            <Link href="/study-guide#connection-types" className="text-accent hover:underline flex items-center gap-1">
+              [VIEW IN STUDY GUIDE]
+            </Link>
+            <Link href="/" className="text-sm text-accent hover:underline">
+              {"<"} BACK TO HUB
+            </Link>
+          </div>
         </div>
         <p className="text-sm text-slate-400 mt-2">
           Diagnostic Module: Simplex, Half-Duplex, & Full Duplex Transmission Modes

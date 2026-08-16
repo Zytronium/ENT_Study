@@ -38,8 +38,54 @@ body {
   font-family: var(--font-mono);
 }
 
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), 1fr);
+  gap: 0.75rem;
+  max-width: 90%;
+  margin: 1rem auto;
+}
+
+.image-grid img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.25rem;
+  object-fit: cover;
+}
+
+.prose img {
+  max-width: 70%;
+  height: auto;
+  display: block;
+  margin: 1rem auto;
+}
+
 .prose table {
   width: auto;
+}
+
+.prose blockquote {
+  quotes: none;
+  border-left: 4px solid var(--accent);
+  background: #1e293b;
+  border-radius: 0.25rem;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  font-style: normal;
+}
+
+.prose blockquote p::before,
+.prose blockquote p::after {
+  content: none;
+}
+
+.prose blockquote p {
+  margin: 0;
+  color: var(--foreground);
+}
+
+.prose blockquote p + p {
+  margin-top: 0.5rem;
 }
 
 .prose code::before,
@@ -54,6 +100,17 @@ body {
   padding: 0.15em 0.4em;
   font-family: var(--font-mono);
   color: var(--accent);
+}
+
+.quiz-action-card a,
+.quiz-action-btn {
+  color: #020617 !important;
+  text-decoration: none !important;
+}
+
+.quiz-action-card a:hover,
+.quiz-action-btn:hover {
+  color: #020617 !important;
 }
 
 /* Custom scrollbar styles */
@@ -79,4 +136,165 @@ body {
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--accent) var(--background);
+}
+
+/* Print / PDF Friendly Stylesheet */
+@media print {
+  @page {
+    margin: 1.2cm;
+    size: auto;
+  }
+
+  html,
+  body {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    min-height: 100% !important;
+    height: auto !important;
+  }
+
+  /* Reset containers in print to pure white background */
+  body,
+  .min-h-screen,
+  div,
+  main,
+  article {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  /* Hide non-printable navigation, buttons, and interactive UI */
+  .no-print,
+  .quiz-action-card,
+  header,
+  aside,
+  button,
+  .back-to-top-btn {
+    display: none !important;
+  }
+
+  /* Expand article to full printable width */
+  .study-guide-content,
+  article,
+  .prose {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    color: #0f172a !important;
+  }
+
+  .prose blockquote {
+    background-color: #f8fafc !important;
+    border-left: 4px solid #15803d !important;
+    color: #1e293b !important;
+  }
+
+  /* Headings on print */
+  h1, h2, h3, h4, h5, h6 {
+    color: #0f172a !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  h1 {
+    font-size: 1.75rem !important;
+    border-bottom: 2px solid #cbd5e1 !important;
+    padding-bottom: 0.5rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  h2 {
+    font-size: 1.35rem !important;
+    border-bottom: 1px solid #cbd5e1 !important;
+    padding-bottom: 0.25rem !important;
+    margin-top: 1.5rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  h3 {
+    font-size: 1.1rem !important;
+    margin-top: 1.25rem !important;
+    margin-bottom: 0.5rem !important;
+    color: #1e293b !important;
+  }
+
+  p, li, span, strong, em {
+    color: #1e293b !important;
+  }
+
+  a {
+    color: #15803d !important;
+    text-decoration: underline !important;
+  }
+
+  /* Clean table printing without truncation */
+  table {
+    width: 100% !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    border-collapse: collapse !important;
+    border: 1px solid #cbd5e1 !important;
+    margin: 1rem 0 !important;
+  }
+
+  thead {
+    display: table-header-group !important;
+  }
+
+  th {
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 6px 10px !important;
+    font-weight: bold !important;
+    text-align: left !important;
+  }
+
+  td {
+    border: 1px solid #cbd5e1 !important;
+    padding: 6px 10px !important;
+    color: #1e293b !important;
+    background-color: #ffffff !important;
+  }
+
+  tr, pre, blockquote, img, figure {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Invert dark images (and images with transparent background & white lines) while keeping colors/hues */
+  img {
+    filter: invert(1) hue-rotate(180deg) !important;
+    background-color: transparent !important;
+    max-width: 85% !important;
+    height: auto !important;
+    margin: 1rem auto !important;
+    display: block !important;
+    border: 1px solid transparent !important;
+  }
+
+  pre {
+    background-color: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #166534 !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 4px !important;
+  }
+
+  code {
+    background-color: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #15803d !important;
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+  }
+
+  * {
+    overflow: visible !important;
+  }
 }

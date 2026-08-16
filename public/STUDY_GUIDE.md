@@ -1,7 +1,5 @@
 # ENT Study Guide for TTC ENT 2026
 
-[< Back to Hub](/)
-
 ## OSI Model
 OSI Model stands for Open Systems Interconnection Model. It has 7 layers, normally referenced from 7 down to 1:  
 ​7. [Application](#application-layer)  

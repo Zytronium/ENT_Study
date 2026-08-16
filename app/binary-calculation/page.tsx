@@ -108,9 +108,14 @@ function BinaryCalculationContent() {
   return (
     <div className="min-h-screen flex flex-col items-center p-8">
       <header className="w-full max-w-4xl mb-8 border-b border-border pb-4">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-wrap justify-between items-center gap-4">
           <h1 className="text-3xl font-bold text-accent">ENT_ROUTER_V1 | Binary Calculation</h1>
-          <Link href="/" className="text-sm text-accent hover:underline">{"<"} BACK TO HUB</Link>
+          <div className="flex items-center gap-4 text-sm font-mono">
+            <Link href="/study-guide#counting-bits--calculating-binary" className="text-accent hover:underline flex items-center gap-1">
+              [VIEW IN STUDY GUIDE]
+            </Link>
+            <Link href="/" className="text-sm text-accent hover:underline">{"<"} BACK TO HUB</Link>
+          </div>
         </div>
       </header>
 
