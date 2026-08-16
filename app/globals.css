@@ -21,6 +21,7 @@
   --color-accent: var(--accent);
   --color-border: var(--border);
   --font-mono: "ShareTechMono", "Courier New", Courier, monospace;
+  --breakpoint-xs: 475px;
 }
 
 body {
