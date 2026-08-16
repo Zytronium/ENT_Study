@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 type CableConcept =
@@ -227,7 +228,10 @@ function scrambleAllQuestions(
   };
 }
 
-export default function PatchVsCrossoverCablesQuiz() {
+function PatchVsCrossoverCablesQuizContent() {
+  const searchParams = useSearchParams();
+  const isMastery = searchParams.get("mastery") === "true";
+
   const [definitions, setDefinitions] = useState<DefinitionChallenge[]>(() => shuffleArray(initialDefinitions));
   const [scenarios, setScenarios] = useState<ScenarioChallenge[]>(() => shuffleArray(initialScenarios));
   const [specs, setSpecs] = useState<SpecQuestion[]>(() =>
@@ -239,8 +243,8 @@ export default function PatchVsCrossoverCablesQuiz() {
 
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResults, setShowResults] = useState<boolean>(false);
-  const [isTypingMode, setIsTypingMode] = useState<boolean>(false);
-  const [hasPassedOnce, setHasPassedOnce] = useState<boolean>(false);
+  const [isTypingMode, setIsTypingMode] = useState<boolean>(() => isMastery);
+  const [hasPassedOnce, setHasPassedOnce] = useState<boolean>(() => isMastery);
   const [, setAttemptCount] = useState<number>(1);
 
   const handleAnswerChange = (id: string, value: string) => {
@@ -685,5 +689,13 @@ export default function PatchVsCrossoverCablesQuiz() {
         </section>
       </main>
     </div>
+  );
+}
+
+export default function PatchVsCrossoverCablesQuiz() {
+  return (
+    <Suspense fallback={null}>
+      <PatchVsCrossoverCablesQuizContent />
+    </Suspense>
   );
 }

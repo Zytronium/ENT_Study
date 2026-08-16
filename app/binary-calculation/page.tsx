@@ -1,18 +1,63 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 type QuestionType = "leading" | "trailing" | "random";
 
-export default function BinaryCalculation() {
-  interface Challenge {
-    bits: string;
-    value: number;
-    options: number[];
+interface Challenge {
+  bits: string;
+  value: number;
+  options: number[];
+}
+
+function generateNewChallenges(): Challenge[] {
+  const newChallenges: Challenge[] = [];
+
+  for (let i = 0; i < 4; i++) {
+    const types: QuestionType[] = ["leading", "trailing", "random"];
+    const type = types[Math.floor(Math.random() * types.length)];
+    let newBits = "";
+
+    if (type === "leading") {
+      const ones = Math.floor(Math.random() * 7) + 1; // 1 to 7 ones
+      newBits = "1".repeat(ones) + "0".repeat(8 - ones);
+    } else if (type === "trailing") {
+      const ones = Math.floor(Math.random() * 7) + 1; // 1 to 7 ones
+      newBits = "0".repeat(8 - ones) + "1".repeat(ones);
+    } else {
+      for (let j = 0; j < 8; j++) {
+        newBits += Math.random() > 0.5 ? "1" : "0";
+      }
+    }
+
+    const newValue = parseInt(newBits, 2);
+
+    // Generate options for MC
+    const newOptions = [newValue];
+    while (newOptions.length < 4) {
+      const rand = Math.floor(Math.random() * 256);
+      if (!newOptions.includes(rand)) {
+        newOptions.push(rand);
+      }
+    }
+
+    newChallenges.push({
+      bits: newBits,
+      value: newValue,
+      options: newOptions.sort((a, b) => a - b)
+    });
   }
 
-  const [challenges, setChallenges] = useState<Challenge[]>([]);
+  return newChallenges;
+}
+
+function BinaryCalculationContent() {
+  const searchParams = useSearchParams();
+  const isMastery = searchParams.get("mastery") === "true";
+
+  const [challenges, setChallenges] = useState<Challenge[]>(generateNewChallenges);
   const [userInputs, setUserInputs] = useState<string[]>(["", "", "", ""]);
   const [validationResults, setValidationResults] = useState<(boolean | null)[]>([null, null, null, null]);
   const [correctCount, setCorrectCount] = useState<number>(0);
@@ -21,55 +66,13 @@ export default function BinaryCalculation() {
   const [feedback, setFeedback] = useState<string>("");
 
   const generateQuestion = useCallback(() => {
-    const newChallenges: Challenge[] = [];
-
-    for (let i = 0; i < 4; i++) {
-      const types: QuestionType[] = ["leading", "trailing", "random"];
-      const type = types[Math.floor(Math.random() * types.length)];
-      let newBits = "";
-      let newValue = 0;
-
-      if (type === "leading") {
-        const ones = Math.floor(Math.random() * 7) + 1; // 1 to 7 ones
-        newBits = "1".repeat(ones) + "0".repeat(8 - ones);
-      } else if (type === "trailing") {
-        const ones = Math.floor(Math.random() * 7) + 1; // 1 to 7 ones
-        newBits = "0".repeat(8 - ones) + "1".repeat(ones);
-      } else {
-        for (let j = 0; j < 8; j++) {
-          newBits += Math.random() > 0.5 ? "1" : "0";
-        }
-      }
-
-      newValue = parseInt(newBits, 2);
-
-      // Generate options for MC
-      const newOptions = [newValue];
-      while (newOptions.length < 4) {
-        const rand = Math.floor(Math.random() * 256);
-        if (!newOptions.includes(rand)) {
-          newOptions.push(rand);
-        }
-      }
-
-      newChallenges.push({
-        bits: newBits,
-        value: newValue,
-        options: newOptions.sort((a, b) => a - b)
-      });
-    }
-
-    setChallenges(newChallenges);
+    setChallenges(generateNewChallenges());
     setUserInputs(["", "", "", ""]);
     setValidationResults([null, null, null, null]);
     setFeedback("");
     setShowHint1(false);
     setShowHint2(false);
   }, []);
-
-  useEffect(() => {
-    generateQuestion();
-  }, [generateQuestion]);
 
   const handleCheck = () => {
     const results = challenges.map((challenge, index) => {
@@ -136,7 +139,7 @@ export default function BinaryCalculation() {
                     </div>
                   </div>
 
-                  {correctCount === 0 ? (
+                  {correctCount === 0 && !isMastery ? (
                     <div className="grid grid-cols-2 gap-2">
                       {challenge.options.map(opt => (
                         <button
@@ -205,7 +208,7 @@ export default function BinaryCalculation() {
                   <p className="text-slate-400 italic">If there&apos;s a solid line of 1&apos;s on the right, the value is always 1 less than the next digit (e.g., 0111 is 8-1=7).</p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-accent text-xs mb-1">TRICK 2: LEADING 1's</h4>
+                  <h4 className="font-bold text-accent text-xs mb-1">TRICK 2: LEADING 1&apos;s</h4>
                   <p className="text-slate-400 italic">If there&apos;s a solid line of 1&apos;s on the left, start with 255 and subtract the value of the trailing zeros if they were ones (e.g., 11110000 is 255-15=240).</p>
                 </div>
                 <div>
@@ -218,5 +221,13 @@ export default function BinaryCalculation() {
         </section>
       </main>
     </div>
+  );
+}
+
+export default function BinaryCalculation() {
+  return (
+    <Suspense fallback={null}>
+      <BinaryCalculationContent />
+    </Suspense>
   );
 }

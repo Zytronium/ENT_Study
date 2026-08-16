@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ENT Study | Daniel's Interactive Study Guide",
+  title: "Hub | ENT Study",
   description: "Daniel's Interactive Study Guide for the Enterprise Networking Technologies (ENT) course at TTC.",
 };
 

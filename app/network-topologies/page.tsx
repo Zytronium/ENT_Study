@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 type TopologyName = "Star" | "Ring" | "Bus" | "Mesh";
@@ -208,7 +209,10 @@ function scrambleAllQuestions(
   };
 }
 
-export default function WiredNetworkTopologiesQuiz() {
+function WiredNetworkTopologiesQuizContent() {
+  const searchParams = useSearchParams();
+  const isMastery = searchParams.get("mastery") === "true";
+
   const [diagrams, setDiagrams] = useState<DiagramChallenge[]>(() => shuffleArray(initialDiagrams));
   const [definitions, setDefinitions] = useState<DefinitionChallenge[]>(() => shuffleArray(initialDefinitions));
   const [specs, setSpecs] = useState<SpecQuestion[]>(() =>
@@ -220,9 +224,9 @@ export default function WiredNetworkTopologiesQuiz() {
 
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResults, setShowResults] = useState<boolean>(false);
-  const [isTypingMode, setIsTypingMode] = useState<boolean>(false);
-  const [hasPassedOnce, setHasPassedOnce] = useState<boolean>(false);
-  const [attemptCount, setAttemptCount] = useState<number>(1);
+  const [isTypingMode, setIsTypingMode] = useState<boolean>(() => isMastery);
+  const [hasPassedOnce, setHasPassedOnce] = useState<boolean>(() => isMastery);
+  const [, setAttemptCount] = useState<number>(1);
 
   const handleAnswerChange = (id: string, value: string) => {
     setAnswers((prev) => ({ ...prev, [id]: value }));
@@ -660,5 +664,13 @@ export default function WiredNetworkTopologiesQuiz() {
         </section>
       </main>
     </div>
+  );
+}
+
+export default function WiredNetworkTopologiesQuiz() {
+  return (
+    <Suspense fallback={null}>
+      <WiredNetworkTopologiesQuizContent />
+    </Suspense>
   );
 }

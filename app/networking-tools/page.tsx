@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 const toolsData = [
@@ -17,11 +18,16 @@ const toolsData = [
   { name: "Multimeter", description: "Measures electricity in a wire" },
 ];
 
-export default function NetworkingToolsQuiz() {
+function NetworkingToolsQuizContent() {
+  const searchParams = useSearchParams();
+  const isMastery = searchParams.get("mastery") === "true";
+
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResults, setShowResults] = useState(false);
-  const [isHardMode, setIsHardMode] = useState(false);
-  const [displayTools, setDisplayTools] = useState(toolsData);
+  const [isHardMode, setIsHardMode] = useState(() => isMastery);
+  const [displayTools, setDisplayTools] = useState(() =>
+    isMastery ? [...toolsData].sort(() => Math.random() - 0.5) : toolsData
+  );
 
   const handleInputChange = (toolName: string, value: string) => {
     setAnswers(prev => ({ ...prev, [toolName]: value }));
@@ -33,7 +39,7 @@ export default function NetworkingToolsQuiz() {
 
   const resetQuiz = () => {
     const wasAllCorrect = allCorrect;
-    if (wasAllCorrect) {
+    if (wasAllCorrect || isMastery) {
       setIsHardMode(true);
       setDisplayTools([...toolsData].sort(() => Math.random() - 0.5));
     }
@@ -84,7 +90,7 @@ export default function NetworkingToolsQuiz() {
               <div className="flex items-start gap-4">
                 <span className="text-accent font-mono text-sm">[{index + 1}]</span>
                 <div className="flex-grow text-sm text-slate-300 italic">
-                  "{tool.description}"
+                  &ldquo;{tool.description}&rdquo;
                 </div>
               </div>
 
@@ -167,5 +173,13 @@ export default function NetworkingToolsQuiz() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function NetworkingToolsQuiz() {
+  return (
+    <Suspense fallback={null}>
+      <NetworkingToolsQuizContent />
+    </Suspense>
   );
 }

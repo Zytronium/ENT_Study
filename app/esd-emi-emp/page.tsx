@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 type ThreatType = "ESD" | "EMI" | "EMP";
@@ -216,7 +217,10 @@ function scrambleAllQuestions(
   };
 }
 
-export default function EsdEmiEmpQuiz() {
+function EsdEmiEmpQuizContent() {
+  const searchParams = useSearchParams();
+  const isMastery = searchParams.get("mastery") === "true";
+
   const [definitions, setDefinitions] = useState<DefinitionChallenge[]>(() => shuffleArray(initialDefinitions));
   const [scenarios, setScenarios] = useState<ScenarioChallenge[]>(() => shuffleArray(initialScenarios));
   const [specs, setSpecs] = useState<SpecQuestion[]>(() =>
@@ -228,8 +232,8 @@ export default function EsdEmiEmpQuiz() {
 
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResults, setShowResults] = useState<boolean>(false);
-  const [isTypingMode, setIsTypingMode] = useState<boolean>(false);
-  const [hasPassedOnce, setHasPassedOnce] = useState<boolean>(false);
+  const [isTypingMode, setIsTypingMode] = useState<boolean>(() => isMastery);
+  const [hasPassedOnce, setHasPassedOnce] = useState<boolean>(() => isMastery);
   const [, setAttemptCount] = useState<number>(1);
 
   const handleAnswerChange = (id: string, value: string) => {
@@ -668,5 +672,13 @@ export default function EsdEmiEmpQuiz() {
         </section>
       </main>
     </div>
+  );
+}
+
+export default function EsdEmiEmpQuiz() {
+  return (
+    <Suspense fallback={null}>
+      <EsdEmiEmpQuizContent />
+    </Suspense>
   );
 }

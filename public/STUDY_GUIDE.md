@@ -303,7 +303,7 @@ flame-retardant properties that are less stringent than plenum cables but more r
 them ideal for multi-story buildings where cables need to traverse between floors. Riser cables must meet certain fire
 safety standards. You can remember that CMR is called "riser" because CMR cables run vertically up and between floors.
 
-## CM (general use) Cables
+### CM (general use) Cables
 Communications Multipurpose (or CM) cables have minimal fire restrictions and are the cheapest cables, but can produce
 very toxic fumes when burnt. They are designed for general everyday use.
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 const layers = [
@@ -13,12 +14,17 @@ const layers = [
   { number: 1, name: "Physical", description: "Raw bits across physical medium. Cables, antennas, hubs." },
 ];
 
-export default function OSIQuiz() {
+function OSIQuizContent() {
+  const searchParams = useSearchParams();
+  const isMastery = searchParams.get("mastery") === "true";
+
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [numberAnswers, setNumberAnswers] = useState<Record<number, string>>({});
   const [showResults, setShowResults] = useState(false);
-  const [scrambledLayers, setScrambledLayers] = useState(layers);
-  const [isScrambled, setIsScrambled] = useState(false);
+  const [scrambledLayers, setScrambledLayers] = useState(() =>
+    isMastery ? [...layers].sort(() => Math.random() - 0.5) : layers
+  );
+  const [isScrambled, setIsScrambled] = useState(() => isMastery);
 
   const scrambleLayers = () => {
     const shuffled = [...layers].sort(() => Math.random() - 0.5);
@@ -42,7 +48,7 @@ export default function OSIQuiz() {
     setAnswers({});
     setNumberAnswers({});
     setShowResults(false);
-    if (allCorrect) {
+    if (allCorrect || isMastery || isScrambled) {
       scrambleLayers();
     }
   };
@@ -93,7 +99,7 @@ export default function OSIQuiz() {
                 :
               </div>
               <div className="flex-grow text-sm text-slate-300 italic mb-2 md:mb-0">
-                "{layer.description}"
+                &ldquo;{layer.description}&rdquo;
               </div>
               <div className="md:w-48 flex-shrink-0">
                 <select
@@ -152,5 +158,13 @@ export default function OSIQuiz() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function OSIQuiz() {
+  return (
+    <Suspense fallback={null}>
+      <OSIQuizContent />
+    </Suspense>
   );
 }

@@ -1,20 +1,183 @@
-import Link from "next/link";
-import type { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Hub | ENT Study",
-  description: "Daniel's Interactive Study Guide for the Enterprise Networking Technologies (ENT) course at TTC.",
-};
+import Link from "next/link";
+import { useState, useRef, useEffect } from "react";
+
+interface StudyTopicLinkProps {
+  href: string;
+  title: string;
+  date: string;
+  description: string;
+  offline?: boolean;
+  mastery: boolean;
+}
+
+function StudyTopicLink({ href, title, date, description, offline, mastery }: StudyTopicLinkProps) {
+  if (mastery)
+    href += "?mastery=true";
+  return (
+    <Link
+      href={href}
+      className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
+    >
+      <div className="flex justify-between items-center">
+        <span className="text-accent group-hover:underline">{">"} {title} {offline && (<span
+          className="text-red-500 text-xs ml-2">[OFFLINE]</span>)}</span>
+        <span className="text-xs text-slate-500">[{date}]</span>
+      </div>
+      <p className="text-sm text-slate-400 mt-2">{description}</p>
+    </Link>
+  );
+}
+
+const studyTopics: Array<{
+  href: string;
+  title: string;
+  date: string;
+  description: string;
+  offline?: boolean;
+}> = [
+  {
+    href: "/osi-model",
+    title: "OSI Model",
+    date: "8/10-12/26",
+    description: "The 7 layers of the Open Systems Interconnection model.",
+  },
+  {
+    href: "/networking-tools",
+    title: "Networking Tools",
+    date: "8/11/26",
+    description: "Tools of the trade for networking professionals.",
+  },
+  {
+    href: "/modem-router",
+    title: "Modems VS Routers",
+    date: "8/11/26",
+    description: "Difference between modems and routers.",
+  },
+  {
+    href: "/eia-tia-standard",
+    title: "EIA/TIA 568B Standard Specification",
+    date: "8/11/26",
+    description: "Order of the colored wires in a CAT5/CAT6 cable plug.",
+  },
+  {
+    href: "/bits-nibbles-bytes",
+    title: "Bits, Nibbles, and Bytes",
+    date: "8/13/26",
+    description: "Bits, nibbles, bytes, kilobits, megabytes, etc.",
+  },
+  {
+    href: "/binary-calculation",
+    title: "Binary Calculation",
+    date: "8/13/26",
+    description: "Calculating binary numbers.",
+  },
+  {
+    href: "/communication-types",
+    title: "Communication Types",
+    date: "8/13/26",
+    description: "Simplex, Half-Duplex, Full Duplex.",
+  },
+  {
+    href: "/network-topologies",
+    title: "Wired Network Topologies",
+    date: "8/14/26",
+    description: "Network layouts; Star, ring, bus, mesh.",
+  },
+  {
+    href: "/802.3-ethernet-standards",
+    title: "Wired Ethernet Standards",
+    date: "8/14/26",
+    description: "802.3 wired ethernet IEEE standards chart.",
+  },
+  {
+    href: "/patch-vs-crossover-cables",
+    title: "Patch VS Crossover Cables",
+    date: "8/14/26",
+    description: "Patch (straight) cables VS crossover cables and shielded vs unshielded twisted pairs.",
+  },
+  {
+    href: "/cable-ratings",
+    title: "Cable Ratings",
+    date: "8/14/26",
+    description: "PVC vs Plenum-rated cable specifications and fire safety ratings.",
+  },
+  {
+    href: "/esd-emi-emp",
+    title: "ESD, EMI, & EMP",
+    date: "8/14/26",
+    description: "Electrostatic discharges, electromagnetic interference, and electromagnetic pulses.",
+  },
+];
 
 export default function Home() {
+  const [isMasteryMode, setIsMasteryMode] = useState(false);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const tooltipRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target as Node)) {
+        setShowTooltip(false);
+      }
+    };
+
+    if (showTooltip) {
+      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [showTooltip]);
   return (
     <div className="min-h-screen flex flex-col items-center p-8">
       <header className="w-full max-w-4xl mb-12 border-b border-border pb-4">
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold text-accent">ENT_ROUTER_V1 | Hub</h1>
-          <Link href="/study-guide" className="text-accent hover:underline">
-            {">"} Study Guide
-          </Link>
+          <div className="flex gap-4 items-center">
+            <div className="relative" ref={tooltipRef}>
+              <button
+                onClick={() => setIsMasteryMode(!isMasteryMode)}
+                className={`px-4 py-2 rounded border transition-colors ${
+                  isMasteryMode
+                    ? "bg-accent text-slate-900 border-accent hover:bg-green-400"
+                    : "bg-slate-800 text-accent border-border hover:bg-slate-700"
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  {isMasteryMode ? "[MASTERY: ON]" : "[MASTERY: OFF]"}
+                  <span
+                    className="inline-flex items-center justify-center w-3 h-3 text-xs border border-current rounded-full cursor-help"
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowTooltip(!showTooltip);
+                    }}
+                    onTouchStart={(e) => {
+                      e.stopPropagation();
+                      setShowTooltip(!showTooltip);
+                    }}
+                  >
+                    i
+                  </span>
+                </span>
+              </button>
+              {showTooltip && (
+                <div
+                  className="absolute top-full right-0 mt-2 w-64 p-3 bg-slate-800 border border-border rounded shadow-lg text-sm text-slate-300 z-10">
+                  Skips to final hard mode on first attempt on all study quizes when on.
+                </div>
+              )}
+            </div>
+            <Link href="/study-guide" className="text-accent hover:underline">
+              {">"} Study Guide
+            </Link>
+          </div>
         </div>
         <p className="text-sm text-slate-400">System Uptime: 2026-08-12 17:53:00</p>
       </header>
@@ -25,140 +188,17 @@ export default function Home() {
             [STUDY_TOPICS]
           </h2>
           <nav className="flex flex-col gap-4">
-            <Link
-              href="/osi-model"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
-            >
-              <div className="flex justify-between items-center">
-                <span className="text-accent group-hover:underline">{">"} OSI Model</span>
-                <span className="text-xs text-slate-500">[8/10-12/26]</span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2">The 7 layers of the Open Systems Interconnection model.</p>
-            </Link>
-
-            <Link
-              href="/networking-tools"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
-            >
-              <div className="flex justify-between items-center">
-                <span className="text-accent group-hover:underline">{">"} Networking Tools</span>
-                <span className="text-xs text-slate-500">[8/11/26]</span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2">Tools of the trade for networking professionals.</p>
-            </Link>
-
-            <Link
-              href="/modem-router"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
-            >
-              <div className="flex justify-between items-center">
-                <span className="text-accent group-hover:underline">{">"} Modems VS Routers</span>
-                <span className="text-xs text-slate-500">[8/11/26]</span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2">Difference between modems and routers.</p>
-            </Link>
-
-            <Link
-              href="/eia-tia-standard"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
-            >
-              <div className="flex justify-between items-center">
-                <span className="text-accent group-hover:underline">{">"} EIA/TIA 568B Standard Specification</span>
-                <span className="text-xs text-slate-500">[8/11/26]</span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2">Order of the colored wires in a CAT5/CAT6 cable plug.</p>
-            </Link>
-
-            <Link
-              href="/bits-nibbles-bytes"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
-            >
-              <div className="flex justify-between items-center">
-                <span className="text-accent group-hover:underline">{">"} Bits, Nibbles, and Bytes</span>
-                <span className="text-xs text-slate-500">[8/13/26]</span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2">Bits, nibbles, bytes, kilobits, megabytes, etc.</p>
-            </Link>
-
-            <Link
-              href="/binary-calculation"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
-            >
-              <div className="flex justify-between items-center">
-                <span className="text-accent group-hover:underline">{">"} Binary Calculation</span>
-                <span className="text-xs text-slate-500">[8/13/26]</span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2">Calculating binary numbers.</p>
-            </Link>
-
-            <Link
-              href="/communication-types"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
-            >
-              <div className="flex justify-between items-center">
-                <span className="text-accent group-hover:underline">{">"} Communication Types</span>
-                <span className="text-xs text-slate-500">[8/13/26]</span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2">Simplex, Half-Duplex, Full Duplex.</p>
-            </Link>
-
-            <Link
-              href="/network-topologies"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
-            >
-              <div className="flex justify-between items-center">
-                <span className="text-accent group-hover:underline">{">"} Wired Network Topologies</span>
-                <span className="text-xs text-slate-500">[8/14/26]</span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2">Network layouts; Star, ring, bus, mesh.</p>
-            </Link>
-
-            <Link
-              href="/802.3-ethernet-standards"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
-            >
-              <div className="flex justify-between items-center">
-                <span className="text-accent group-hover:underline">{">"} Wired Ethernet Standards</span>
-                <span className="text-xs text-slate-500">[8/14/26]</span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2">802.3 wired ethernet IEEE standards chart.</p>
-            </Link>
-
-            <Link
-              href="/patch-vs-crossover-cables"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
-            >
-              <div className="flex justify-between items-center">
-                <span className="text-accent group-hover:underline">{">"} Patch VS Crossover Cables</span>
-                <span className="text-xs text-slate-500">[8/14/26]</span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2">Patch (straight) cables VS crossover cables and shielded vs
-                unshielded twisted pairs.</p>
-            </Link>
-
-            <Link
-              href="/cable-ratings"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
-            >
-              <div className="flex justify-between items-center">
-                <span className="text-accent group-hover:underline">{">"} Cable Ratings</span>
-                <span className="text-xs text-slate-500">[8/14/26]</span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2">PVC vs Plenum-rated cable specifications
-                and fire safety ratings.</p>
-            </Link>
-
-            <Link
-              href="/esd-emi-emp"
-              className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
-            >
-              <div className="flex justify-between items-center">
-                <span className="text-accent group-hover:underline">{">"} ESD, EMI, & EMP</span>
-                <span className="text-xs text-slate-500">[8/14/26]</span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2">Electrostatic discharges, electromagnetic interference, and
-              electromagnetic pulses.</p>
-            </Link>
+            {studyTopics.map((topic) => (
+              <StudyTopicLink
+                key={topic.href}
+                href={topic.href}
+                title={topic.title}
+                date={topic.date}
+                description={topic.description}
+                offline={topic.offline ?? false}
+                mastery={isMasteryMode}
+              />
+            ))}
           </nav>
         </section>
       </main>

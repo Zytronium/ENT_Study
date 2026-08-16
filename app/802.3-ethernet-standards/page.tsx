@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 interface EthernetStandardRow {
@@ -348,14 +349,18 @@ function BlankCell({
   );
 }
 
-export default function EthernetStandardsQuiz() {
-  const [stage, setStage] = useState(1);
-  const [blankCells, setBlankCells] = useState<Set<string>>(() => generateBlankSet(1));
+function EthernetStandardsQuizContent() {
+  const searchParams = useSearchParams();
+  const isMastery = searchParams.get("mastery") === "true";
+  const initialStage = isMastery ? BLANK_COUNTS_BY_STAGE.length : 1;
+
+  const [stage, setStage] = useState(initialStage);
+  const [blankCells, setBlankCells] = useState<Set<string>>(() => generateBlankSet(initialStage));
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
   const [showResults, setShowResults] = useState(false);
   const [correctAttempts, setCorrectAttempts] = useState(0);
 
-  const useTextInput = correctAttempts >= TEXT_INPUT_UNLOCK_ATTEMPTS;
+  const useTextInput = isMastery || correctAttempts >= TEXT_INPUT_UNLOCK_ATTEMPTS;
 
   const startStage = useCallback((stageNum: number) => {
     setBlankCells(generateBlankSet(stageNum));
@@ -618,5 +623,13 @@ export default function EthernetStandardsQuiz() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function EthernetStandardsQuiz() {
+  return (
+    <Suspense fallback={null}>
+      <EthernetStandardsQuizContent />
+    </Suspense>
   );
 }
