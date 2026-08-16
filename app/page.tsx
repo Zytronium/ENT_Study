@@ -126,11 +126,12 @@ export default function Home() {
                 <span className="text-accent group-hover:underline">{">"} Patch VS Crossover Cables</span>
                 <span className="text-xs text-slate-500">[8/14/26]</span>
               </div>
-              <p className="text-sm text-slate-400 mt-2">Patch (aka straight) cables VS crossover cables.</p>
+              <p className="text-sm text-slate-400 mt-2">Patch (straight) cables VS crossover cables and shielded vs
+                unshielded twisted pairs.</p>
             </Link>
 
             <Link
-              href="/pvc-rated-cables"
+              href="/cable-ratings"
               className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
             >
               <div className="flex justify-between items-center">
@@ -147,8 +148,7 @@ export default function Home() {
               className="p-4 bg-slate-800 hover:bg-slate-700 border border-border rounded transition-colors group"
             >
               <div className="flex justify-between items-center">
-                <span className="text-accent group-hover:underline">{">"} ESD, EMI, & EMP <span
-                  className="text-red-500 text-xs ml-2">[OFFLINE]</span></span>
+                <span className="text-accent group-hover:underline">{">"} ESD, EMI, & EMP</span>
                 <span className="text-xs text-slate-500">[8/14/26]</span>
               </div>
               <p className="text-sm text-slate-400 mt-2">Electrostatic discharges, electromagnetic interfearance, and
