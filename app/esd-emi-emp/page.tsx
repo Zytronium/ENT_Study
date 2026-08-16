@@ -346,7 +346,7 @@ export default function EsdEmiEmpQuiz() {
                       {isTypingMode ? (
                         <input
                           type="text"
-                          placeholder="Type threat (ESD, EMI, EMP)..."
+                          placeholder="Type threat..."
                           disabled={showResults}
                           value={userVal}
                           onChange={(e) => handleAnswerChange(def.id, e.target.value)}
@@ -449,7 +449,7 @@ export default function EsdEmiEmpQuiz() {
                       {isTypingMode ? (
                         <input
                           type="text"
-                          placeholder="Type ESD, EMI, or EMP..."
+                          placeholder="Type threat..."
                           disabled={showResults}
                           value={userVal}
                           onChange={(e) => handleAnswerChange(scen.id, e.target.value)}
