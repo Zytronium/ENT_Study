@@ -286,7 +286,7 @@ Ethernet cable materials come in 3 forms:
 - Riser
 - CM (communications multipurpose)
 
-### Plenum Cables
+### Plenum (CMP) Cables
 These are used in plenum areas. Plenum areas are the spaces in buildings used for air circulation in HVAC systems, 
 typically found above drop ceilings or below raised floors, where smoke and fire can spread rapidly through the building's 
 air-handling space. Plenum-rated cables are made with fire-resistant materials that produce less smoke and toxic fumes 
