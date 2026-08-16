@@ -136,10 +136,10 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center p-8">
       <header className="w-full max-w-4xl mb-12 border-b border-border pb-4">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <h1 className="text-3xl font-bold text-accent">ENT_ROUTER_V1 | Hub</h1>
-          <div className="flex gap-4 items-center">
-            <div className="relative" ref={tooltipRef}>
+          <div className="flex flex-col xs:flex-row gap-4 items-start xs:items-center w-full sm:w-auto">
+          <div className="relative" ref={tooltipRef}>
               <button
                 onClick={() => setIsMasteryMode(!isMasteryMode)}
                 className={`px-4 py-2 rounded border transition-colors ${
