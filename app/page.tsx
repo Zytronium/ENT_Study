@@ -111,10 +111,35 @@ const studyTopics: Array<{
   },
 ];
 
+function formatUptime(totalSeconds: number): string {
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  const parts = [
+    hours.toString().padStart(2, "0"),
+    minutes.toString().padStart(2, "0"),
+    seconds.toString().padStart(2, "0"),
+  ];
+  return days > 0 ? `${days}d ${parts.join(":")}` : parts.join(":");
+}
+
+const DEPLOY_TIME = process.env.NEXT_PUBLIC_BUILD_TIME
+  ? new Date(process.env.NEXT_PUBLIC_BUILD_TIME).getTime()
+  : Date.now();
+
 export default function Home() {
   const [isMasteryMode, setIsMasteryMode] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [uptimeSeconds, setUptimeSeconds] = useState(0);
   const tooltipRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const update = () => setUptimeSeconds(Math.floor((Date.now() - DEPLOY_TIME) / 1000));
+    update();
+    const interval = setInterval(update, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
@@ -179,7 +204,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <p className="text-sm text-slate-400">System Uptime: 2026-08-12 17:53:00</p>
+        <p className="text-sm text-slate-400">System Uptime: {formatUptime(uptimeSeconds)}</p>
       </header>
 
       <main className="w-full flex justify-center">
