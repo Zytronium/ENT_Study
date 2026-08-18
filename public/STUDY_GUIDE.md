@@ -369,9 +369,11 @@ Wi-Fi networks can operate with different types of security:
   * Easy to set up
   * Very insecure
 
-## Wireless WiFi St/ndards
+## Wireless Wi-Fi Standards
 
 Speeds and distances shown are advertized speed and distances under perfect lab conditions.
+
+### Chart
 
 | Version | IEEE Standard | Frequency       | Speed    | Distance |
 |---------|---------------|-----------------|----------|----------|
