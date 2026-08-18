@@ -348,11 +348,11 @@ Wi-Fi networks can operate with different types of security:
   * Some open networks can be malicious honeypots
   * **Do not connect!**
 
-* ⚠ **WEP — Wired Equivalent Privacy**
+* ⚠ **WEP - Wired Equivalent Privacy**
   * Easily hackable 
   * Not secure.
 
-* ⚠ **WPA — Wi-Fi Protected Access**
+* ⚠ **WPA - Wi-Fi Protected Access**
   * Uses TKIP keys = not secure (anymore)
   * Easily hackable
 
@@ -368,3 +368,37 @@ Wi-Fi networks can operate with different types of security:
 * ⚠ **WPS**
   * Easy to set up
   * Very insecure
+
+## Wireless WiFi St/ndards
+
+Speeds and distances shown are advertized speed and distances under perfect lab conditions.
+
+| Version | IEEE Standard | Frequency       | Speed    | Distance |
+|---------|---------------|-----------------|----------|----------|
+| Wi-Fi   | 802.11        | 2.4 GHz         | 2 Mb/s   | 100 ft   |
+| Wi-Fi 1 | 802.11b       | 2.4 GHz         | 11 Mb/s  | 100 ft   |
+| Wi-Fi 2 | 802.11a       | 5 GHz           | 54 Mb/s  | 100 ft   |
+| Wi-Fi 3 | 802.11g       | 2.4 GHz         | 54 Mb/s  | 125 ft   |
+| Wi-Fi 4 | 802.11n       | 2.4 GHz + 5 GHz | 600 Mb/s | 225 ft   |
+| Wi-Fi 5 | 802.11ac      | 5 GHz           | 1 Gb/s   | 90 ft    |
+| Wi-Fi 6 | 802.11ax      | 2.4 GHz + 5 GHz | 14 Gb/s  | 100 ft   |
+
+Wi-Fi 7 will likely not be tested on but is under 802.11be, operates on 2.4 GHz, 5 GHz, AND 6 GHz, 
+and can reach up to 46 Gb/s. Wi-Fi 8 will not eb tested on either as it is not planned to release 
+until 2028; Wi-Fi 8 is under 802.11bn.
+
+## Wired vs Wireless
+
+### Wired
+- Reliable
+- Secure
+- Not mobile
+
+Contention Method (traffic control): CSMA/CD (Carrier Sense Multiple Access with Collision _Detection_)
+
+### Wireless
+- Unreliable
+- Less secure
+- Mobile
+
+Contention method: CSMA/CA (Carrier Sense Multiple Acces with Collision _Avoidance_)
