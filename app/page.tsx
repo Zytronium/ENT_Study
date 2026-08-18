@@ -120,7 +120,6 @@ const studyTopics: Array<{
     title: "Wireless Wi-Fi Standards",
     date: "8/18/26",
     description: "802.11 wireless standards chart, frequencies, speeds, and laboratory distances.",
-    offline: true,
   },
   {
     href: "/wired-vs-wireless",
