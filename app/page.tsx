@@ -127,6 +127,12 @@ const studyTopics: Array<{
     date: "8/18/26",
     description: "Comparing wired vs wireless characteristics and contention methods (CSMA/CD vs CSMA/CA).",
   },
+  {
+    href: "/wan-technologies",
+    title: "WAN Technologies",
+    date: "8/18/26",
+    description: "Comparing different WAN technologies and carriers.",
+  },
 ];
 
 function formatUptime(totalSeconds: number): string {
