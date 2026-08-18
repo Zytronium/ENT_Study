@@ -7,7 +7,7 @@ import remarkRehype from 'remark-rehype';
 import rehypeSlug from 'rehype-slug';
 import rehypeStringify from 'rehype-stringify';
 import { visit } from 'unist-util-visit';
-import type { Element, Root } from 'hast';
+import type { Element, ElementContent, Root } from 'hast';
 import type { Metadata } from 'next';
 import StudyGuideViewer, { TocItem } from './StudyGuideViewer';
 
@@ -89,14 +89,32 @@ const TOPIC_QUIZ_MAP: Record<string, { title: string; quizUrl: string; quizName:
     quizName: 'ESD, EMI & EMP Threat Diagnostic',
     description: 'Test your understanding of ESD, EMI, and EMP through definitions, scenarios, and characteristics.',
   },
+  'wireless-80211': {
+    title: 'Wireless 802.11',
+    quizUrl: '/wireless-802-11',
+    quizName: 'Wireless 802.11 & Router Security Simulator',
+    description: 'Test your knowledge of RF frequencies (2.4/5 GHz) and router security configurations (WPA2/WPA3).',
+  },
+  'wireless-wi-fi-standards': {
+    title: 'Wireless Wi-Fi Standards',
+    quizUrl: '/802.11-wireless-standards',
+    quizName: 'IEEE 802.11 Wi-Fi Standards Matrix',
+    description: 'Complete the IEEE 802.11 wireless standards chart across versions, frequencies, speeds, and distances.',
+  },
+  'wired-vs-wireless': {
+    title: 'Wired vs Wireless',
+    quizUrl: '/wired-vs-wireless',
+    quizName: 'Wired vs Wireless & Contention Quiz',
+    description: 'Compare wired and wireless characteristics and contention traffic control methods (CSMA/CD vs CSMA/CA).',
+  },
 };
 
 type Token =
   | { kind: 'img'; node: Element }
   | { kind: 'connector'; node: Element | { type: 'text'; value: string } }
-  | { kind: 'content'; node: any };
+  | { kind: 'content'; node: ElementContent };
 
-function tokenize(children: any[]): Token[] {
+function tokenize(children: ElementContent[]): Token[] {
   return children.map((child) => {
     if (child.type === 'element' && child.tagName === 'img') return { kind: 'img', node: child };
     if (child.type === 'element' && child.tagName === 'br') return { kind: 'connector', node: child };
@@ -127,11 +145,11 @@ function makeImageGrid(images: Element[]): Element {
 
 function splitParagraphIntoNodes(p: Element): Element[] {
   const tokens = tokenize(p.children);
-  const segments: Array<{ type: 'content'; nodes: any[] } | { type: 'images'; images: Element[] }> = [];
+  const segments: Array<{ type: 'content'; nodes: ElementContent[] } | { type: 'images'; images: Element[] }> = [];
 
   let pending: Token[] = [];
 
-  const appendContent = (nodes: any[]) => {
+  const appendContent = (nodes: ElementContent[]) => {
     const last = segments[segments.length - 1];
     if (last && last.type === 'content') {
       last.nodes.push(...nodes);
@@ -172,7 +190,7 @@ function splitParagraphIntoNodes(p: Element): Element[] {
   for (const seg of segments) {
     if (seg.type === 'content') {
       const hasReal = seg.nodes.some(
-        (n) => !(n.type === 'text' && n.value.trim() === '') && n.tagName !== 'br'
+        (n) => !(n.type === 'text' && n.value.trim() === '') && !(n.type === 'element' && n.tagName === 'br')
       );
       if (!hasReal) continue;
       result.push({ type: 'element', tagName: 'p', properties: p.properties, children: seg.nodes });

@@ -109,6 +109,26 @@ const studyTopics: Array<{
     date: "8/14/26",
     description: "Electrostatic discharges, electromagnetic interference, and electromagnetic pulses.",
   },
+  {
+    href: "/wireless-802-11",
+    title: "Wireless 802.11",
+    date: "8/18/26",
+    description: "Radio frequencies (2.4/5 GHz) and wireless security (WPA2/WPA3 router setup simulator).",
+  },
+  {
+    href: "/802.11-wireless-standards",
+    title: "Wireless Wi-Fi Standards",
+    date: "8/18/26",
+    description: "802.11 wireless standards chart, frequencies, speeds, and laboratory distances.",
+    offline: true,
+  },
+  {
+    href: "/wired-vs-wireless",
+    title: "Wired VS Wireless",
+    date: "8/18/26",
+    description: "Comparing wired vs wireless characteristics and contention methods (CSMA/CD vs CSMA/CA).",
+    offline: true,
+  },
 ];
 
 function formatUptime(totalSeconds: number): string {

@@ -321,7 +321,14 @@ area of effect) or nuclear explosions (extremely large area of effect).
 ## Wireless 802.11
 
 Wireless uses radio frequencies to transmit without wires. They operate on 2.4 GHz and 5 GHz frequencies. Newer
-WiFi standards (like WiFi 7) can also operate on 6 GHz, but those are new enough that you likely won't be tested on them.
+Wi-Fi standards (like Wi-Fi 7) can also operate on 6 GHz, but those are new enough that you likely won't be tested on them.
+
+### Frequency Band Chart
+
+| Frequency Band | Total Channels | Non-Overlapping Channels  | Speed  | Distance & Penetration                 | Interference Level |
+|----------------|----------------|---------------------------|--------|----------------------------------------|--------------------|
+| 2.4 GHz        | 11 Total       | 3 (Channels 1, 6, and 11) | Slower | Farther; penetrates walls easily       | High               |
+| 5 GHz          | 25 Total       | All 25                    | Faster | Shorter; cannot penetrate walls easily | Low                |
 
 ### 2.4 GHz
 
