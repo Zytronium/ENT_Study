@@ -131,7 +131,8 @@ const studyTopics: Array<{
     href: "/wan-technologies",
     title: "WAN Technologies",
     date: "8/18/26",
-    description: "Comparing different WAN technologies and carriers.",
+    description: "Comparing WAN technologies: POTS dial-up modems, and digital carrier line specifications.",
+    offline: true,
   },
 ];
 

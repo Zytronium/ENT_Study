@@ -416,16 +416,16 @@ Contention method: CSMA/CA (Carrier Sense Multiple Access with Collision _Avoida
 
 ### Modems and POTS
 
-Traditional dial-up modems used POT lines (Plain Old Telephone lines), which provided analog telephone connections
-over copper wires. A modem converted digital computer data into signals suitable for transmission over the 
-analog telephone line and converted received signals back into digital data. Dial-up modem speeds ranged from 
+Traditional dial-up modems used POTS lines (Plain Old Telephone Service lines), which provided analog telephone 
+connections over copper wires. A modem converted digital computer data into signals suitable for transmission over 
+the analog telephone line and converted received signals back into digital data. Dial-up modem speeds ranged from 
 approximately 300 bps to 54 Kbps, depending on the modem and connection standard.
 
 ### Carrier chart
 
 | Carrier | 64 Kbps Channels | Max Throughput |
 |---------|-----------------:|---------------:|
-| ISDN    |                2 |       128 Kbps |
+| ISDN    |                2 |   128 **K**bps |
 | T1      |               24 |     1.544 Mbps |
 | T3      |      672 (T1x28) |    44.736 Mbps |
 | E1      |               32 |     2.048 Mbps |
