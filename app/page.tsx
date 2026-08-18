@@ -126,7 +126,6 @@ const studyTopics: Array<{
     title: "Wired VS Wireless",
     date: "8/18/26",
     description: "Comparing wired vs wireless characteristics and contention methods (CSMA/CD vs CSMA/CA).",
-    offline: true,
   },
 ];
 
