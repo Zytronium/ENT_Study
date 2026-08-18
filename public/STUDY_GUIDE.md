@@ -258,7 +258,7 @@ A mesh network can be either wired or wireless.
 | 802.3z        | 1000baseT  | 100m                                   | 1 Gb/s   | Twisted pair, Cat5e or better | RJ45                                      | also called Gigabit ethernet                         |
 | 802.3an       | 10GbaseT   | Cat5e/Cat6: 55m; Cat6a or better: 100m | 10 Gb/s  | Twisted pair                  | RJ45                                      |                                                      |
 
-## Patch Cables vs Crossover Cables
+## Patch Cables VS Crossover Cables
 
 ### Patch Cables
 Also known as straight cables, these are ethernet cables that follow the same 568A or 568B standard on both terminated 
@@ -371,7 +371,7 @@ Wi-Fi networks can operate with different types of security:
 
 ## Wireless Wi-Fi Standards
 
-Speeds and distances shown are advertized speed and distances under perfect lab conditions.
+Speeds and distances shown are advertised speed and distances under perfect lab conditions.
 
 ### Chart
 
@@ -389,7 +389,7 @@ Wi-Fi 7 will likely not be tested on but is under 802.11be, operates on 2.4 GHz,
 and can reach up to 46 Gb/s. Wi-Fi 8 will not eb tested on either as it is not planned to release 
 until 2028; Wi-Fi 8 is under 802.11bn.
 
-## Wired vs Wireless
+## Wired VS Wireless
 
 ### Wired
 - Reliable
@@ -403,4 +403,25 @@ Contention Method (traffic control): CSMA/CD (Carrier Sense Multiple Access with
 - Less secure
 - Mobile
 
-Contention method: CSMA/CA (Carrier Sense Multiple Acces with Collision _Avoidance_)
+Contention method: CSMA/CA (Carrier Sense Multiple Access with Collision _Avoidance_)
+
+## WAN Technologies
+
+### Modems and POTS
+
+Traditional dial-up modems used POT lines (Plain Old Telephone lines), which provided analog telephone connections
+over copper wires. A modem converted digital computer data into signals suitable for transmission over the 
+analog telephone line and converted received signals back into digital data. Dial-up modem speeds ranged from 
+approximately 300 bps to 54 Kbps, depending on the modem and connection standard.
+
+### Carrier chart
+
+| Carrier | 64 Kbps Channels | Max Throughput |
+|---------|-----------------:|---------------:|
+| ISDN    |                2 |       128 Kbps |
+| T1      |               24 |     1.544 Mbps |
+| T3      |      672 (T1x28) |    44.736 Mbps |
+| E1      |               32 |     2.048 Mbps |
+| E3      |      512 (E1x16) |    34.368 Mbps |
+
+T1 and T3 are what were used in North America, while E1 and E3 were mostly used in Europe.
