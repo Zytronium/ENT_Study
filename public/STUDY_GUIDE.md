@@ -317,3 +317,54 @@ with your Wi-Fi or disrupt electronics briefly. They can be caused by things lik
 ### EMP
 EMP stands for electromagnetic pulse. These are very destructive. They can be caused by lightning strikes (very small 
 area of effect) or nuclear explosions (extremely large area of effect). 
+
+## Wireless 802.11
+
+Wireless uses radio frequencies to transmit without wires. They operate on 2.4 GHz and 5 GHz frequencies. Newer
+WiFi standards (like WiFi 7) can also operate on 6 GHz, but those are new enough that you likely won't be tested on them.
+
+### 2.4 GHz
+
+* Has 11 channels total, but only 3 don't overlap.
+* Channels 1, 6, and 11 do not overlap.
+* Slower than 5 GHz 
+* Goes farther than 5GHz and can more easily penetrate solid objects like walls.
+* More interference than 5GHz due to many other devices operating on this frequency, such as microwaves, Bluetooth 
+headphones, or cordless telephones.
+
+### 5 GHz
+
+* Has 25 **non-overlapping** channels.
+* Generally faster than 2.4GHz
+* Goes a shorter distance than 2.4GHz and can't easily penetrate solid objects.
+* Less interference than 2.4GHz due to fewer devices operating on this frequency.
+
+### Security
+Wi-Fi networks can operate with different types of security:
+
+* ⚠ **Open**
+  * No password = no security.
+  * Hackers can steal your data
+  * Some open networks can be malicious honeypots
+  * **Do not connect!**
+
+* ⚠ **WEP — Wired Equivalent Privacy**
+  * Easily hackable 
+  * Not secure.
+
+* ⚠ **WPA — Wi-Fi Protected Access**
+  * Uses TKIP keys = not secure (anymore)
+  * Easily hackable
+
+* ✓ **WPA2**
+  * Uses AES.
+  * Used by the US Department of Defense.
+  * Secure (for now).
+
+* ✓ **WPA3**
+  * New and cutting edge (2018).
+  * Secure (for now).
+
+* ⚠ **WPS**
+  * Easy to set up
+  * Very insecure
