@@ -145,7 +145,6 @@ const studyTopics: Array<{
     title: "Hexadecimal",
     date: "8/19/26",
     description: "Hexadecimal base-16 number system and converting between hex, binary, and decimal.",
-    offline: true,
   },
 ];
 

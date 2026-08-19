@@ -113,6 +113,12 @@ const TOPIC_QUIZ_MAP: Record<string, { title: string; quizUrl: string; quizName:
     quizName: 'WAN Technologies & Carrier Lines Assessment',
     description: 'Test your understanding of dial-up POTS lines, modems, digital carrier specifications (ISDN, T1, T3, E1, E3), channel counts, and regional deployments.',
   },
+  'hexadecimal': {
+    title: 'Hexadecimal',
+    quizUrl: '/hexadecimal',
+    quizName: 'Hexadecimal Conversion Interactive Simulator',
+    description: 'Practice converting between hexadecimal, binary, and decimal values.',
+  },
 };
 
 type Token =
