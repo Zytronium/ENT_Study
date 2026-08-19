@@ -133,6 +133,20 @@ const studyTopics: Array<{
     date: "8/18/26",
     description: "Comparing WAN technologies: POTS dial-up modems, and digital carrier line specifications.",
   },
+  {
+    href: "/data-link-layer",
+    title: "Data-Link Layer",
+    date: "8/19/26",
+    description: "LLC and MAC sublayers, MAC addressing, and Layer 2 networking concepts.",
+    offline: true,
+  },
+  {
+    href: "/hexadecimal",
+    title: "Hexadecimal",
+    date: "8/19/26",
+    description: "Hexadecimal base-16 number system and converting between hex, binary, and decimal.",
+    offline: true,
+  },
 ];
 
 function formatUptime(totalSeconds: number): string {
