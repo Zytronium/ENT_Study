@@ -164,12 +164,12 @@ const INITIAL_SCENARIOS: ScenarioQuestion[] = [
     id: "scen-device-identifier",
     prompt: "Given the sample MAC address 03:E5:B1:F4:B2:A4, what does the second half (F4:B2:A4) represent?",
     options: [
-      "The Manufacturer-assigned unique sequence not duplicated within the same OUI",
+      "The manufacturer-assigned unique sequence unique to the OUI",
       "The vendor ID code registered with the IEEE",
       "The IP network subnet mask converted to hexadecimal",
       "The room number and physical building coordinates of the hardware",
     ],
-    answer: "The Manufacturer-assigned unique sequence not duplicated within the same OUI",
+    answer: "The manufacturer-assigned unique sequence unique to the OUI",
     explanation: "The second half is a unique sequence produced by the vendor that should not be duplicated across other MAC addresses sharing the same OUI.",
   },
   {
@@ -193,7 +193,7 @@ const INITIAL_SCENARIOS: ScenarioQuestion[] = [
       "Eight 16-bit hexadecimal blocks separated by semicolons",
       "Twelve decimal integers separated by dashes",
     ],
-    answer: "Six hexadecimal pairs",
+    answer: "Six hexadecimal pairs separated by colons",
     explanation: "A traditional MAC address is 48 bits (6 bytes) written as six hexadecimal pairs separated by colons or hyphens.",
   },
   {
