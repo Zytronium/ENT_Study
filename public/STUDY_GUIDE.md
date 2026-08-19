@@ -513,8 +513,8 @@ exactly four binary bits, and it's shorter to write than decimal or binary. For 
 212 in decimal. 
 
 ### Hexadecimal to Decimal
-Convert each hexadecimal digit into its corresponding value, i.e. 3=3, 8=8, A=10, F=15. F/15 is the max for one digit 
-because that's the max you can get with 4 bits. Then do the same with the next hexadecimal digits and all the rest. Say 
+Convert each hexadecimal digit into its corresponding value. F/15 is the max for one digit because 
+that's the max you can get with 4 bits. Then do the same with the all the remaining hexadecimal digits. Say 
 your hexidecimal value was D4, then you'll have `13, 4`. Now take these values and convert them to 4-bit binary 
 sequences.
 
