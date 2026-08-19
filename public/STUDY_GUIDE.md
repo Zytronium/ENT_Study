@@ -445,7 +445,7 @@ networks, the Data-Link Layer is divided into two sublayers:
 
 **LLC (Logical Link Control)** is the upper sublayer of the Data-Link Layer. It provides an interface between the 
 Network Layer and the MAC sublayer and helps identify and provide services for the protocols operating above the 
-Data-Link Layer. LLC is defined by IEEE 802.2.
+Data-Link Layer. LLC binds logical addresses to physical cards. LLC is defined by IEEE 802.2.
 
 Think of LLC as the logical side of Layer 2: it connects higher-layer protocols to the Data-Link Layer.
 

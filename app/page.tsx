@@ -138,7 +138,6 @@ const studyTopics: Array<{
     title: "Data-Link Layer",
     date: "8/19/26",
     description: "LLC and MAC sublayers, MAC addressing, and Layer 2 networking concepts.",
-    offline: true,
   },
   {
     href: "/hexadecimal",
