@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Wired vs Wireless | ENT Study",
-  description: "Comparing wired vs wireless characteristics and contention methods (CSMA/CD vs CSMA/CA).",
+  title: "WAN Technologies | ENT Study",
+  description: "Comparing WAN technologies: POTS dial-up modems, and digital carrier line specifications.",
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {

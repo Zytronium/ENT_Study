@@ -107,6 +107,12 @@ const TOPIC_QUIZ_MAP: Record<string, { title: string; quizUrl: string; quizName:
     quizName: 'Wired vs Wireless & Contention Quiz',
     description: 'Compare wired and wireless characteristics and contention traffic control methods (CSMA/CD vs CSMA/CA).',
   },
+  'wan-technologies': {
+    title: 'WAN Technologies',
+    quizUrl: '/wan-technologies',
+    quizName: 'WAN Technologies & Carrier Lines Assessment',
+    description: 'Test your understanding of dial-up POTS lines, modems, digital carrier specifications (ISDN, T1, T3, E1, E3), channel counts, and regional deployments.',
+  },
 };
 
 type Token =
