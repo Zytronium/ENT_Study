@@ -432,3 +432,76 @@ approximately 300 bps to 54 Kbps, depending on the modem and connection standard
 | E3      |      512 (E1x16) |    34.368 Mbps |
 
 T1 and T3 are what were used in North America, while E1 and E3 were mostly used in Europe.
+
+## Data-Link Layer
+
+The Data-Link Layer (Layer 2) is responsible for communication between devices over a local network. In IEEE 802 
+networks, the Data-Link Layer is divided into two sublayers:
+
+- LLC (Logical Link Control)
+- MAC (Media Access Control)
+
+### Logical Link Control (LLC)
+
+**LLC (Logical Link Control)** is the upper sublayer of the Data-Link Layer. It provides an interface between the 
+Network Layer and the MAC sublayer and helps identify and provide services for the protocols operating above the 
+Data-Link Layer. LLC is defined by IEEE 802.2.
+
+Think of LLC as the logical side of Layer 2: it connects higher-layer protocols to the Data-Link Layer.
+
+### Media Access Control (MAC)
+
+**MAC (Media Access Control)** is the lower sublayer of the Data-Link Layer. It sits between the LLC sublayer and the 
+Physical Layer and handles functions related to accessing the transmission medium and MAC addressing.
+
+Two common IEEE 802 MAC standards are:
+
+| Standard   | Technology | Medium   |
+| ---------- | ---------- | -------- |
+| **802.3**  | Ethernet   | Wired    |
+| **802.11** | Wi-Fi      | Wireless |
+
+### NICs and MAC Addresses
+
+A **NIC (Network Interface Card)** is the hardware interface that allows a device to connect to a network. NICs implement
+functions associated with the Data-Link and Physical Layers and have a MAC address associated with their network interface.
+
+A **MAC address** is a Layer 2 physical address used to identify a network interface for communication on a local 
+network. A traditional MAC address is 48 bits (or 6 bytes) and is normally written as six hexadecimal pairs.
+
+Example:  
+`03:E5:B1:F4:B2:A4`
+
+MAC addresses are intended to be globally unique identifiers (though, in practice, there can be some duplicates). The
+first half (`03:E5:B1` in our example) is the OUI (organizationally unique identifier), which is assigned by the IEEE to
+manufacturers and identifies the vendor or organization that produced the network interface. The second half is a unique
+sequence that should not be duplicated on any other MAC address with the same OUI.
+
+> **Remember:** A MAC address identifies a **network interface**, not the physical location of the device.
+
+### MAC Address vs. IP Address
+
+A useful way to distinguish the two is:
+
+| Address         | OSI Layer           | Purpose                                                                                                        |
+| --------------- |---------------------|----------------------------------------------------------------------------------------------------------------|
+| **IP address**  | Layer 3 - Network   | Identifies a device/interface for communication across networks. Provides the device location/how to reach it. |
+| **MAC address** | Layer 2 - Data-Link | Identifies a network interface for local network communication. Provides the device identity.                  |
+
+**ARP (Address Resolution Protocol)** is used with IPv4 to determine the MAC address corresponding to an IP address on 
+the local network. In other words, **ARP is what resolves the MAC address from the IP address** (not LLC).
+
+### Summary
+To summarize, here's a graphic to visualize the Data-Link layer's sublayers:
+
+```text
+Data-Link Layer (Layer 2)
+│
+├── LLC — Logical Link Control
+│   └── Interfaces with the Network Layer
+│
+└── MAC — Media Access Control
+    ├── MAC addressing
+    ├── Access to the transmission medium
+    └── Interfaces with the Physical Layer
+```

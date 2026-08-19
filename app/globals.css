@@ -102,6 +102,13 @@ body {
   color: var(--accent);
 }
 
+.prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
 .quiz-action-card a,
 .quiz-action-btn {
   color: #020617 !important;
@@ -292,6 +299,12 @@ body {
     color: #15803d !important;
     white-space: pre-wrap !important;
     word-break: break-word !important;
+  }
+
+  pre code {
+    background-color: transparent !important;
+    border: none !important;
+    color: inherit !important;
   }
 
   * {
