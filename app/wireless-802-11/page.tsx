@@ -244,7 +244,7 @@ const initialFrequencyQuestions: FrequencyQuestion[] = [
       "2.4 GHz has 25 non-overlapping channels that collide",
       "2.4 GHz operates exclusively at 100 Mb/s",
     ],
-    answer: "2.4 GHz is shared by common devices like microwaves, Bluetooth headphones, and cordless phones",
+    answer: "2.4 GHz is shared by many devices",
     explanation: "2.4 GHz is crowded with consumer electronics like microwave ovens, Bluetooth gear, and cordless landlines.",
   },
 ];
