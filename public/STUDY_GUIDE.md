@@ -505,3 +505,54 @@ Data-Link Layer (Layer 2)
     ├── Access to the transmission medium
     └── Interfaces with the Physical Layer
 ```
+
+## Hexadecimal
+Hexadecimal is a base-16 number system that uses the digits `0–9` and the letters `A–F`, where `A = 10`, `B = 11`,
+`C = 12`, `D = 13`, `E = 14`, and `F = 15`. It is commonly used in networking because one hexadecimal digit represents 
+exactly four binary bits, and it's shorter to write than decimal or binary. For example, D4 is 11010100 in binary or
+212 in decimal. 
+
+### Hexadecimal to Decimal
+Convert each hexadecimal digit into its corresponding value, i.e. 3=3, 8=8, A=10, F=15. F/15 is the max for one digit 
+because that's the max you can get with 4 bits. Then do the same with the next hexadecimal digits and all the rest. Say 
+your hexidecimal value was D4, then you'll have `13, 4`. Now take these values and convert them to 4-bit binary 
+sequences.
+
+The left half of the chart is for 13 and the right half is for 4.
+
+| 8 | 4 | 2 | 1 | | 8 | 4 | 2 | 1 |
+|---|---|---|---|-|---|---|---|---|
+| 1 | 1 | 0 | 1 | | 0 | 1 | 0 | 0 |
+
+Now combine those two 4-bit sequences into a single 8-bit sequence by concatenating them.
+
+| 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
+|:---:|:--:|:--:|:--:|---|---|---|---|
+|  1  | 1  | 0  | 1  | 0 | 1 | 0 | 0 |
+
+Now calculate the value of this binary sequence.
+
+128+64+16+4=**212**.
+
+That's the value of D4 from hex to dec.
+
+### Decimal to Hexadecimal
+Converting from decimal to hexadecimal is the same process but in reverse. To convert a number from decimal to 
+hexadecimal, you must first convert it to binary. Say the number is 212:
+
+| 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
+|:---:|:--:|:--:|:--:|---|---|---|---|
+|  1  | 1  | 0  | 1  | 0 | 1 | 0 | 0 |
+
+Now divide this sequence into two 4-bit binary sequences:
+
+| 8 | 4 | 2 | 1 | | 8 | 4 | 2 | 1 |
+|---|---|---|---|-|---|---|---|---|
+| 1 | 1 | 0 | 1 | | 0 | 1 | 0 | 0 |
+
+Now calculate the values of both 4-bit sequences.  
+8+4+1=13; 4=4.
+
+Now convert those 2 digits to hexadecimal digits: 13=D; 4=4. That gives you **D4**.
+
+> **Quick Reference:** `A = 10`, `B = 11`, `C = 12`, `D = 13`, `E = 14`, `F = 15`.
