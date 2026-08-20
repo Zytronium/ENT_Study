@@ -556,3 +556,74 @@ Now calculate the values of both 4-bit sequences.
 Now convert those 2 digits to hexadecimal digits: 13=D; 4=4. That gives you **D4**.
 
 > **Quick Reference:** `A = 10`, `B = 11`, `C = 12`, `D = 13`, `E = 14`, `F = 15`.
+
+## Layer 2 Switches - Data-Link Layer
+Layer 2 switches directy traffic by MAC addresses. Switches build MAC tables (sometimes called CAM tables) that
+map physical switch ports to MAC addresses. If a specified MAC address is not in the table when a packet is directed
+to that address, the switch broadcasts on all ports except the sending one to find out which port that MAC address
+is on. The device with that MAC address then sends back a signals letting the switch know that's where it is, and the
+switch puts its MAC address udner that port in the MAC table.
+
+## Network Layer - IP Addresses
+
+### IPv4
+
+- 32-bit dotted decimal address (i.e. 192.168.0.23)
+- 2 parts: Network & Host IP
+- 4 Octects, each 8 bits = 32 bits total
+- each octect is between 0 and 255
+- there are over 4 billion unique possible IPv4 addresses
+- Currently used IP version
+
+Because there are fewer possible IPv4 addresses than devices on the internet, IPv4 addresses are split
+into public and private IP addresses.
+
+#### Public IPv4 Addresses
+Public IP addresses allow devices to communicate over the internet and are globally unique. They are typically assigned
+to a router or other network device by an ISP. A home network will often have one public IP address, which is assigned
+to its router. When a device on the network accesses the internet, the router typically uses NAT (Network Address
+Translation) to translate the device's private IP address into the network's public IP address.
+
+For example:
+
+`PC (192.168.1.23) -> Router/NAT (203.0.113.45) -> Internet`
+
+#### Private IPv4 Addresses
+Private IP addresses are assigned to individual devices on a network. They have to be wihtin certain ranges of
+IP addresses. A DHCP server assigns private IP addresses. There are also 3 different classes of private IP addresses.
+
+| Class | IP Address Range              | Default Subnet Mask |
+|:-----:|-------------------------------|---------------------|
+|   A   | 10.0.0.0 - 10.255.255.255     | 255.0.0.0           |
+|   B   | 172.16.0.0 - 172.31.255.255   | 255.255.0.0         |
+|   C   | 192.168.0.0 - 192.168.255.255 | 255.255.255.0       |
+
+Class C is the most commonly used as it's generally for small or home networks.
+
+#### Other IPv4 Addresses
+
+`127.0.0.1` is a loopback address.
+
+`169.254.X.X` addresses are APIPA, or automatic private IP addressing. On Windows, if your
+device has this private IP, it means the DHCP server could not be contacted to assign you a private IP
+address. A device with an APIPA IP cannot reach the internet.
+
+### IP Address Classes
+There are 5 IP Address classes, though we don't worry about classes D and E much.
+
+| Class | Network Number | Net/Host | Subnet Mask   | Possible Networks | Possible Hosts |
+|:-----:|----------------|----------|---------------|-------------------|----------------|
+|   A   | 1-126 (or 127) | N.H.H.H  | 255.0.0.0     | 126               | 16M            |
+|   B   | 128-191        | N.N.H.H  | 255.255.0.0   | 16k               | 65k            |
+|   C   | 192-223        | N.N.N.H  | 255.255.255.0 | 2M                | 254            |
+|   D   | 224-239        |          |               |                   |                |
+|   E   | 240-254        |          |               |                   |                | 
+
+Class D is for documentation/labs.  
+Class E is for experimental.
+
+### IPv6
+
+- 128-bit hexadecimal address (i.e. 2001:0db8:85a3:0020:0000:8a2e:0370:7334)
+- 2 parts: Prefixes & Host ID's
+- Over 340 ***Undecillion*** (or 2¹²⁸) unique possible IPv6 addresses 
