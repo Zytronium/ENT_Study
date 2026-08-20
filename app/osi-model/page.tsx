@@ -59,39 +59,71 @@ function OSIQuizContent() {
   );
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-8">
-      <header className="w-full max-w-4xl mb-8 border-b border-border pb-4">
-        <div className="flex flex-wrap justify-between items-center gap-4">
-          <h1 className="text-3xl font-bold text-accent">ENT_ROUTER_V1 | OSI Model</h1>
-          <div className="flex items-center gap-4 text-sm font-mono">
-            <Link href="/study-guide#osi-model" className="text-accent hover:underline flex items-center gap-1">
-              [VIEW IN STUDY GUIDE]
-            </Link>
-            <Link href="/" className="text-accent hover:underline">{"<"} BACK TO HUB</Link>
+    <div className="min-h-screen flex flex-col items-center p-4 sm:p-8">
+      {/* Header */}
+      <header className="w-full max-w-4xl mb-8 cyber-glass-panel p-4 sm:p-5 rounded-xl border border-slate-800 shadow-xl flex flex-wrap justify-between items-center gap-4">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
+              DIAGNOSTIC_MODULE
+            </span>
+            <span className="text-xs text-slate-500 font-mono">//</span>
+            <span className="text-xs text-slate-400 font-mono">L1_THROUGH_L7</span>
           </div>
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <span className="text-emerald-400 font-mono">ENT_ROUTER_V1</span>
+            <span className="text-slate-600 font-light">|</span>
+            <span className="text-slate-200">OSI Model</span>
+          </h1>
+        </div>
+        <div className="flex items-center gap-3 text-xs font-mono">
+          <Link
+            href="/study-guide#osi-model"
+            className="px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400 transition-all flex items-center gap-1.5 font-bold"
+          >
+            <span>[STUDY_GUIDE]</span>
+          </Link>
+          <Link
+            href="/"
+            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:text-white hover:border-slate-600 transition-all font-bold"
+          >
+            {"<"} BACK TO HUB
+          </Link>
         </div>
       </header>
 
-      <main className="w-full max-w-4xl terminal-box">
-        <h2 className="text-xl font-bold mb-6 text-accent underline">OSI Model Layer Matching</h2>
-        <p className="mb-8 text-slate-300">Match the correct OSI layer name to its description and number.</p>
+      <main className="w-full max-w-4xl terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+        <div className="flex items-center justify-between pb-3 mb-6 border-b border-slate-800/80">
+          <div className="flex items-center gap-2">
+            <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+              [OSI_LAYER_ARCHITECTURE_MATCHING]
+            </h2>
+          </div>
+        </div>
 
-        <div className="space-y-6">
+        <p className="mb-6 text-xs sm:text-sm text-slate-400 font-mono">
+          Match the correct OSI layer name to its technical description and layer position index.
+        </p>
+
+        <div className="space-y-4">
           {scrambledLayers.map((layer) => (
-            <div key={layer.number} className="flex flex-col md:flex-row gap-4 border-b border-border/50 pb-4 last:border-0">
-              <div className="md:w-24 font-bold text-accent shrink-0 flex items-center gap-2">
-                Layer
+            <div
+              key={layer.number}
+              className="flex flex-col md:flex-row gap-4 p-4 bg-slate-900/70 border border-slate-800/80 rounded-lg hover:border-slate-700 transition-colors"
+            >
+              <div className="md:w-28 font-bold text-emerald-400 shrink-0 flex items-center gap-2 font-mono text-sm">
+                <span>Layer</span>
                 {isScrambled ? (
                   <input
                     type="number"
                     min="1"
                     max="7"
-                    className={`w-12 bg-slate-900 border border-border p-1 text-sm rounded focus:border-accent outline-none text-center ${
+                    className={`w-12 bg-slate-950 border p-1 text-sm rounded font-mono focus:ring-1 focus:ring-emerald-400 outline-none text-center ${
                       showResults
                         ? numberAnswers[layer.number] === String(layer.number)
-                          ? "border-green-500 text-green-500"
-                          : "border-red-500 text-red-500"
-                        : ""
+                          ? "border-emerald-500 text-emerald-400 bg-emerald-950/30"
+                          : "border-rose-500 text-rose-400 bg-rose-950/30"
+                        : "border-slate-700 text-slate-200 focus:border-emerald-400"
                     }`}
                     value={numberAnswers[layer.number] || ""}
                     onChange={(e) => handleNumberInput(layer.number, e.target.value)}
@@ -99,21 +131,23 @@ function OSIQuizContent() {
                     placeholder="_"
                   />
                 ) : (
-                  <span className="w-12 text-center">{layer.number}</span>
+                  <span className="w-8 text-center text-emerald-300 bg-slate-950 border border-slate-800 rounded py-0.5">
+                    {layer.number}
+                  </span>
                 )}
-                :
+                <span>:</span>
               </div>
-              <div className="flex-grow text-sm text-slate-300 italic mb-2 md:mb-0">
+              <div className="flex-grow text-xs sm:text-sm text-slate-300 leading-relaxed font-mono flex items-center">
                 &ldquo;{layer.description}&rdquo;
               </div>
-              <div className="md:w-48 flex-shrink-0">
+              <div className="md:w-56 flex-shrink-0">
                 <select
-                  className={`w-full bg-slate-900 border border-border p-2 text-sm rounded focus:border-accent outline-none ${
+                  className={`w-full bg-slate-950 border p-2 text-xs sm:text-sm font-mono rounded-lg outline-none transition-colors ${
                     showResults 
                       ? answers[layer.number] === layer.name 
-                        ? "border-green-500 text-green-500" 
-                        : "border-red-500 text-red-500"
-                      : ""
+                        ? "border-emerald-500 text-emerald-400 bg-emerald-950/30" 
+                        : "border-rose-500 text-rose-400 bg-rose-950/30"
+                      : "border-slate-700 text-slate-200 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400"
                   }`}
                   value={answers[layer.number] || ""}
                   onChange={(e) => handleSelect(layer.number, e.target.value)}
@@ -129,34 +163,46 @@ function OSIQuizContent() {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-col items-center gap-4">
+        <div className="mt-8 pt-6 border-t border-slate-800/80 flex flex-col items-center gap-4">
           {!showResults ? (
             <button
               onClick={checkResults}
-              className="px-6 py-2 bg-accent text-slate-900 font-bold rounded hover:bg-green-400 transition-colors"
+              className="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-sm rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all cursor-pointer"
             >
               VALIDATE CONFIGURATION
             </button>
           ) : (
             <div className="text-center w-full">
-              <div className={`p-4 mb-6 rounded ${allCorrect ? "bg-green-900/30 text-green-400 border border-green-500" : "bg-red-900/30 text-red-400 border border-red-500"}`}>
+              <div className={`p-4 mb-6 rounded-lg ${
+                allCorrect
+                  ? "bg-emerald-950/40 text-emerald-300 border border-emerald-500/60 shadow-lg shadow-emerald-950/40"
+                  : "bg-rose-950/40 text-rose-300 border border-rose-500/60 shadow-lg shadow-rose-950/40"
+              }`}>
                 {allCorrect ? (
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl mb-2">Success!</span>
-                    <p>All layers correctly identified.</p>
+                    <span className="text-lg font-bold font-mono mb-1 text-emerald-400 flex items-center gap-2">
+                      <span>[OK]</span> CONFIGURATION SYNCHRONIZED
+                    </span>
+                    <p className="text-xs sm:text-sm text-emerald-300/90 font-mono">
+                      All 7 OSI layers correctly identified and mapped.
+                    </p>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl mb-2">Error!</span>
-                    <p>Configuration mismatch detected. Review the layers marked in red.</p>
+                    <span className="text-lg font-bold font-mono mb-1 text-rose-400 flex items-center gap-2">
+                      <span>[!]</span> CONFIGURATION MISMATCH DETECTED
+                    </span>
+                    <p className="text-xs sm:text-sm text-rose-300/90 font-mono">
+                      One or more layer assignments failed validation. Review highlighted fields.
+                    </p>
                   </div>
                 )}
               </div>
               <button
                 onClick={resetQuiz}
-                className="px-6 py-2 border border-accent text-accent font-bold rounded hover:bg-accent/10 transition-colors"
+                className="px-6 py-2.5 border border-emerald-500/40 hover:border-emerald-400 bg-slate-900/80 hover:bg-slate-800 text-emerald-400 font-bold font-mono text-sm rounded-lg transition-all cursor-pointer"
               >
-                {allCorrect || isScrambled ? "SCRAMBLE FIRMWARE (reset and scramble order)" : "RESET FIRMWARE (reset answers)"}
+                {allCorrect || isScrambled ? "SCRAMBLE FIRMWARE (Reset and scramble order)" : "RESET FIRMWARE (Reset answers)"}
               </button>
             </div>
           )}

@@ -148,31 +148,50 @@ export default function CommunicationTypesQuiz() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-8">
-      <header className="w-full max-w-4xl mb-8 border-b border-border pb-4">
-        <div className="flex flex-wrap justify-between items-center gap-4">
-          <h1 className="text-3xl font-bold text-accent">ENT_ROUTER_V1 | Communication Types</h1>
-          <div className="flex items-center gap-4 text-sm font-mono">
-            <Link href="/study-guide#connection-types" className="text-accent hover:underline flex items-center gap-1">
-              [VIEW IN STUDY GUIDE]
-            </Link>
-            <Link href="/" className="text-sm text-accent hover:underline">
-              {"<"} BACK TO HUB
-            </Link>
+    <div className="min-h-screen flex flex-col items-center p-4 sm:p-8">
+      {/* Header */}
+      <header className="w-full max-w-4xl mb-8 cyber-glass-panel p-4 sm:p-5 rounded-xl border border-slate-800 shadow-xl flex flex-wrap justify-between items-center gap-4">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
+              DIAGNOSTIC_MODULE
+            </span>
+            <span className="text-xs text-slate-500 font-mono">//</span>
+            <span className="text-xs text-slate-400 font-mono">TRANSMISSION_MODES</span>
           </div>
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <span className="text-emerald-400 font-mono">ENT_ROUTER_V1</span>
+            <span className="text-slate-600 font-light">|</span>
+            <span className="text-slate-200">Communication Types</span>
+          </h1>
         </div>
-        <p className="text-sm text-slate-400 mt-2">
-          Diagnostic Module: Simplex, Half-Duplex, & Full Duplex Transmission Modes
-        </p>
+        <div className="flex items-center gap-3 text-xs font-mono">
+          <Link
+            href="/study-guide#connection-types"
+            className="px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400 transition-all flex items-center gap-1.5 font-bold"
+          >
+            <span>[STUDY_GUIDE]</span>
+          </Link>
+          <Link
+            href="/"
+            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:text-white hover:border-slate-600 transition-all font-bold"
+          >
+            {"<"} BACK TO HUB
+          </Link>
+        </div>
       </header>
 
-      <main className="w-full max-w-4xl space-y-8">
+      <main className="w-full max-w-4xl space-y-8 font-mono">
         {/* Section 1: Definition Matching */}
-        <section className="terminal-box">
-          <div className="flex justify-between items-center mb-4 pb-2 border-b border-border">
-            <h2 className="text-xl font-bold text-accent underline">Transmission Mode Definitions</h2>
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                [PART_01: TRANSMISSION_MODE_DEFINITIONS]
+              </h2>
+            </div>
           </div>
-          <p className="text-xs text-slate-300 mb-6">
+          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
             Match each signal transmission principle to its corresponding connection standard.
           </p>
 
@@ -184,22 +203,22 @@ export default function CommunicationTypesQuiz() {
               return (
                 <div
                   key={def.id}
-                  className={`p-4 rounded border transition-colors ${
+                  className={`p-4 rounded-lg border transition-all ${
                     showResults
                       ? isCorrect
-                        ? "border-green-500/60 bg-green-950/20"
-                        : "border-red-500/60 bg-red-950/20"
-                      : "border-border/60 bg-slate-900/50"
+                        ? "border-emerald-500/60 bg-emerald-950/20"
+                        : "border-rose-500/60 bg-rose-950/20"
+                      : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
                   }`}
                 >
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex items-start gap-3 flex-grow">
-                      <span className="text-accent font-mono text-xs mt-1 shrink-0">
-                        [{String(idx + 1).padStart(2, "0")}]
+                      <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-2 py-0.5 rounded shrink-0">
+                        #{String(idx + 1).padStart(2, "0")}
                       </span>
                       <div>
-                        <div className="text-sm text-slate-200 font-medium">{`"${def.description}"`}</div>
-                        <div className="text-xs text-slate-400 font-mono mt-1 opacity-75">{def.directionVisual}</div>
+                        <div className="text-xs sm:text-sm text-slate-200 font-medium leading-relaxed">{`"${def.description}"`}</div>
+                        <div className="text-xs text-cyan-400 font-mono mt-1 opacity-80">{def.directionVisual}</div>
                       </div>
                     </div>
 
@@ -208,12 +227,12 @@ export default function CommunicationTypesQuiz() {
                         disabled={showResults}
                         value={selected}
                         onChange={(e) => handleDefSelect(def.id, e.target.value)}
-                        className={`w-full bg-slate-900 border p-2 text-xs rounded font-mono outline-none ${
+                        className={`w-full bg-slate-950 border p-2 text-xs sm:text-sm font-mono rounded-lg outline-none transition-colors ${
                           showResults
                             ? isCorrect
-                              ? "border-green-500 text-green-400"
-                              : "border-red-500 text-red-400"
-                            : "border-border focus:border-accent text-slate-200"
+                              ? "border-emerald-500 text-emerald-400 bg-emerald-950/30"
+                              : "border-rose-500 text-rose-400 bg-rose-950/30"
+                            : "border-slate-700 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 text-slate-200"
                         }`}
                       >
                         <option value="">-- Select Type --</option>
@@ -224,7 +243,7 @@ export default function CommunicationTypesQuiz() {
                         ))}
                       </select>
                       {showResults && !isCorrect && (
-                        <div className="text-xs text-red-400 mt-1 font-mono">Expected: {def.answer}</div>
+                        <div className="text-xs text-rose-400 mt-1 font-mono">Expected: {def.answer}</div>
                       )}
                     </div>
                   </div>
@@ -235,11 +254,15 @@ export default function CommunicationTypesQuiz() {
         </section>
 
         {/* Section 2: Real-World Example Classification */}
-        <section className="terminal-box">
-          <div className="flex justify-between items-center mb-4 pb-2 border-b border-border">
-            <h2 className="text-xl font-bold text-accent underline">Real-World & Hardware Classification</h2>
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                [PART_02: REAL_WORLD_&_HARDWARE_CLASSIFICATION]
+              </h2>
+            </div>
           </div>
-          <p className="text-xs text-slate-300 mb-6">
+          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
             Identify the communication type utilized by each real-world system, protocol, or networking hardware device.
           </p>
 
@@ -251,23 +274,25 @@ export default function CommunicationTypesQuiz() {
               return (
                 <div
                   key={ex.id}
-                  className={`p-4 rounded border transition-colors flex flex-col justify-between ${
+                  className={`p-4 rounded-lg border transition-all flex flex-col justify-between ${
                     showResults
                       ? isCorrect
-                        ? "border-green-500/60 bg-green-950/20"
-                        : "border-red-500/60 bg-red-950/20"
-                      : "border-border/60 bg-slate-900/50"
+                        ? "border-emerald-500/60 bg-emerald-950/20"
+                        : "border-rose-500/60 bg-rose-950/20"
+                      : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
                   }`}
                 >
                   <div>
                     <div className="flex justify-between items-start gap-2 mb-2">
-                      <span className="text-xs text-slate-400 font-mono">#{idx + 1}</span>
-                      <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-border">
+                      <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
+                        #{idx + 1}
+                      </span>
+                      <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-950 text-slate-400 border border-slate-800">
                         {ex.category}
                       </span>
                     </div>
 
-                    <div className="text-sm font-bold text-slate-100 mb-3">{ex.item}</div>
+                    <div className="text-sm font-bold text-slate-100 mb-3 font-mono">{ex.item}</div>
                   </div>
 
                   <div className="space-y-2 mt-2">
@@ -276,17 +301,17 @@ export default function CommunicationTypesQuiz() {
                         const isChosen = selected === t;
                         const isTarget = t === ex.answer;
 
-                        let style = "bg-slate-900 border-border text-slate-300 hover:border-accent";
+                        let style = "bg-slate-950 border-slate-800 text-slate-300 hover:border-emerald-500/50 hover:text-white";
                         if (showResults) {
                           if (isTarget) {
-                            style = "bg-green-900/50 border-green-500 text-green-300 font-bold";
+                            style = "bg-emerald-950/60 border-emerald-500 text-emerald-300 font-bold";
                           } else if (isChosen && !isTarget) {
-                            style = "bg-red-900/50 border-red-500 text-red-300 line-through";
+                            style = "bg-rose-950/60 border-rose-500 text-rose-300 line-through";
                           } else {
-                            style = "bg-slate-900/30 border-border/30 text-slate-600 opacity-50";
+                            style = "bg-slate-950/40 border-slate-800/40 text-slate-600 opacity-50";
                           }
                         } else if (isChosen) {
-                          style = "bg-accent/20 border-accent text-accent font-bold";
+                          style = "bg-emerald-950/40 border-emerald-400 text-emerald-300 font-bold shadow-sm";
                         }
 
                         return (
@@ -295,7 +320,7 @@ export default function CommunicationTypesQuiz() {
                             type="button"
                             disabled={showResults}
                             onClick={() => handleExSelect(ex.id, t)}
-                            className={`p-1.5 rounded text-[11px] border font-mono text-center transition-all ${style}`}
+                            className={`p-2 rounded-lg text-[11px] border font-mono text-center transition-all cursor-pointer disabled:cursor-default ${style}`}
                           >
                             {t}
                           </button>
@@ -304,11 +329,11 @@ export default function CommunicationTypesQuiz() {
                     </div>
 
                     {showResults && (
-                      <div className="pt-2 border-t border-border/40 text-[11px]">
-                        <div className={isCorrect ? "text-green-400 font-mono" : "text-red-400 font-mono"}>
-                          {isCorrect ? "✓ Verified" : `✗ Target: ${ex.answer}`}
+                      <div className="pt-2 border-t border-slate-800/60 text-xs font-mono">
+                        <div className={isCorrect ? "text-emerald-400 font-bold" : "text-rose-400 font-bold"}>
+                          {isCorrect ? "[OK] Verified" : `[!] Target: ${ex.answer}`}
                         </div>
-                        <p className="text-slate-400 italic text-[11px] mt-0.5">{ex.explanation}</p>
+                        <p className="text-slate-400 italic font-mono text-[11px] mt-0.5">{ex.explanation}</p>
                       </div>
                     )}
                   </div>
@@ -317,39 +342,43 @@ export default function CommunicationTypesQuiz() {
             })}
           </div>
 
-          <div className="mt-8 pt-6 border-t border-border flex flex-col items-center gap-4">
+          <div className="mt-8 pt-6 border-t border-slate-800/80 flex flex-col items-center gap-4">
             {!showResults ? (
               <button
                 type="button"
                 onClick={handleValidate}
                 disabled={Object.keys(defAnswers).length === 0 && Object.keys(exAnswers).length === 0}
-                className="px-8 py-2.5 bg-accent text-slate-900 font-bold rounded hover:bg-green-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-mono text-sm tracking-wider"
+                className="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-sm rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 VALIDATE COMMUNICATION MATRIX
               </button>
             ) : (
               <div className="w-full text-center space-y-4">
                 <div
-                  className={`p-4 rounded border ${
+                  className={`p-4 rounded-lg ${
                     allCorrect
-                      ? "bg-green-950/40 text-green-400 border-green-500"
-                      : "bg-red-950/40 text-red-400 border-red-500"
+                      ? "bg-emerald-950/40 text-emerald-300 border border-emerald-500/60 shadow-lg shadow-emerald-950/40"
+                      : "bg-rose-950/40 text-rose-300 border border-rose-500/60 shadow-lg shadow-rose-950/40"
                   }`}
                 >
-                  <div className="font-mono text-sm mb-1">
-                    Score: <span className="font-bold">{totalScore}</span> / {totalQuestions}
+                  <div className="font-mono text-xs mb-1 text-slate-400">
+                    DIAGNOSTIC SCORE: <span className="font-bold text-white">{totalScore}</span> / {totalQuestions}
                   </div>
                   {allCorrect ? (
                     <div>
-                      <div className="text-xl font-bold mb-1">TRANSMISSION MODES VALIDATED</div>
-                      <p className="text-xs text-slate-300">
+                      <div className="text-base sm:text-lg font-bold font-mono mb-1 text-emerald-400 flex items-center justify-center gap-2">
+                        <span>[OK]</span> TRANSMISSION MODES VALIDATED
+                      </div>
+                      <p className="text-xs sm:text-sm text-emerald-300/90 font-mono">
                         Simplex, Half-Duplex, and Full Duplex criteria correctly verified across all systems.
                       </p>
                     </div>
                   ) : (
                     <div>
-                      <div className="text-xl font-bold mb-1">TRANSMISSION MISALIGNMENT DETECTED</div>
-                      <p className="text-xs text-slate-300">
+                      <div className="text-base sm:text-lg font-bold font-mono mb-1 text-rose-400 flex items-center justify-center gap-2">
+                        <span>[!]</span> TRANSMISSION MISALIGNMENT DETECTED
+                      </div>
+                      <p className="text-xs sm:text-sm text-rose-300/90 font-mono">
                         {totalQuestions - totalScore} item(s) incorrectly classified. Review flagged items above.
                       </p>
                     </div>
@@ -360,7 +389,7 @@ export default function CommunicationTypesQuiz() {
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="px-6 py-2 border border-accent text-accent font-bold rounded hover:bg-accent/10 transition-colors font-mono text-xs"
+                    className="px-6 py-2.5 border border-emerald-500/40 hover:border-emerald-400 bg-slate-900/80 hover:bg-slate-800 text-emerald-400 font-bold font-mono text-sm rounded-lg transition-all cursor-pointer"
                   >
                     SCRAMBLE & RESET
                   </button>

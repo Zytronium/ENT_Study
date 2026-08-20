@@ -105,122 +105,182 @@ export default function EIATIAQuiz() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-8">
-      <header className="w-full max-w-4xl mb-8 border-b border-border pb-4">
-        <div className="flex flex-wrap justify-between items-center gap-4">
-          <h1 className="text-3xl font-bold text-accent">ENT_ROUTER_V1 | EIA/TIA 568B</h1>
-          <div className="flex items-center gap-4 text-sm font-mono">
-            <Link href="/study-guide#eiatia-568b-standard-specification" className="text-accent hover:underline flex items-center gap-1">
-              [VIEW IN STUDY GUIDE]
-            </Link>
-            <Link href="/" className="text-sm text-accent hover:underline">{"<"} BACK TO HUB</Link>
+    <div className="min-h-screen flex flex-col items-center p-4 sm:p-8">
+      {/* Header */}
+      <header className="w-full max-w-4xl mb-8 cyber-glass-panel p-4 sm:p-5 rounded-xl border border-slate-800 shadow-xl flex flex-wrap justify-between items-center gap-4">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
+              DIAGNOSTIC_MODULE
+            </span>
+            <span className="text-xs text-slate-500 font-mono">//</span>
+            <span className="text-xs text-slate-400 font-mono">RJ45_COLOR_CODE</span>
           </div>
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <span className="text-emerald-400 font-mono">ENT_ROUTER_V1</span>
+            <span className="text-slate-600 font-light">|</span>
+            <span className="text-slate-200">EIA/TIA 568B Standard</span>
+          </h1>
+        </div>
+        <div className="flex items-center gap-3 text-xs font-mono">
+          <Link
+            href="/study-guide#eiatia-568b-standard-specification"
+            className="px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400 transition-all flex items-center gap-1.5 font-bold"
+          >
+            <span>[STUDY_GUIDE]</span>
+          </Link>
+          <Link
+            href="/"
+            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:text-white hover:border-slate-600 transition-all font-bold"
+          >
+            {"<"} BACK TO HUB
+          </Link>
         </div>
       </header>
 
-      <main className="w-full max-w-4xl terminal-box">
-        <h2 className="text-xl font-bold mb-2 text-accent underline">Wire Order Drag-to-Sort</h2>
-        <p className="mb-2 text-slate-300">
-          Drag the wires into the correct EIA/TIA 568B order, pin 8 at the top down to pin 1 at the bottom.
-        </p>
-        <p className="mb-8 text-slate-400 text-sm">
-          Tap &quot;hint&quot; on a wire to reveal its mnemonic.
-        </p>
-
-        <div className="space-y-2">
-          {order.map((wire, index) => (
-            <div
-              key={wire.id}
-              draggable={!showResults}
-              onDragStart={() => handleDragStart(wire.id)}
-              onDragOver={(e) => handleDragOver(e, wire.id)}
-              onDrop={() => handleDrop(wire.id)}
-              onDragEnd={handleDragEnd}
-              className={`flex items-center gap-4 border rounded p-3 transition-colors ${
-                showResults
-                  ? wire.position === 8 - index
-                    ? "border-green-500 bg-green-900/20"
-                    : "border-red-500 bg-red-900/20"
-                  : dragOverId === wire.id
-                    ? "border-accent bg-slate-800"
-                    : "border-border bg-slate-900"
-              } ${draggedId === wire.id ? "opacity-40" : ""} ${!showResults ? "cursor-move" : ""}`}
-            >
-              <div className="w-8 text-center font-bold text-accent shrink-0">
-                {8 - index}
-              </div>
-
-              <div
-                className="w-16 sm:w-48 md:w-64 lg:w-96 h-6 rounded shrink-0 border border-slate-600 overflow-hidden"
-                style={{ background: wire.swatch }}
-              />
-
-              <div className="grow text-sm">
-                {wire.label}
-                {hints[wire.id] && (
-                  <div className="text-accent text-xs mt-1 italic">Mnemonic: {wire.mnemonic}</div>
-                )}
-              </div>
-
-              <button
-                onClick={() => toggleHint(wire.id)}
-                className="text-xs px-2 py-1 border border-border rounded text-slate-300 hover:border-accent hover:text-accent transition-colors shrink-0"
-              >
-                {hints[wire.id] ? "hide hint" : "hint"}
-              </button>
-
-              {!showResults && (
-                <div className="flex flex-col gap-1 shrink-0">
-                  <button
-                    onClick={() => move(wire.id, -1)}
-                    disabled={index === 0}
-                    className="text-xs px-2 border border-border rounded text-slate-300 hover:border-accent hover:text-accent disabled:opacity-20 transition-colors"
-                    aria-label="Move up"
-                  >
-                    ^
-                  </button>
-                  <button
-                    onClick={() => move(wire.id, 1)}
-                    disabled={index === order.length - 1}
-                    className="text-xs px-2 border border-border rounded text-slate-300 hover:border-accent hover:text-accent disabled:opacity-20 transition-colors"
-                    aria-label="Move down"
-                  >
-                    v
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
+      <main className="w-full max-w-4xl terminal-box border-l-4 border-l-emerald-500 shadow-2xl font-mono">
+        <div className="flex items-center justify-between pb-3 mb-6 border-b border-slate-800/80">
+          <div className="flex items-center gap-2">
+            <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+              [RJ45_MODULAR_PLUG_WIRE_CRIMPING_SIMULATOR]
+            </h2>
+          </div>
+          <div className="text-xs font-mono text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">
+            SPEC: EIA/TIA 568B
+          </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center gap-4">
+        <p className="text-xs sm:text-sm text-slate-300 font-mono mb-2">
+          Arrange wires into the correct EIA/TIA 568B sequence, from Pin 8 (top) down to Pin 1 (bottom).
+        </p>
+        <p className="mb-6 text-xs text-slate-400 font-mono">
+          Drag and drop wire channels or use tactile touch buttons. Tap &quot;hint&quot; to reveal mnemonics.
+        </p>
+
+        {/* RJ45 Connector Skin Container */}
+        <div className="p-4 sm:p-6 bg-slate-950/80 border-2 border-slate-800 rounded-xl shadow-inner relative space-y-3">
+          <div className="text-[10px] font-mono text-slate-500 uppercase tracking-wider mb-2 flex justify-between items-center border-b border-slate-800/60 pb-2">
+            <span>PIN #</span>
+            <span>WIRE CONDUCTOR COLOR</span>
+            <span>MNEMONIC / CONTROLS</span>
+          </div>
+
+          {order.map((wire, index) => {
+            const isTargetPin = wire.position === 8 - index;
+            return (
+              <div
+                key={wire.id}
+                draggable={!showResults}
+                onDragStart={() => handleDragStart(wire.id)}
+                onDragOver={(e) => handleDragOver(e, wire.id)}
+                onDrop={() => handleDrop(wire.id)}
+                onDragEnd={handleDragEnd}
+                className={`flex items-center gap-3 sm:gap-4 border rounded-lg p-2.5 sm:p-3 transition-all ${
+                  showResults
+                    ? isTargetPin
+                      ? "border-emerald-500 bg-emerald-950/20 shadow-sm shadow-emerald-950"
+                      : "border-rose-500 bg-rose-950/20 shadow-sm shadow-rose-950"
+                    : dragOverId === wire.id
+                      ? "border-emerald-400 bg-slate-800 ring-2 ring-emerald-500/30"
+                      : "border-slate-800 bg-slate-900/90 hover:border-slate-700"
+                } ${draggedId === wire.id ? "opacity-30 scale-95" : ""} ${!showResults ? "cursor-grab active:cursor-grabbing" : ""}`}
+              >
+                <div className="w-10 text-center font-mono font-bold text-xs sm:text-sm text-emerald-400 bg-slate-950 border border-slate-800 py-1 rounded shrink-0">
+                  P{8 - index}
+                </div>
+
+                <div
+                  className="w-16 sm:w-40 md:w-56 h-7 rounded-md shrink-0 border border-slate-600/80 shadow-md relative overflow-hidden"
+                  style={{ background: wire.swatch }}
+                >
+                  {/* Subtle gloss highlight on wire */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/20 via-transparent to-black/30 pointer-events-none" />
+                </div>
+
+                <div className="grow text-xs sm:text-sm font-mono text-slate-200">
+                  <span className="font-semibold">{wire.label}</span>
+                  {hints[wire.id] && (
+                    <div className="text-amber-300 text-xs mt-0.5 italic font-mono flex items-center gap-1">
+                      <span>Mnemonic: {wire.mnemonic}</span>
+                    </div>
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => toggleHint(wire.id)}
+                  className="text-[11px] font-mono px-2 py-1 border border-slate-700 rounded-md bg-slate-950 text-slate-400 hover:border-emerald-500/50 hover:text-emerald-400 transition-colors shrink-0 cursor-pointer"
+                >
+                  {hints[wire.id] ? "hide" : "hint"}
+                </button>
+
+                {!showResults && (
+                  <div className="flex flex-col gap-1 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => move(wire.id, -1)}
+                      disabled={index === 0}
+                      className="text-[10px] px-1.5 py-0.5 border border-slate-800 rounded bg-slate-950 text-slate-400 hover:border-emerald-500 hover:text-emerald-400 disabled:opacity-20 transition-colors cursor-pointer"
+                      aria-label="Move up"
+                    >
+                      ▲
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => move(wire.id, 1)}
+                      disabled={index === order.length - 1}
+                      className="text-[10px] px-1.5 py-0.5 border border-slate-800 rounded bg-slate-950 text-slate-400 hover:border-emerald-500 hover:text-emerald-400 disabled:opacity-20 transition-colors cursor-pointer"
+                      aria-label="Move down"
+                    >
+                      ▼
+                    </button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="mt-8 pt-6 border-t border-slate-800/80 flex flex-col items-center gap-4">
           {!showResults ? (
             <button
               onClick={checkResults}
-              className="px-6 py-2 bg-accent text-slate-900 font-bold rounded hover:bg-green-400 transition-colors"
+              className="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-sm rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all cursor-pointer"
             >
               VALIDATE CONFIGURATION
             </button>
           ) : (
             <div className="text-center w-full">
-              <div className={`p-4 mb-6 rounded ${allCorrect ? "bg-green-900/30 text-green-400 border border-green-500" : "bg-red-900/30 text-red-400 border border-red-500"}`}>
+              <div className={`p-4 mb-6 rounded-lg ${
+                allCorrect
+                  ? "bg-emerald-950/40 text-emerald-300 border border-emerald-500/60 shadow-lg shadow-emerald-950/40"
+                  : "bg-rose-950/40 text-rose-300 border border-rose-500/60 shadow-lg shadow-rose-950/40"
+              }`}>
                 {allCorrect ? (
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl mb-2">Success!</span>
-                    <p>Wire order matches EIA/TIA 568B.</p>
+                    <span className="text-lg font-bold font-mono mb-1 text-emerald-400 flex items-center gap-2">
+                      <span>[OK]</span> CONFIGURATION SYNCHRONIZED
+                    </span>
+                    <p className="text-xs sm:text-sm text-emerald-300/90 font-mono">
+                      Wire pinout matches EIA/TIA 568B specification (Pins 8 through 1).
+                    </p>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl mb-2">Error!</span>
-                    <p>Configuration mismatch detected. Review the pins marked in red.</p>
+                    <span className="text-lg font-bold font-mono mb-1 text-rose-400 flex items-center gap-2">
+                      <span>[!]</span> CONFIGURATION MISMATCH DETECTED
+                    </span>
+                    <p className="text-xs sm:text-sm text-rose-300/90 font-mono">
+                      One or more wire positions fail EIA/TIA 568B parity. Review pins marked in red.
+                    </p>
                   </div>
                 )}
               </div>
               <button
                 onClick={resetQuiz}
-                className="px-6 py-2 border border-accent text-accent font-bold rounded hover:bg-accent/10 transition-colors"
+                className="px-6 py-2.5 border border-emerald-500/40 hover:border-emerald-400 bg-slate-900/80 hover:bg-slate-800 text-emerald-400 font-bold font-mono text-sm rounded-lg transition-all cursor-pointer"
               >
-                SCRAMBLE FIRMWARE (reset and scramble order)
+                SCRAMBLE FIRMWARE (Reset and scramble order)
               </button>
             </div>
           )}

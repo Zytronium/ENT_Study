@@ -106,53 +106,109 @@ function BinaryCalculationContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-8">
-      <header className="w-full max-w-4xl mb-8 border-b border-border pb-4">
-        <div className="flex flex-wrap justify-between items-center gap-4">
-          <h1 className="text-3xl font-bold text-accent">ENT_ROUTER_V1 | Binary Calculation</h1>
-          <div className="flex items-center gap-4 text-sm font-mono">
-            <Link href="/study-guide#counting-bits--calculating-binary" className="text-accent hover:underline flex items-center gap-1">
-              [VIEW IN STUDY GUIDE]
-            </Link>
-            <Link href="/" className="text-sm text-accent hover:underline">{"<"} BACK TO HUB</Link>
+    <div className="min-h-screen flex flex-col items-center p-4 sm:p-8">
+      {/* Header */}
+      <header className="w-full max-w-4xl mb-8 cyber-glass-panel p-4 sm:p-5 rounded-xl border border-slate-800 shadow-xl flex flex-wrap justify-between items-center gap-4">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
+              DIAGNOSTIC_MODULE
+            </span>
+            <span className="text-xs text-slate-500 font-mono">//</span>
+            <span className="text-xs text-slate-400 font-mono">8_BIT_REGISTERS</span>
           </div>
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <span className="text-emerald-400 font-mono">ENT_ROUTER_V1</span>
+            <span className="text-slate-600 font-light">|</span>
+            <span className="text-slate-200">Binary Calculation</span>
+          </h1>
+        </div>
+        <div className="flex items-center gap-3 text-xs font-mono">
+          <Link
+            href="/study-guide#counting-bits--calculating-binary"
+            className="px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400 transition-all flex items-center gap-1.5 font-bold"
+          >
+            <span>[STUDY_GUIDE]</span>
+          </Link>
+          <Link
+            href="/"
+            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:text-white hover:border-slate-600 transition-all font-bold"
+          >
+            {"<"} BACK TO HUB
+          </Link>
         </div>
       </header>
 
       <main className="w-full max-w-4xl space-y-8">
-        <section className="terminal-box border-l-4 border-l-accent">
-          <h2 className="text-xl font-bold mb-6 text-accent">[BINARY_CHALLENGE]</h2>
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex items-center justify-between pb-3 mb-6 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                [8_BIT_REGISTER_DECIMAL_CONVERSION]
+              </h2>
+            </div>
+            {correctCount > 0 && (
+              <div className="text-xs font-mono text-emerald-400 bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-900/50">
+                SCORE: {correctCount} SYNCS
+              </div>
+            )}
+          </div>
 
           <div className="flex flex-col items-center gap-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
               {challenges.map((challenge, idx) => (
-                <div key={idx}
-                     className={`p-4 border-2 rounded ${validationResults[idx] === false ? 'border-red-400' : validationResults[idx] === true ? 'border-green-400' : 'border-slate-700'}`}>
+                <div
+                  key={idx}
+                  className={`p-4 rounded-xl border-2 transition-all ${
+                    validationResults[idx] === false
+                      ? "border-rose-500/70 bg-rose-950/20 shadow-rose-950/40 shadow-md"
+                      : validationResults[idx] === true
+                      ? "border-emerald-500/70 bg-emerald-950/20 shadow-emerald-950/40 shadow-md"
+                      : "border-slate-800 bg-slate-900/80"
+                  }`}
+                >
                   <div className="mb-4">
                     {showHint1 && (
-                      <div className="grid grid-cols-8 text-center mb-2 font-mono text-xs text-slate-400">
-                        {[128, 64, 32, 16, 8, 4, 2, 1].map(v => <div key={v}>{v}</div>)}
+                      <div className="grid grid-cols-8 text-center mb-1.5 font-mono text-[11px] text-cyan-400 font-bold">
+                        {[128, 64, 32, 16, 8, 4, 2, 1].map((v) => (
+                          <div key={v} className="bg-slate-950/60 py-0.5 rounded border border-slate-800/60">
+                            {v}
+                          </div>
+                        ))}
                       </div>
                     )}
-                    <div className="grid grid-cols-8 gap-1">
-                      {challenge.bits.split("").map((bit, i) => (
-                        <div key={i}
-                             className="aspect-square flex items-center justify-center bg-slate-900 border-2 border-slate-700 text-xl font-bold rounded">
-                          {bit}
-                        </div>
-                      ))}
+                    {/* 8-bit register cells */}
+                    <div className="grid grid-cols-8 gap-1 p-1 bg-slate-950 rounded-lg border border-slate-800 shadow-inner">
+                      {challenge.bits.split("").map((bit, i) => {
+                        const isOn = bit === "1";
+                        return (
+                          <div
+                            key={i}
+                            className={`aspect-square flex items-center justify-center font-mono text-lg sm:text-xl font-bold rounded transition-all ${
+                              isOn
+                                ? "bg-emerald-500/20 border border-emerald-400/80 text-emerald-300 shadow-sm shadow-emerald-500/30"
+                                : "bg-slate-900 border border-slate-800 text-slate-600"
+                            }`}
+                          >
+                            {bit}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
 
                   {correctCount === 0 && !isMastery ? (
                     <div className="grid grid-cols-2 gap-2">
-                      {challenge.options.map(opt => (
+                      {challenge.options.map((opt) => (
                         <button
                           key={opt}
+                          type="button"
                           onClick={() => handleOptionClick(idx, opt)}
                           disabled={validationResults[idx] === true}
-                          className={`p-2 border border-border rounded font-mono text-lg transition-colors disabled:opacity-50 ${
-                            userInputs[idx] === opt.toString() ? 'bg-accent text-slate-900' : 'bg-slate-800 hover:bg-slate-700'
+                          className={`p-2.5 border rounded-lg font-mono text-base transition-colors cursor-pointer disabled:cursor-default ${
+                            userInputs[idx] === opt.toString()
+                              ? "bg-emerald-500 text-slate-950 font-bold border-emerald-400 shadow-md"
+                              : "bg-slate-950 hover:bg-slate-800 border-slate-800 text-slate-200"
                           }`}
                         >
                           {opt}
@@ -164,8 +220,8 @@ function BinaryCalculationContent() {
                       type="number"
                       value={userInputs[idx]}
                       onChange={(e) => handleInputChange(idx, e.target.value)}
-                      className="w-full bg-slate-900 border border-border p-3 rounded font-mono text-xl text-center outline-none"
-                      placeholder="???"
+                      className="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg font-mono text-lg text-center outline-none text-slate-100 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400"
+                      placeholder="ENTER DECIMAL VALUE..."
                     />
                   )}
                 </div>
@@ -174,51 +230,73 @@ function BinaryCalculationContent() {
 
             <button
               onClick={handleCheck}
-              disabled={userInputs.some(input => input === "") || validationResults.every(r => r === true)}
-              className="px-12 py-4 bg-accent text-slate-900 font-bold text-lg rounded hover:bg-green-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={userInputs.some((input) => input === "") || validationResults.every((r) => r === true)}
+              className="px-10 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-sm rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
-              SUBMIT ALL
+              VALIDATE PARITY
             </button>
 
             {feedback && (
               <div
-                className={`text-center font-mono font-bold text-lg ${validationResults.every(r => r === true) ? "text-green-400" : "text-red-400 animate-shake"}`}>
+                className={`p-4 rounded-lg font-mono text-sm text-center border shadow-lg w-full ${
+                  validationResults.every((r) => r === true)
+                    ? "border-emerald-500/60 bg-emerald-950/40 text-emerald-300 shadow-emerald-950/40"
+                    : "border-rose-500/60 bg-rose-950/40 text-rose-300 shadow-rose-950/40"
+                }`}
+              >
                 {feedback}
               </div>
             )}
 
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-4 justify-center">
               <button
+                type="button"
                 onClick={() => setShowHint1(!showHint1)}
-                className="text-xs text-slate-500 hover:text-accent underline"
+                className="px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-950 text-xs font-mono text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition-all cursor-pointer"
               >
                 {showHint1 ? "[HIDE_VALUE_TABLE]" : "[SHOW_VALUE_TABLE]"}
               </button>
               <button
+                type="button"
                 onClick={() => setShowHint2(!showHint2)}
-                className="text-xs text-slate-500 hover:text-accent underline"
+                className="px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-950 text-xs font-mono text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition-all cursor-pointer"
               >
                 {showHint2 ? "[HIDE_TRICKS]" : "[SHOW_TRICKS]"}
               </button>
-              <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer"
-                 className="text-xs text-slate-500 hover:text-accent underline">
+              <button
+                type="button"
+                onClick={() => window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank', 'noopener,noreferrer')}
+                className="px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-950 text-xs font-mono text-slate-400 hover:text-emerald-400 hover:border-emerald-500/40 transition-all cursor-pointer"
+              >
                 [SHOW_RICKS]
-              </a>
+              </button>
             </div>
 
             {showHint2 && (
-              <div className="w-full p-4 bg-slate-900 border border-slate-700 rounded text-sm space-y-4">
+              <div className="w-full p-4 bg-slate-950 border border-slate-800 rounded-lg text-sm space-y-4 shadow-inner">
                 <div>
-                  <h4 className="font-bold text-accent text-xs mb-1">TRICK 1: TRAILING 1&apos;s</h4>
-                  <p className="text-slate-400 italic">If there&apos;s a solid line of 1&apos;s on the right, the value is always 1 less than the next digit (e.g., 0111 is 8-1=7).</p>
+                  <h4 className="font-bold text-emerald-400 font-mono text-xs mb-1">
+                    TRICK 1: TRAILING 1&apos;s
+                  </h4>
+                  <p className="text-slate-400 italic text-xs sm:text-sm">
+                    If there&apos;s a solid line of 1&apos;s on the right, the value is always 1 less than the next digit (e.g., 0111 is 8-1=7).
+                  </p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-accent text-xs mb-1">TRICK 2: LEADING 1&apos;s</h4>
-                  <p className="text-slate-400 italic">If there&apos;s a solid line of 1&apos;s on the left, start with 255 and subtract the value of the trailing zeros if they were ones (e.g., 11110000 is 255-15=240).</p>
+                  <h4 className="font-bold text-emerald-400 font-mono text-xs mb-1">
+                    TRICK 2: LEADING 1&apos;s
+                  </h4>
+                  <p className="text-slate-400 italic text-xs sm:text-sm">
+                    If there&apos;s a solid line of 1&apos;s on the left, start with 255 and subtract the value of the trailing zeros if they were ones (e.g., 11110000 is 255-15=240).
+                  </p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-accent text-xs mb-1">TRICK 3: ODD/EVEN</h4>
-                  <p className="text-slate-400 italic">If the sequence ends in 1, it&apos;s ODD. If it ends in 0, it&apos;s EVEN. Use this to eliminate wrong choices!</p>
+                  <h4 className="font-bold text-emerald-400 font-mono text-xs mb-1">
+                    TRICK 3: ODD/EVEN
+                  </h4>
+                  <p className="text-slate-400 italic text-xs sm:text-sm">
+                    If the sequence ends in 1, it&apos;s ODD. If it ends in 0, it&apos;s EVEN. Use this to eliminate wrong choices!
+                  </p>
                 </div>
               </div>
             )}

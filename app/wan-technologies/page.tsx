@@ -415,20 +415,20 @@ function WANQuizContent() {
     return (
       <div
         key={q.id}
-        className={`p-4 rounded border transition-colors ${
+        className={`p-4 rounded-lg border transition-all ${
           showResults
             ? isCorrect
-              ? "border-green-500/60 bg-green-950/20"
-              : "border-red-500/60 bg-red-950/20"
-            : "border-border/60 bg-slate-900/50"
+              ? "border-emerald-500/60 bg-emerald-950/20"
+              : "border-rose-500/60 bg-rose-950/20"
+            : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
         }`}
       >
         <div className="flex items-start gap-3">
-          <span className="text-accent font-mono text-xs mt-0.5 shrink-0">
-            [{String(index + 1).padStart(2, "0")}]
+          <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-2 py-0.5 rounded shrink-0">
+            #{String(index + 1).padStart(2, "0")}
           </span>
           <div className="flex-grow">
-          <p className="text-sm text-slate-200 font-medium mb-3">{q.prompt}</p>
+            <p className="text-xs sm:text-sm text-slate-200 font-medium mb-3">{q.prompt}</p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
               {q.options.map((opt) => {
@@ -436,17 +436,17 @@ function WANQuizContent() {
                 const isOptionCorrect = opt === q.answer;
 
                 let btnStyle =
-                  "bg-slate-900 border-border text-slate-300 hover:border-accent hover:text-white";
+                  "bg-slate-950 border-slate-800 text-slate-300 hover:border-emerald-500/50 hover:text-white";
                 if (showResults) {
                   if (isOptionCorrect) {
-                    btnStyle = "bg-green-900/50 border-green-500 text-green-300 font-bold";
+                    btnStyle = "bg-emerald-950/60 border-emerald-500 text-emerald-300 font-bold";
                   } else if (isOptionSelected && !isOptionCorrect) {
-                    btnStyle = "bg-red-900/50 border-red-500 text-red-300 line-through";
+                    btnStyle = "bg-rose-950/60 border-rose-500 text-rose-300 line-through";
                   } else {
-                    btnStyle = "bg-slate-900/40 border-border/40 text-slate-500 opacity-60";
+                    btnStyle = "bg-slate-950/40 border-slate-800/40 text-slate-600 opacity-60";
                   }
                 } else if (isOptionSelected) {
-                  btnStyle = "bg-accent/20 border-accent text-accent font-bold";
+                  btnStyle = "bg-emerald-950/40 border-emerald-400 text-emerald-300 font-bold shadow-sm";
                 }
 
                 return (
@@ -455,14 +455,14 @@ function WANQuizContent() {
                     type="button"
                     disabled={showResults}
                     onClick={() => handleSelectAnswer(q.id, opt)}
-                    className={`text-left p-2.5 rounded text-xs border font-mono transition-all flex items-center justify-between ${btnStyle}`}
+                    className={`text-left p-2.5 rounded-lg text-xs font-mono border transition-all flex items-center justify-between cursor-pointer disabled:cursor-default ${btnStyle}`}
                   >
                     <span>{opt}</span>
                     {showResults && isOptionCorrect && (
-                      <span className="text-green-400 text-xs font-bold">✓</span>
+                      <span className="text-emerald-400 text-xs font-bold">[OK]</span>
                     )}
                     {showResults && isOptionSelected && !isOptionCorrect && (
-                      <span className="text-red-400 text-xs font-bold">✗</span>
+                      <span className="text-rose-400 text-xs font-bold">[!]</span>
                     )}
                   </button>
                 );
@@ -471,16 +471,16 @@ function WANQuizContent() {
 
             {showResults && (
               <div
-                className={`mt-3 text-xs p-2.5 rounded border ${
+                className={`mt-3 text-xs p-2.5 rounded-lg border font-mono ${
                   isCorrect
-                    ? "bg-green-950/40 text-green-300 border-green-800/60"
-                    : "bg-red-950/40 text-red-300 border-red-800/60"
+                    ? "bg-emerald-950/40 text-emerald-300 border-emerald-800/60"
+                    : "bg-rose-950/40 text-rose-300 border-rose-800/60"
                 }`}
               >
-                <span className="font-bold font-mono">
-                  {isCorrect ? "✓ VALIDATED: " : "✗ ERROR: "}
+                <span className="font-bold">
+                  {isCorrect ? "[OK] VALIDATED: " : "[!] ERROR: "}
                 </span>
-                {q.explanation}
+                <span className="font-mono">{q.explanation}</span>
               </div>
             )}
           </div>
@@ -490,47 +490,57 @@ function WANQuizContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-8">
+    <div className="min-h-screen flex flex-col items-center p-4 sm:p-8">
       {/* Header */}
-      <header className="w-full max-w-4xl mb-8 border-b border-border pb-4">
-        <div className="flex flex-wrap justify-between items-center gap-4">
-          <h1 className="text-3xl font-bold text-accent">ENT_ROUTER_V1 | WAN Technologies</h1>
-          <div className="flex items-center gap-4 text-sm font-mono">
-            <Link
-              href="/study-guide#wan-technologies"
-              className="text-accent hover:underline flex items-center gap-1"
-            >
-              [VIEW IN STUDY GUIDE]
-            </Link>
-            <Link href="/" className="text-sm text-accent hover:underline">
-              {"<"} BACK TO HUB
-            </Link>
+      <header className="w-full max-w-4xl mb-8 cyber-glass-panel p-4 sm:p-5 rounded-xl border border-slate-800 shadow-xl flex flex-wrap justify-between items-center gap-4">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
+              DIAGNOSTIC_MODULE
+            </span>
+            <span className="text-xs text-slate-500 font-mono">//</span>
+            <span className="text-xs text-slate-400 font-mono">TELECOM_CARRIERS</span>
           </div>
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <span className="text-emerald-400 font-mono">ENT_ROUTER_V1</span>
+            <span className="text-slate-600 font-light">|</span>
+            <span className="text-slate-200">WAN Technologies</span>
+          </h1>
         </div>
-        <p className="text-sm text-slate-400 mt-2">
-          Diagnostic Module: POTS Dial-Up Modems, Carrier Standards (ISDN, T1, T3, E1, E3), Channels &amp; Regional Deployments
-        </p>
+        <div className="flex items-center gap-3 text-xs font-mono">
+          <Link
+            href="/study-guide#wan-technologies"
+            className="px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400 transition-all flex items-center gap-1.5 font-bold"
+          >
+            <span>[STUDY_GUIDE]</span>
+          </Link>
+          <Link
+            href="/"
+            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:text-white hover:border-slate-600 transition-all font-bold"
+          >
+            {"<"} BACK TO HUB
+          </Link>
+        </div>
       </header>
 
       {/* Main Content Area */}
-      <main className="w-full max-w-4xl space-y-8">
+      <main className="w-full max-w-4xl space-y-8 font-mono">
         {/* Part 1: Modems & POTS Fundamentals */}
-        <section className="terminal-box">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-4 border-b border-border">
-            <div>
-              <h2 className="text-xl font-bold text-accent underline">Part 1: Modems &amp; POTS Fundamentals</h2>
-              <p className="text-xs text-slate-400 mt-1">
-                Select the correct technical response regarding analog copper lines, signal modulation, and dial-up throughput.
-              </p>
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-3 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                [PART_01: MODEMS_&_POTS_FUNDAMENTALS]
+              </h2>
             </div>
             {showResults && (
-              <div className="font-mono text-sm px-3 py-1 rounded bg-slate-900 border border-border">
-                Part 1:{" "}
+              <div className="font-mono text-xs px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
+                SCORE:{" "}
                 <span
                   className={
                     part1CorrectCount === part1Questions.length
-                      ? "text-green-400 font-bold"
-                      : "text-yellow-400 font-bold"
+                      ? "text-emerald-400 font-bold"
+                      : "text-amber-400 font-bold"
                   }
                 >
                   {part1CorrectCount}
@@ -539,6 +549,9 @@ function WANQuizContent() {
               </div>
             )}
           </div>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
+            Select the correct technical response regarding analog copper lines, signal modulation, and dial-up throughput.
+          </p>
 
           <div className="space-y-4">
             {part1Questions.map((q, index) => renderQuestionBlock(q, index))}
@@ -546,22 +559,21 @@ function WANQuizContent() {
         </section>
 
         {/* Part 2: Carrier Standards & Max Throughput */}
-        <section className="terminal-box">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-4 border-b border-border">
-            <div>
-              <h2 className="text-xl font-bold text-accent underline">Part 2: Carrier Standards &amp; Max Throughput</h2>
-              <p className="text-xs text-slate-400 mt-1">
-                Identify maximum throughput specifications and single-channel bandwidth across ISDN, T-carrier, and E-carrier systems.
-              </p>
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-3 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                [PART_02: CARRIER_STANDARDS_&_MAX_THROUGHPUT]
+              </h2>
             </div>
             {showResults && (
-              <div className="font-mono text-sm px-3 py-1 rounded bg-slate-900 border border-border">
-                Part 2:{" "}
+              <div className="font-mono text-xs px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
+                SCORE:{" "}
                 <span
                   className={
                     part2CorrectCount === part2Questions.length
-                      ? "text-green-400 font-bold"
-                      : "text-yellow-400 font-bold"
+                      ? "text-emerald-400 font-bold"
+                      : "text-amber-400 font-bold"
                   }
                 >
                   {part2CorrectCount}
@@ -570,6 +582,9 @@ function WANQuizContent() {
               </div>
             )}
           </div>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
+            Identify maximum throughput specifications and single-channel bandwidth across ISDN, T-carrier, and E-carrier systems.
+          </p>
 
           <div className="space-y-4">
             {part2Questions.map((q, index) => renderQuestionBlock(q, index))}
@@ -577,22 +592,21 @@ function WANQuizContent() {
         </section>
 
         {/* Part 3: Channel Capacity & Carrier Multipliers */}
-        <section className="terminal-box">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-4 border-b border-border">
-            <div>
-              <h2 className="text-xl font-bold text-accent underline">Part 3: Channel Capacity &amp; Carrier Multipliers</h2>
-              <p className="text-xs text-slate-400 mt-1">
-                Calculate 64 Kbps channel counts and multiplier bundling for T1, E1, T3, and E3.
-              </p>
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-3 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                [PART_03: CHANNEL_CAPACITY_&_CARRIER_MULTIPLIERS]
+              </h2>
             </div>
             {showResults && (
-              <div className="font-mono text-sm px-3 py-1 rounded bg-slate-900 border border-border">
-                Part 3:{" "}
+              <div className="font-mono text-xs px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
+                SCORE:{" "}
                 <span
                   className={
                     part3CorrectCount === part3Questions.length
-                      ? "text-green-400 font-bold"
-                      : "text-yellow-400 font-bold"
+                      ? "text-emerald-400 font-bold"
+                      : "text-amber-400 font-bold"
                   }
                 >
                   {part3CorrectCount}
@@ -601,6 +615,9 @@ function WANQuizContent() {
               </div>
             )}
           </div>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
+            Calculate 64 Kbps channel counts and multiplier bundling for T1, E1, T3, and E3.
+          </p>
 
           <div className="space-y-4">
             {part3Questions.map((q, index) => renderQuestionBlock(q, index))}
@@ -608,22 +625,21 @@ function WANQuizContent() {
         </section>
 
         {/* Part 4: Geographic Deployment & Regional Standards */}
-        <section className="terminal-box">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-4 border-b border-border">
-            <div>
-              <h2 className="text-xl font-bold text-accent underline">Part 4: Geographic Deployment &amp; Regional Standards</h2>
-              <p className="text-xs text-slate-400 mt-1">
-                Match carrier standards (T-carrier vs E-carrier) to their historical and geographic regions of deployment.
-              </p>
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-3 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                [PART_04: GEOGRAPHIC_DEPLOYMENT_&_REGIONAL_STANDARDS]
+              </h2>
             </div>
             {showResults && (
-              <div className="font-mono text-sm px-3 py-1 rounded bg-slate-900 border border-border">
-                Part 4:{" "}
+              <div className="font-mono text-xs px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
+                SCORE:{" "}
                 <span
                   className={
                     part4CorrectCount === part4Questions.length
-                      ? "text-green-400 font-bold"
-                      : "text-yellow-400 font-bold"
+                      ? "text-emerald-400 font-bold"
+                      : "text-amber-400 font-bold"
                   }
                 >
                   {part4CorrectCount}
@@ -632,6 +648,9 @@ function WANQuizContent() {
               </div>
             )}
           </div>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
+            Match carrier standards (T-carrier vs E-carrier) to their historical and geographic regions of deployment.
+          </p>
 
           <div className="space-y-4">
             {part4Questions.map((q, index) => renderQuestionBlock(q, index))}
@@ -639,22 +658,21 @@ function WANQuizContent() {
         </section>
 
         {/* Part 5: WAN Link Scenario Classification */}
-        <section className="terminal-box">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-4 border-b border-border">
-            <div>
-              <h2 className="text-xl font-bold text-accent underline">Part 5: WAN Link Scenario Identification</h2>
-              <p className="text-xs text-slate-400 mt-1">
-                Analyze real-world enterprise deployment scenarios and assign the optimal WAN technology or carrier standard.
-              </p>
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-3 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                [PART_05: WAN_LINK_SCENARIO_IDENTIFICATION]
+              </h2>
             </div>
             {showResults && (
-              <div className="font-mono text-sm px-3 py-1 rounded bg-slate-900 border border-border">
-                Part 5:{" "}
+              <div className="font-mono text-xs px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
+                SCORE:{" "}
                 <span
                   className={
                     scenarioCorrectCount === scenarios.length
-                      ? "text-green-400 font-bold"
-                      : "text-yellow-400 font-bold"
+                      ? "text-emerald-400 font-bold"
+                      : "text-amber-400 font-bold"
                   }
                 >
                   {scenarioCorrectCount}
@@ -663,6 +681,9 @@ function WANQuizContent() {
               </div>
             )}
           </div>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
+            Analyze real-world enterprise deployment scenarios and assign the optimal WAN technology or carrier standard.
+          </p>
 
           <div className="space-y-4">
             {scenarios.map((s, index) => {
@@ -672,25 +693,25 @@ function WANQuizContent() {
               return (
                 <div
                   key={s.id}
-                  className={`p-4 rounded border transition-colors ${
+                  className={`p-4 rounded-lg border transition-all ${
                     showResults
                       ? isCorrect
-                        ? "border-green-500/60 bg-green-950/20"
-                        : "border-red-500/60 bg-red-950/20"
-                      : "border-border/60 bg-slate-900/50"
+                        ? "border-emerald-500/60 bg-emerald-950/20"
+                        : "border-rose-500/60 bg-rose-950/20"
+                      : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <span className="text-accent font-mono text-xs mt-0.5 shrink-0">
-                      [{String(index + 1).padStart(2, "0")}]
+                    <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-2 py-0.5 rounded shrink-0">
+                      #{String(index + 1).padStart(2, "0")}
                     </span>
                     <div className="flex-grow">
                       <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                        <span className="text-xs font-bold text-slate-300 font-mono">
+                        <span className="text-xs font-bold text-slate-200 font-mono">
                           {s.scenarioTitle}
                         </span>
                       </div>
-                      <p className="text-sm text-slate-200 font-medium mb-3">{s.description}</p>
+                      <p className="text-xs sm:text-sm text-slate-200 font-medium mb-3 font-mono">{s.description}</p>
 
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
                         {s.options.map((opt) => {
@@ -698,17 +719,17 @@ function WANQuizContent() {
                           const isOptionCorrect = opt === s.answer;
 
                           let btnStyle =
-                            "bg-slate-900 border-border text-slate-300 hover:border-accent hover:text-white";
+                            "bg-slate-950 border-slate-800 text-slate-300 hover:border-emerald-500/50 hover:text-white";
                           if (showResults) {
                             if (isOptionCorrect) {
-                              btnStyle = "bg-green-900/50 border-green-500 text-green-300 font-bold";
+                              btnStyle = "bg-emerald-950/60 border-emerald-500 text-emerald-300 font-bold";
                             } else if (isOptionSelected && !isOptionCorrect) {
-                              btnStyle = "bg-red-900/50 border-red-500 text-red-300 line-through";
+                              btnStyle = "bg-rose-950/60 border-rose-500 text-rose-300 line-through";
                             } else {
-                              btnStyle = "bg-slate-900/40 border-border/40 text-slate-500 opacity-60";
+                              btnStyle = "bg-slate-950/40 border-slate-800/40 text-slate-600 opacity-60";
                             }
                           } else if (isOptionSelected) {
-                            btnStyle = "bg-accent/20 border-accent text-accent font-bold";
+                            btnStyle = "bg-emerald-950/40 border-emerald-400 text-emerald-300 font-bold shadow-sm";
                           }
 
                           return (
@@ -717,14 +738,14 @@ function WANQuizContent() {
                               type="button"
                               disabled={showResults}
                               onClick={() => handleSelectAnswer(s.id, opt)}
-                              className={`text-left p-2.5 rounded text-xs border font-mono transition-all flex items-center justify-between ${btnStyle}`}
+                              className={`text-left p-2.5 rounded-lg text-xs font-mono border transition-all flex items-center justify-between cursor-pointer disabled:cursor-default ${btnStyle}`}
                             >
                               <span>{opt}</span>
                               {showResults && isOptionCorrect && (
-                                <span className="text-green-400 text-xs font-bold">✓</span>
+                                <span className="text-emerald-400 text-xs font-bold">[OK]</span>
                               )}
                               {showResults && isOptionSelected && !isOptionCorrect && (
-                                <span className="text-red-400 text-xs font-bold">✗</span>
+                                <span className="text-rose-400 text-xs font-bold">[!]</span>
                               )}
                             </button>
                           );
@@ -733,16 +754,16 @@ function WANQuizContent() {
 
                       {showResults && (
                         <div
-                          className={`mt-3 text-xs p-2.5 rounded border ${
+                          className={`mt-3 text-xs p-2.5 rounded-lg border font-mono ${
                             isCorrect
-                              ? "bg-green-950/40 text-green-300 border-green-800/60"
-                              : "bg-red-950/40 text-red-300 border-red-800/60"
+                              ? "bg-emerald-950/40 text-emerald-300 border-emerald-800/60"
+                              : "bg-rose-950/40 text-rose-300 border-rose-800/60"
                           }`}
                         >
-                          <span className="font-bold font-mono">
-                            {isCorrect ? "✓ VALIDATED: " : "✗ ERROR: "}
+                          <span className="font-bold">
+                            {isCorrect ? "[OK] VALIDATED: " : "[!] ERROR: "}
                           </span>
-                          {s.explanation}
+                          <span className="font-mono">{s.explanation}</span>
                         </div>
                       )}
                     </div>
@@ -754,13 +775,13 @@ function WANQuizContent() {
         </section>
 
         {/* Validation / Results Actions */}
-        <section className="terminal-box text-center">
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl text-center">
           {!showResults ? (
             <div className="flex flex-col items-center gap-3">
               <button
                 type="button"
                 onClick={handleValidate}
-                className="px-8 py-3 bg-accent text-slate-900 font-bold rounded hover:bg-green-400 transition-colors font-mono tracking-wide cursor-pointer shadow-lg shadow-accent/20"
+                className="px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-sm rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all cursor-pointer"
               >
                 VALIDATE WAN CONFIG
               </button>
@@ -771,27 +792,27 @@ function WANQuizContent() {
           ) : (
             <div className="space-y-6">
               <div
-                className={`p-6 rounded border ${
+                className={`p-6 rounded-lg border shadow-lg ${
                   allCorrect
-                    ? "bg-green-950/40 text-green-300 border-green-700/60"
-                    : "bg-red-950/40 text-red-300 border-red-700/60"
+                    ? "bg-emerald-950/40 text-emerald-300 border-emerald-500/60 shadow-emerald-950/40"
+                    : "bg-rose-950/40 text-rose-300 border-rose-500/60 shadow-rose-950/40"
                 }`}
               >
                 {allCorrect ? (
                   <div className="flex flex-col items-center gap-2">
-                    <span className="text-2xl font-bold font-mono text-green-400">
-                      [DIAGNOSTIC PASSED]
+                    <span className="text-lg sm:text-xl font-bold font-mono text-emerald-400 flex items-center gap-2">
+                      <span>[OK]</span> SUCCESS: ALL WAN SYSTEMS SYNCHRONIZED
                     </span>
-                    <p className="text-sm">
+                    <p className="text-xs sm:text-sm text-emerald-300/90 font-mono">
                       All WAN carrier specs, POTS modem principles, and regional standards verified successfully.
                     </p>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center gap-2">
-                    <span className="text-2xl font-bold font-mono text-red-400">
-                      [DIAGNOSTIC FAILED]
+                    <span className="text-lg sm:text-xl font-bold font-mono text-rose-400 flex items-center gap-2">
+                      <span>[!]</span> WAN DIAGNOSTIC MISMATCH DETECTED
                     </span>
-                    <p className="text-sm">
+                    <p className="text-xs sm:text-sm text-rose-300/90 font-mono">
                       {totalQuestions - totalCorrect} specification mismatch(es) detected. Review the highlighted errors above.
                     </p>
                   </div>
@@ -806,9 +827,9 @@ function WANQuizContent() {
                 <button
                   type="button"
                   onClick={handleResetAndScramble}
-                  className="px-6 py-2.5 border border-accent text-accent font-bold rounded hover:bg-accent/10 transition-colors font-mono text-xs tracking-wider cursor-pointer"
+                  className="px-6 py-2.5 border border-emerald-500/40 hover:border-emerald-400 bg-slate-900/80 hover:bg-slate-800 text-emerald-400 font-bold font-mono text-sm rounded-lg transition-all cursor-pointer"
                 >
-                  [SCRAMBLE &amp; RESET]
+                  SCRAMBLE & RESET
                 </button>
               </div>
             </div>

@@ -283,46 +283,61 @@ function EsdEmiEmpQuizContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-8">
-      <header className="w-full max-w-4xl mb-8 border-b border-border pb-4">
-        <div className="flex flex-wrap justify-between items-center gap-4">
-          <h1 className="text-3xl font-bold text-accent">ENT_ROUTER_V1 | ESD, EMI, & EMP</h1>
-          <div className="flex items-center gap-4 text-sm font-mono">
-            <Link href="/study-guide#esd-emi--emp" className="text-accent hover:underline flex items-center gap-1">
-              [VIEW IN STUDY GUIDE]
-            </Link>
-            <Link href="/" className="text-sm text-accent hover:underline">
-              {"<"} BACK TO HUB
-            </Link>
+    <div className="min-h-screen flex flex-col items-center p-4 sm:p-8">
+      {/* Header */}
+      <header className="w-full max-w-4xl mb-8 cyber-glass-panel p-4 sm:p-5 rounded-xl border border-slate-800 shadow-xl flex flex-wrap justify-between items-center gap-4">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
+              DIAGNOSTIC_MODULE
+            </span>
+            <span className="text-xs text-slate-500 font-mono">//</span>
+            <span className="text-xs text-slate-400 font-mono">THREAT_ANALYSIS</span>
           </div>
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <span className="text-emerald-400 font-mono">ENT_ROUTER_V1</span>
+            <span className="text-slate-600 font-light">|</span>
+            <span className="text-slate-200">ESD, EMI, & EMP</span>
+          </h1>
         </div>
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-2">
-          <p className="text-sm text-slate-400">
-            Diagnostic Module: Electrostatic Discharge, Electromagnetic Interference & Electromagnetic Pulse Analysis
-          </p>
+        <div className="flex items-center gap-3 text-xs font-mono">
+          <Link
+            href="/study-guide#esd-emi--emp"
+            className="px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400 transition-all flex items-center gap-1.5 font-bold"
+          >
+            <span>[STUDY_GUIDE]</span>
+          </Link>
+          <Link
+            href="/"
+            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:text-white hover:border-slate-600 transition-all font-bold"
+          >
+            {"<"} BACK TO HUB
+          </Link>
         </div>
       </header>
 
-      <main className="w-full max-w-4xl space-y-8">
+      <main className="w-full max-w-4xl space-y-8 font-mono">
         {/* SECTION 1: Core Threat Definitions */}
-        <section className="terminal-box">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-4 border-b border-border">
-            <div>
-              <h2 className="text-xl font-bold text-accent underline">Part 1: Core Threat & Acronym Identification</h2>
-              <p className="text-xs text-slate-400 mt-1">
-                Match each definition and description to the correct electrical or electromagnetic threat.
-              </p>
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-3 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                [PART_01: CORE_THREAT_&_ACRONYM_IDENTIFICATION]
+              </h2>
             </div>
             {showResults && (
-              <div className="font-mono text-sm px-3 py-1 rounded bg-slate-900 border border-border">
-                Definitions:{" "}
-                <span className={definitionCorrectCount === definitions.length ? "text-green-400 font-bold" : "text-yellow-400 font-bold"}>
+              <div className="font-mono text-xs px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
+                SCORE:{" "}
+                <span className={definitionCorrectCount === definitions.length ? "text-emerald-400 font-bold" : "text-amber-400 font-bold"}>
                   {definitionCorrectCount}
                 </span>{" "}
                 / {definitions.length}
               </div>
             )}
           </div>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
+            Match each definition and description to the correct electrical or electromagnetic threat.
+          </p>
 
           <div className="space-y-4">
             {definitions.map((def, index) => {
@@ -332,22 +347,22 @@ function EsdEmiEmpQuizContent() {
               return (
                 <div
                   key={def.id}
-                  className={`p-4 rounded border transition-colors ${
+                  className={`p-4 rounded-lg border transition-all ${
                     showResults
                       ? isCorrect
-                        ? "border-green-500/60 bg-green-950/20"
-                        : "border-red-500/60 bg-red-950/20"
-                      : "border-border/60 bg-slate-900/50"
+                        ? "border-emerald-500/60 bg-emerald-950/20"
+                        : "border-rose-500/60 bg-rose-950/20"
+                      : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
                   }`}
                 >
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex items-start gap-3 grow">
-                      <span className="text-accent font-mono text-xs mt-1 shrink-0">
-                        [{String(index + 1).padStart(2, "0")}]
+                      <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-2 py-0.5 rounded shrink-0">
+                        #{String(index + 1).padStart(2, "0")}
                       </span>
                       <div>
-                        <p className="text-sm text-slate-200 font-medium italic">{def.definition}</p>
-                        <p className="text-xs text-slate-400 mt-1">{def.detailHint}</p>
+                        <p className="text-xs sm:text-sm text-slate-200 font-medium italic font-mono leading-relaxed">{def.definition}</p>
+                        <p className="text-xs text-cyan-400/80 font-mono mt-1">{def.detailHint}</p>
                       </div>
                     </div>
 
@@ -359,12 +374,12 @@ function EsdEmiEmpQuizContent() {
                           disabled={showResults}
                           value={userVal}
                           onChange={(e) => handleAnswerChange(def.id, e.target.value)}
-                          className={`w-full bg-slate-900 border p-2 text-sm rounded font-mono outline-none transition-colors ${
+                          className={`w-full bg-slate-950 border p-2 text-xs sm:text-sm rounded-lg font-mono outline-none transition-colors ${
                             showResults
                               ? isCorrect
-                                ? "border-green-500 text-green-400 bg-green-950/30"
-                                : "border-red-500 text-red-400 bg-red-950/30"
-                              : "border-border focus:border-accent text-slate-200"
+                                ? "border-emerald-500 text-emerald-400 bg-emerald-950/30"
+                                : "border-rose-500 text-rose-400 bg-rose-950/30"
+                              : "border-slate-700 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 text-slate-200"
                           }`}
                         />
                       ) : (
@@ -372,12 +387,12 @@ function EsdEmiEmpQuizContent() {
                           disabled={showResults}
                           value={userVal}
                           onChange={(e) => handleAnswerChange(def.id, e.target.value)}
-                          className={`w-full bg-slate-900 border p-2 text-sm rounded font-mono outline-none transition-colors ${
+                          className={`w-full bg-slate-950 border p-2 text-xs sm:text-sm rounded-lg font-mono outline-none transition-colors ${
                             showResults
                               ? isCorrect
-                                ? "border-green-500 text-green-400 bg-green-950/30"
-                                : "border-red-500 text-red-400 bg-red-950/30"
-                              : "border-border focus:border-accent text-slate-200"
+                                ? "border-emerald-500 text-emerald-400 bg-emerald-950/30"
+                                : "border-rose-500 text-rose-400 bg-rose-950/30"
+                              : "border-slate-700 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 text-slate-200"
                           }`}
                         >
                           <option value="">-- Select Threat --</option>
@@ -390,13 +405,13 @@ function EsdEmiEmpQuizContent() {
                       )}
 
                       {showResults && !isCorrect && (
-                        <div className="mt-1 text-xs font-mono text-red-400">
+                        <div className="mt-1 text-xs font-mono text-rose-400">
                           Expected: <strong>{def.threat}</strong> ({def.fullName})
                         </div>
                       )}
                       {showResults && isCorrect && (
-                        <div className="mt-1 text-xs font-mono text-green-400">
-                          ✓ Correct: {def.threat} ({def.fullName})
+                        <div className="mt-1 text-xs font-mono text-emerald-400">
+                          [OK] Correct: {def.threat} ({def.fullName})
                         </div>
                       )}
                     </div>
@@ -408,24 +423,26 @@ function EsdEmiEmpQuizContent() {
         </section>
 
         {/* SECTION 2: Environmental Scenarios & Threat Classification */}
-        <section className="terminal-box">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-4 border-b border-border">
-            <div>
-              <h2 className="text-xl font-bold text-accent underline">Part 2: Environmental Scenario Classification</h2>
-              <p className="text-xs text-slate-400 mt-1">
-                Classify each operational scenario or hardware incident as ESD, EMI, or EMP.
-              </p>
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-3 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                [PART_02: ENVIRONMENTAL_SCENARIO_CLASSIFICATION]
+              </h2>
             </div>
             {showResults && (
-              <div className="font-mono text-sm px-3 py-1 rounded bg-slate-900 border border-border">
-                Scenarios:{" "}
-                <span className={scenarioCorrectCount === scenarios.length ? "text-green-400 font-bold" : "text-yellow-400 font-bold"}>
+              <div className="font-mono text-xs px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
+                SCORE:{" "}
+                <span className={scenarioCorrectCount === scenarios.length ? "text-emerald-400 font-bold" : "text-amber-400 font-bold"}>
                   {scenarioCorrectCount}
                 </span>{" "}
                 / {scenarios.length}
               </div>
             )}
           </div>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
+            Classify each operational scenario or hardware incident as ESD, EMI, or EMP.
+          </p>
 
           <div className="space-y-4">
             {scenarios.map((scen, index) => {
@@ -435,22 +452,22 @@ function EsdEmiEmpQuizContent() {
               return (
                 <div
                   key={scen.id}
-                  className={`p-4 rounded border transition-colors ${
+                  className={`p-4 rounded-lg border transition-all ${
                     showResults
                       ? isCorrect
-                        ? "border-green-500/60 bg-green-950/20"
-                        : "border-red-500/60 bg-red-950/20"
-                      : "border-border/60 bg-slate-900/50"
+                        ? "border-emerald-500/60 bg-emerald-950/20"
+                        : "border-rose-500/60 bg-rose-950/20"
+                      : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
                   }`}
                 >
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <div className="flex items-start gap-3 grow">
-                      <span className="text-accent font-mono text-xs mt-1 shrink-0">
-                        [{String(index + 1).padStart(2, "0")}]
+                      <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-2 py-0.5 rounded shrink-0">
+                        #{String(index + 1).padStart(2, "0")}
                       </span>
                       <div>
-                        <p className="text-sm text-slate-200 font-medium">{scen.incident}</p>
-                        <p className="text-xs text-slate-400 mt-1">{scen.context}</p>
+                        <p className="text-xs sm:text-sm text-slate-200 font-medium font-mono leading-relaxed">{scen.incident}</p>
+                        <p className="text-xs text-cyan-400/80 font-mono mt-1">{scen.context}</p>
                       </div>
                     </div>
 
@@ -462,12 +479,12 @@ function EsdEmiEmpQuizContent() {
                           disabled={showResults}
                           value={userVal}
                           onChange={(e) => handleAnswerChange(scen.id, e.target.value)}
-                          className={`w-full bg-slate-900 border p-2 text-sm rounded font-mono outline-none transition-colors ${
+                          className={`w-full bg-slate-950 border p-2 text-xs sm:text-sm rounded-lg font-mono outline-none transition-colors ${
                             showResults
                               ? isCorrect
-                                ? "border-green-500 text-green-400 bg-green-950/30"
-                                : "border-red-500 text-red-400 bg-red-950/30"
-                              : "border-border focus:border-accent text-slate-200"
+                                ? "border-emerald-500 text-emerald-400 bg-emerald-950/30"
+                                : "border-rose-500 text-rose-400 bg-rose-950/30"
+                              : "border-slate-700 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 text-slate-200"
                           }`}
                         />
                       ) : (
@@ -475,12 +492,12 @@ function EsdEmiEmpQuizContent() {
                           disabled={showResults}
                           value={userVal}
                           onChange={(e) => handleAnswerChange(scen.id, e.target.value)}
-                          className={`w-full bg-slate-900 border p-2 text-sm rounded font-mono outline-none transition-colors ${
+                          className={`w-full bg-slate-950 border p-2 text-xs sm:text-sm rounded-lg font-mono outline-none transition-colors ${
                             showResults
                               ? isCorrect
-                                ? "border-green-500 text-green-400 bg-green-950/30"
-                                : "border-red-500 text-red-400 bg-red-950/30"
-                              : "border-border focus:border-accent text-slate-200"
+                                ? "border-emerald-500 text-emerald-400 bg-emerald-950/30"
+                                : "border-rose-500 text-rose-400 bg-rose-950/30"
+                              : "border-slate-700 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 text-slate-200"
                           }`}
                         >
                           <option value="">-- Select Threat --</option>
@@ -493,26 +510,26 @@ function EsdEmiEmpQuizContent() {
                       )}
 
                       {showResults && !isCorrect && (
-                        <div className="mt-1 text-xs font-mono text-red-400">
+                        <div className="mt-1 text-xs font-mono text-rose-400">
                           Expected: <strong>{scen.answer}</strong>
                         </div>
                       )}
                       {showResults && isCorrect && (
-                        <div className="mt-1 text-xs font-mono text-green-400">✓ Correct: {scen.answer}</div>
+                        <div className="mt-1 text-xs font-mono text-emerald-400">[OK] Correct: {scen.answer}</div>
                       )}
                     </div>
                   </div>
 
                   {showResults && (
                     <div
-                      className={`mt-3 text-xs p-2.5 rounded border ${
+                      className={`mt-3 text-xs p-2.5 rounded-lg border font-mono ${
                         isCorrect
-                          ? "bg-green-950/40 text-green-300 border-green-800/60"
-                          : "bg-red-950/40 text-red-300 border-red-800/60"
+                          ? "bg-emerald-950/40 text-emerald-300 border-emerald-800/60"
+                          : "bg-rose-950/40 text-rose-300 border-rose-800/60"
                       }`}
                     >
-                      <span className="font-bold font-mono">{isCorrect ? "✓ VALIDATED: " : "✗ ERROR: "}</span>
-                      {scen.explanation}
+                      <span className="font-bold">{isCorrect ? "[OK] VALIDATED: " : "[!] ERROR: "}</span>
+                      <span className="font-mono">{scen.explanation}</span>
                     </div>
                   )}
                 </div>
@@ -522,26 +539,28 @@ function EsdEmiEmpQuizContent() {
         </section>
 
         {/* SECTION 3: Technical Mechanics & Area of Effect */}
-        <section className="terminal-box">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-4 border-b border-border">
-            <div>
-              <h2 className="text-xl font-bold text-accent underline">Part 3: Threat Mechanics & Area of Effect</h2>
-              <p className="text-xs text-slate-400 mt-1">
-                Answer technical questions regarding threat root causes, area of effect scales, and destructiveness.
-              </p>
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-3 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                [PART_03: THREAT_MECHANICS_&_AREA_OF_EFFECT]
+              </h2>
             </div>
             {showResults && (
-              <div className="font-mono text-sm px-3 py-1 rounded bg-slate-900 border border-border">
-                Specs:{" "}
-                <span className={specCorrectCount === specs.length ? "text-green-400 font-bold" : "text-yellow-400 font-bold"}>
+              <div className="font-mono text-xs px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
+                SCORE:{" "}
+                <span className={specCorrectCount === specs.length ? "text-emerald-400 font-bold" : "text-amber-400 font-bold"}>
                   {specCorrectCount}
                 </span>{" "}
                 / {specs.length}
               </div>
             )}
           </div>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
+            Answer technical questions regarding threat root causes, area of effect scales, and destructiveness.
+          </p>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             {specs.map((q, index) => {
               const selected = answers[q.id];
               const isCorrect = selected === q.answer;
@@ -549,42 +568,42 @@ function EsdEmiEmpQuizContent() {
               return (
                 <div
                   key={q.id}
-                  className={`p-4 rounded border transition-colors ${
+                  className={`p-4 rounded-lg border transition-all ${
                     showResults
                       ? isCorrect
-                        ? "border-green-500/60 bg-green-950/20"
-                        : "border-red-500/60 bg-red-950/20"
-                      : "border-border/60 bg-slate-900/50"
+                        ? "border-emerald-500/60 bg-emerald-950/20"
+                        : "border-rose-500/60 bg-rose-950/20"
+                      : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <span className="text-accent font-mono text-xs mt-0.5 shrink-0">
-                      [{String(index + 1).padStart(2, "0")}]
+                    <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-2 py-0.5 rounded shrink-0">
+                      #{String(index + 1).padStart(2, "0")}
                     </span>
                     <div className="grow">
                       <div className="flex items-center gap-2 mb-1.5">
-                        <span className="text-xs px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-border font-mono">
+                        <span className="text-[11px] px-2 py-0.5 rounded bg-slate-950 text-slate-400 border border-slate-800 font-mono">
                           {q.category}
                         </span>
                       </div>
-                      <p className="text-sm text-slate-200 font-medium mb-3">{q.prompt}</p>
+                      <p className="text-xs sm:text-sm text-slate-200 font-medium mb-3 font-mono">{q.prompt}</p>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
                         {q.options.map((opt) => {
                           const isOptionSelected = selected === opt;
                           const isOptionCorrect = opt === q.answer;
 
-                          let btnStyle = "bg-slate-900 border-border text-slate-300 hover:border-accent hover:text-white";
+                          let btnStyle = "bg-slate-950 border-slate-800 text-slate-300 hover:border-emerald-500/50 hover:text-white";
                           if (showResults) {
                             if (isOptionCorrect) {
-                              btnStyle = "bg-green-900/50 border-green-500 text-green-300 font-bold";
+                              btnStyle = "bg-emerald-950/60 border-emerald-500 text-emerald-300 font-bold";
                             } else if (isOptionSelected && !isOptionCorrect) {
-                              btnStyle = "bg-red-900/50 border-red-500 text-red-300 line-through";
+                              btnStyle = "bg-rose-950/60 border-rose-500 text-rose-300 line-through";
                             } else {
-                              btnStyle = "bg-slate-900/40 border-border/40 text-slate-500 opacity-60";
+                              btnStyle = "bg-slate-950/40 border-slate-800/40 text-slate-600 opacity-60";
                             }
                           } else if (isOptionSelected) {
-                            btnStyle = "bg-accent/20 border-accent text-accent font-bold";
+                            btnStyle = "bg-emerald-950/40 border-emerald-400 text-emerald-300 font-bold shadow-sm";
                           }
 
                           return (
@@ -593,10 +612,10 @@ function EsdEmiEmpQuizContent() {
                               type="button"
                               disabled={showResults}
                               onClick={() => handleAnswerChange(q.id, opt)}
-                              className={`text-left p-2.5 rounded text-xs border font-mono transition-all flex items-center justify-between ${btnStyle}`}
+                              className={`text-left p-2.5 rounded-lg text-xs font-mono border transition-all flex items-center justify-between cursor-pointer disabled:cursor-default ${btnStyle}`}
                             >
                               <span>{opt}</span>
-                              {showResults && isOptionCorrect && <span className="text-green-400 text-xs font-bold">✓</span>}
+                              {showResults && isOptionCorrect && <span className="text-emerald-400 text-xs font-bold">[OK]</span>}
                             </button>
                           );
                         })}
@@ -604,14 +623,14 @@ function EsdEmiEmpQuizContent() {
 
                       {showResults && (
                         <div
-                          className={`mt-3 text-xs p-2.5 rounded border ${
+                          className={`mt-3 text-xs p-2.5 rounded-lg border font-mono ${
                             isCorrect
-                              ? "bg-green-950/40 text-green-300 border-green-800/60"
-                              : "bg-red-950/40 text-red-300 border-red-800/60"
+                              ? "bg-emerald-950/40 text-emerald-300 border-emerald-800/60"
+                              : "bg-rose-950/40 text-rose-300 border-rose-800/60"
                           }`}
                         >
-                          <span className="font-bold font-mono">{isCorrect ? "✓ VALIDATED: " : "✗ ERROR: "}</span>
-                          {q.explanation}
+                          <span className="font-bold">{isCorrect ? "[OK] VALIDATED: " : "[!] ERROR: "}</span>
+                          <span className="font-mono">{q.explanation}</span>
                         </div>
                       )}
                     </div>
@@ -623,13 +642,13 @@ function EsdEmiEmpQuizContent() {
         </section>
 
         {/* Validation / Results Actions */}
-        <section className="terminal-box text-center">
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl text-center">
           {!showResults ? (
             <div className="flex flex-col items-center gap-3">
               <button
                 type="button"
                 onClick={handleValidate}
-                className="px-8 py-3 bg-accent text-slate-900 font-bold rounded hover:bg-green-400 transition-colors font-mono tracking-wide cursor-pointer shadow-lg shadow-accent/20"
+                className="px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-sm rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all cursor-pointer"
               >
                 VALIDATE THREAT DIAGNOSTICS
               </button>
@@ -640,23 +659,27 @@ function EsdEmiEmpQuizContent() {
           ) : (
             <div className="space-y-6">
               <div
-                className={`p-6 rounded border ${
+                className={`p-6 rounded-lg border shadow-lg ${
                   allCorrect
-                    ? "bg-green-900/30 text-green-400 border-green-500"
-                    : "bg-red-900/30 text-red-400 border-red-500"
+                    ? "bg-emerald-950/40 text-emerald-300 border-emerald-500/60 shadow-emerald-950/40"
+                    : "bg-rose-950/40 text-rose-300 border-rose-500/60 shadow-rose-950/40"
                 }`}
               >
                 {allCorrect ? (
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl mb-1 font-bold">SUCCESS! ALL THREAT DIAGNOSTICS SYNCHRONIZED</span>
-                    <p className="text-sm text-slate-300 mt-1">
+                    <span className="text-lg sm:text-xl font-bold font-mono text-emerald-400 flex items-center gap-2">
+                      <span>[OK]</span> SUCCESS: ALL THREAT DIAGNOSTICS SYNCHRONIZED
+                    </span>
+                    <p className="text-xs sm:text-sm text-emerald-300/90 font-mono mt-1">
                       Perfect Score: {totalCorrect} / {totalQuestions} correct across definitions, scenarios, and threat mechanics.
                     </p>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center">
-                    <span className="text-2xl mb-1 font-bold">THREAT DIAGNOSTIC MISMATCH DETECTED</span>
-                    <p className="text-sm text-slate-300 mt-1">
+                    <span className="text-lg sm:text-xl font-bold font-mono text-rose-400 flex items-center gap-2">
+                      <span>[!]</span> THREAT DIAGNOSTIC MISMATCH DETECTED
+                    </span>
+                    <p className="text-xs sm:text-sm text-rose-300/90 font-mono mt-1">
                       Score: {totalCorrect} / {totalQuestions} correct ({totalQuestions - totalCorrect} mismatches to resolve).
                     </p>
                   </div>
@@ -667,7 +690,7 @@ function EsdEmiEmpQuizContent() {
                 <button
                   type="button"
                   onClick={handleResetAndScramble}
-                  className="px-6 py-2.5 border border-accent bg-accent/10 text-accent font-bold rounded hover:bg-accent hover:text-slate-900 transition-colors font-mono cursor-pointer"
+                  className="px-6 py-2.5 border border-emerald-500/40 hover:border-emerald-400 bg-slate-900/80 hover:bg-slate-800 text-emerald-400 font-bold font-mono text-sm rounded-lg transition-all cursor-pointer"
                 >
                   {allCorrect ? "RESET & SCRAMBLE" : "TRY AGAIN"}
                 </button>

@@ -321,39 +321,48 @@ function DataLinkLayerQuizContent() {
   return (
     <div className="min-h-screen flex flex-col items-center p-4 sm:p-8">
       {/* Header */}
-      <header className="w-full max-w-4xl mb-8 border-b border-border pb-4">
-        <div className="flex flex-wrap justify-between items-center gap-4">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-accent">
-              ENT_ROUTER_V1 | Data-Link Layer
-            </h1>
-            <p className="text-xs text-slate-400 mt-1 font-mono">
-              Layer 2 Sublayers (LLC / MAC), MAC Addressing Architecture & ARP
-            </p>
+      <header className="w-full max-w-4xl mb-8 cyber-glass-panel p-4 sm:p-5 rounded-xl border border-slate-800 shadow-xl flex flex-wrap justify-between items-center gap-4">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
+              DIAGNOSTIC_MODULE
+            </span>
+            <span className="text-xs text-slate-500 font-mono">//</span>
+            <span className="text-xs text-slate-400 font-mono">LAYER_2_CONCEPTS</span>
           </div>
-          <div className="flex items-center gap-4 text-sm font-mono">
-            <Link
-              href="/study-guide#data-link-layer"
-              className="text-accent hover:underline flex items-center gap-1"
-            >
-              [VIEW IN STUDY GUIDE]
-            </Link>
-            <Link href="/" className="text-sm text-accent hover:underline">
-              {"<"} BACK TO HUB
-            </Link>
-          </div>
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <span className="text-emerald-400 font-mono">ENT_ROUTER_V1</span>
+            <span className="text-slate-600 font-light">|</span>
+            <span className="text-slate-200">Data-Link Layer</span>
+          </h1>
+        </div>
+        <div className="flex items-center gap-3 text-xs font-mono">
+          <Link
+            href="/study-guide#data-link-layer"
+            className="px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400 transition-all flex items-center gap-1.5 font-bold"
+          >
+            <span>[STUDY_GUIDE]</span>
+          </Link>
+          <Link
+            href="/"
+            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:text-white hover:border-slate-600 transition-all font-bold"
+          >
+            {"<"} BACK TO HUB
+          </Link>
         </div>
       </header>
 
-      <main className="w-full max-w-4xl space-y-8">
+      <main className="w-full max-w-4xl space-y-8 font-mono">
         {/* Section 1: Sublayers & Architecture Matching */}
-        <section className="terminal-box border-l-4 border-l-accent">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-bold text-accent">
-              [PART_01: SUBLAYER_&_MAC_ARCHITECTURAL_CONCEPTS]
-            </h2>
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                [PART_01: SUBLAYER_&_MAC_ARCHITECTURAL_CONCEPTS]
+              </h2>
+            </div>
           </div>
-          <p className="text-xs text-slate-400 mb-6">
+          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
             Identify the corresponding protocol, sublayer, bit length, or governing entity for each Layer 2 requirement.
           </p>
 
@@ -366,20 +375,20 @@ function DataLinkLayerQuizContent() {
               return (
                 <div
                   key={item.id}
-                  className={`p-4 rounded border transition-colors ${
+                  className={`p-4 rounded-lg border transition-all ${
                     showResults
                       ? isCorrect
-                        ? "bg-green-950/20 border-green-500"
-                        : "bg-red-950/20 border-red-500"
-                      : "bg-slate-900 border-slate-800"
+                        ? "border-emerald-500/60 bg-emerald-950/20"
+                        : "border-rose-500/60 bg-rose-950/20"
+                      : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <span className="font-mono text-xs font-bold text-accent bg-slate-800 px-2 py-1 rounded border border-slate-700 shrink-0">
+                    <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-2 py-0.5 rounded shrink-0">
                       #{idx + 1}
                     </span>
                     <div className="flex-1">
-                      <p className="text-sm text-slate-200 font-medium mb-3">{item.prompt}</p>
+                      <p className="text-xs sm:text-sm text-slate-200 font-medium mb-3">{item.prompt}</p>
 
                       {shouldType ? (
                         <div className="mt-2">
@@ -389,7 +398,7 @@ function DataLinkLayerQuizContent() {
                             value={selected}
                             onChange={(e) => handleAnswerChange(item.id, e.target.value)}
                             placeholder="Type the exact name, acronym, or number..."
-                            className="w-full bg-slate-950 border border-slate-700 p-2.5 rounded font-mono text-sm text-slate-100 outline-none focus:border-accent disabled:opacity-60"
+                            className="w-full bg-slate-950 border border-slate-700 p-2.5 rounded-lg font-mono text-xs sm:text-sm text-slate-100 outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 disabled:opacity-60"
                           />
                         </div>
                       ) : (
@@ -399,17 +408,17 @@ function DataLinkLayerQuizContent() {
                             const isOptionCorrect = opt === item.answer;
 
                             let btnStyle =
-                              "bg-slate-950 border-slate-700 text-slate-300 hover:border-accent hover:text-white";
+                              "bg-slate-950 border-slate-800 text-slate-300 hover:border-emerald-500/50 hover:text-white";
                             if (showResults) {
                               if (isOptionCorrect) {
-                                btnStyle = "bg-green-900/50 border-green-500 text-green-300 font-bold";
+                                btnStyle = "bg-emerald-950/60 border-emerald-500 text-emerald-300 font-bold";
                               } else if (isOptionSelected && !isOptionCorrect) {
-                                btnStyle = "bg-red-900/50 border-red-500 text-red-300 line-through";
+                                btnStyle = "bg-rose-950/60 border-rose-500 text-rose-300 line-through";
                               } else {
-                                btnStyle = "bg-slate-950/40 border-border/40 text-slate-500 opacity-60";
+                                btnStyle = "bg-slate-950/40 border-slate-800/40 text-slate-600 opacity-60";
                               }
                             } else if (isOptionSelected) {
-                              btnStyle = "bg-accent/20 border-accent text-accent font-bold";
+                              btnStyle = "bg-emerald-950/40 border-emerald-400 text-emerald-300 font-bold shadow-sm";
                             }
 
                             return (
@@ -418,11 +427,11 @@ function DataLinkLayerQuizContent() {
                                 type="button"
                                 disabled={showResults}
                                 onClick={() => handleAnswerChange(item.id, opt)}
-                                className={`text-left p-2.5 rounded text-xs border font-mono transition-all flex items-center justify-between ${btnStyle} cursor-pointer disabled:cursor-default`}
+                                className={`text-left p-2.5 rounded-lg text-xs font-mono border transition-all flex items-center justify-between cursor-pointer disabled:cursor-default ${btnStyle}`}
                               >
                                 <span>{opt}</span>
                                 {showResults && isOptionCorrect && (
-                                  <span className="text-green-400 text-xs font-bold">✓</span>
+                                  <span className="text-emerald-400 text-xs font-bold">[OK]</span>
                                 )}
                               </button>
                             );
@@ -432,16 +441,16 @@ function DataLinkLayerQuizContent() {
 
                       {showResults && (
                         <div
-                          className={`mt-3 text-xs p-2.5 rounded border ${
+                          className={`mt-3 text-xs p-2.5 rounded-lg border font-mono ${
                             isCorrect
-                              ? "bg-green-950/40 text-green-300 border-green-800/60"
-                              : "bg-red-950/40 text-red-300 border-red-800/60"
+                              ? "bg-emerald-950/40 text-emerald-300 border-emerald-800/60"
+                              : "bg-rose-950/40 text-rose-300 border-rose-800/60"
                           }`}
                         >
-                          <span className="font-bold font-mono">
-                            {isCorrect ? "✓ VALIDATED: " : "✗ ERROR: "}
+                          <span className="font-bold">
+                            {isCorrect ? "[OK] VALIDATED: " : "[!] ERROR: "}
                           </span>
-                          {item.explanation}
+                          <span className="font-mono">{item.explanation}</span>
                         </div>
                       )}
                     </div>
@@ -453,13 +462,15 @@ function DataLinkLayerQuizContent() {
         </section>
 
         {/* Section 2: Scenarios & Address Analysis */}
-        <section className="terminal-box border-l-4 border-l-accent">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-bold text-accent">
-              [PART_02: SCENARIOS_&_ADDRESS_RESOLUTION_ANALYSIS]
-            </h2>
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                [PART_02: SCENARIOS_&_ADDRESS_RESOLUTION_ANALYSIS]
+              </h2>
+            </div>
           </div>
-          <p className="text-xs text-slate-400 mb-6">
+          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
             Evaluate Layer 2 operational scenarios, address field breakdowns, and protocol resolution workflows.
           </p>
 
@@ -471,20 +482,20 @@ function DataLinkLayerQuizContent() {
               return (
                 <div
                   key={item.id}
-                  className={`p-4 rounded border transition-colors ${
+                  className={`p-4 rounded-lg border transition-all ${
                     showResults
                       ? isCorrect
-                        ? "bg-green-950/20 border-green-500"
-                        : "bg-red-950/20 border-red-500"
-                      : "bg-slate-900 border-slate-800"
+                        ? "border-emerald-500/60 bg-emerald-950/20"
+                        : "border-rose-500/60 bg-rose-950/20"
+                      : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <span className="font-mono text-xs font-bold text-accent bg-slate-800 px-2 py-1 rounded border border-slate-700 shrink-0">
+                    <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-2 py-0.5 rounded shrink-0">
                       #{termChallenges.length + idx + 1}
                     </span>
                     <div className="flex-1">
-                      <p className="text-sm text-slate-200 font-medium mb-3">{item.prompt}</p>
+                      <p className="text-xs sm:text-sm text-slate-200 font-medium mb-3 font-mono">{item.prompt}</p>
 
                       <div className="grid grid-cols-1 gap-2 mt-2">
                         {shuffledScenarioOptions[item.id].map((opt) => {
@@ -492,17 +503,17 @@ function DataLinkLayerQuizContent() {
                           const isOptionCorrect = opt === item.answer;
 
                           let btnStyle =
-                            "bg-slate-950 border-slate-700 text-slate-300 hover:border-accent hover:text-white";
+                            "bg-slate-950 border-slate-800 text-slate-300 hover:border-emerald-500/50 hover:text-white";
                           if (showResults) {
                             if (isOptionCorrect) {
-                              btnStyle = "bg-green-900/50 border-green-500 text-green-300 font-bold";
+                              btnStyle = "bg-emerald-950/60 border-emerald-500 text-emerald-300 font-bold";
                             } else if (isOptionSelected && !isOptionCorrect) {
-                              btnStyle = "bg-red-900/50 border-red-500 text-red-300 line-through";
+                              btnStyle = "bg-rose-950/60 border-rose-500 text-rose-300 line-through";
                             } else {
-                              btnStyle = "bg-slate-950/40 border-border/40 text-slate-500 opacity-60";
+                              btnStyle = "bg-slate-950/40 border-slate-800/40 text-slate-600 opacity-60";
                             }
                           } else if (isOptionSelected) {
-                            btnStyle = "bg-accent/20 border-accent text-accent font-bold";
+                            btnStyle = "bg-emerald-950/40 border-emerald-400 text-emerald-300 font-bold shadow-sm";
                           }
 
                           return (
@@ -511,11 +522,11 @@ function DataLinkLayerQuizContent() {
                               type="button"
                               disabled={showResults}
                               onClick={() => handleAnswerChange(item.id, opt)}
-                              className={`text-left p-2.5 rounded text-xs border font-mono transition-all flex items-center justify-between ${btnStyle} cursor-pointer disabled:cursor-default`}
+                              className={`text-left p-2.5 rounded-lg text-xs font-mono border transition-all flex items-center justify-between cursor-pointer disabled:cursor-default ${btnStyle}`}
                             >
                               <span>{opt}</span>
                               {showResults && isOptionCorrect && (
-                                <span className="text-green-400 text-xs font-bold">✓</span>
+                                <span className="text-emerald-400 text-xs font-bold">[OK]</span>
                               )}
                             </button>
                           );
@@ -524,16 +535,16 @@ function DataLinkLayerQuizContent() {
 
                       {showResults && (
                         <div
-                          className={`mt-3 text-xs p-2.5 rounded border ${
+                          className={`mt-3 text-xs p-2.5 rounded-lg border font-mono ${
                             isCorrect
-                              ? "bg-green-950/40 text-green-300 border-green-800/60"
-                              : "bg-red-950/40 text-red-300 border-red-800/60"
+                              ? "bg-emerald-950/40 text-emerald-300 border-emerald-800/60"
+                              : "bg-rose-950/40 text-rose-300 border-rose-800/60"
                           }`}
                         >
-                          <span className="font-bold font-mono">
-                            {isCorrect ? "✓ VALIDATED: " : "✗ ERROR: "}
+                          <span className="font-bold">
+                            {isCorrect ? "[OK] VALIDATED: " : "[!] ERROR: "}
                           </span>
-                          {item.explanation}
+                          <span className="font-mono">{item.explanation}</span>
                         </div>
                       )}
                     </div>
@@ -545,13 +556,13 @@ function DataLinkLayerQuizContent() {
         </section>
 
         {/* Validation & Reset */}
-        <section className="terminal-box text-center">
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl text-center">
           {!showResults ? (
             <div className="flex flex-col items-center gap-3">
               <button
                 type="button"
                 onClick={handleValidate}
-                className="px-8 py-3 bg-accent text-slate-900 font-bold rounded hover:bg-green-400 transition-colors font-mono tracking-wide cursor-pointer shadow-lg shadow-accent/20"
+                className="px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-sm rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all cursor-pointer"
               >
                 VALIDATE ALL RESPONSES
               </button>
@@ -563,41 +574,44 @@ function DataLinkLayerQuizContent() {
           ) : (
             <div className="space-y-6">
               <div
-                className={`p-6 rounded border ${
+                className={`p-6 rounded-lg border shadow-lg ${
                   allCorrect
-                    ? "bg-green-900/30 text-green-400 border-green-500"
-                    : "bg-red-900/30 text-red-400 border-red-500"
+                    ? "bg-emerald-950/40 text-emerald-300 border-emerald-500/60 shadow-emerald-950/40"
+                    : "bg-rose-950/40 text-rose-300 border-rose-500/60 shadow-rose-950/40"
                 }`}
               >
                 {allCorrect ? (
-                  <div className="flex flex-col items-center">
-                    <span className="text-xl sm:text-2xl mb-1 font-bold">
-                      SUCCESS! ALL DATA-LINK CONCEPTS SYNCHRONIZED
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="text-lg sm:text-xl font-bold font-mono text-emerald-400 flex items-center gap-2">
+                      <span>[OK]</span> SUCCESS: LAYER 2 ARCHITECTURE VALIDATED
                     </span>
-                    <p className="text-sm text-slate-300 mt-1">
-                      Perfect Score: {results.correctCount} / {totalQuestions} correct across sublayers, MAC anatomy, and ARP.
+                    <p className="text-xs sm:text-sm text-emerald-300/90 font-mono">
+                      All MAC sublayer, LLC sublayer, and ARP address resolution workflows verified.
                     </p>
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center">
-                    <span className="text-xl sm:text-2xl mb-1 font-bold">
-                      MISMATCH DETECTED IN LAYER 2 RESPONSES
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="text-lg sm:text-xl font-bold font-mono text-rose-400 flex items-center gap-2">
+                      <span>[!]</span> LAYER 2 CONFIGURATION MISMATCH DETECTED
                     </span>
-                    <p className="text-sm text-slate-300 mt-1">
-                      Score: {results.correctCount} / {totalQuestions} correct (
-                      {totalQuestions - results.correctCount} mismatches to resolve).
+                    <p className="text-xs sm:text-sm text-rose-300/90 font-mono">
+                      {totalQuestions - results.correctCount} item(s) failed parity check. Review highlighted errors above.
                     </p>
                   </div>
                 )}
+                <div className="mt-4 text-xs font-mono text-slate-400">
+                  Total Score: <span className="font-bold text-slate-200">{results.correctCount}</span> / {totalQuestions} (
+                  {Math.round((results.correctCount / totalQuestions) * 100)}%)
+                </div>
               </div>
 
-              <div className="flex justify-center">
+              <div className="flex flex-wrap items-center justify-center gap-4">
                 <button
                   type="button"
                   onClick={handleResetAndScramble}
-                  className="px-6 py-2.5 border border-accent bg-accent/10 text-accent font-bold rounded hover:bg-accent hover:text-slate-900 transition-colors font-mono cursor-pointer"
+                  className="px-6 py-2.5 border border-emerald-500/40 hover:border-emerald-400 bg-slate-900/80 hover:bg-slate-800 text-emerald-400 font-bold font-mono text-sm rounded-lg transition-all cursor-pointer"
                 >
-                  {allCorrect ? "RESET & SCRAMBLE" : "TRY AGAIN"}
+                  SCRAMBLE & RESET
                 </button>
               </div>
             </div>

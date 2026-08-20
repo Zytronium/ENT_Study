@@ -23,6 +23,7 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileTocOpen, setIsMobileTocOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [, startTransition] = useTransition();
 
   // Keep track of match marks
@@ -32,7 +33,7 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
   const topicCount = tocItems.filter((item) => item.level === 2).length;
 
   // --------------------------------------------------------------------------
-  // ScrollSpy: Track visible heading & 10 REM scroll threshold
+  // ScrollSpy: Track visible heading, scroll progress & 10 REM threshold
   // --------------------------------------------------------------------------
   useEffect(() => {
     const headingElements = tocItems
@@ -42,6 +43,11 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
     const handleScroll = () => {
       const rootFontSize = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
       setShowBackToTop(window.scrollY >= 10 * rootFontSize);
+
+      const totalDocHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalDocHeight > 0) {
+        setScrollProgress(Math.min(100, Math.max(0, (window.scrollY / totalDocHeight) * 100)));
+      }
 
       if (headingElements.length === 0) return;
 
@@ -230,9 +236,15 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground">
+    <div className="min-h-screen flex flex-col bg-background text-foreground font-mono">
       {/* ---------------- STICKY TOP CONTROLS NAVBAR ---------------- */}
-      <header className="sticky top-0 z-40 bg-slate-950/95 border-b border-border backdrop-blur-md px-4 sm:px-6 py-3 no-print">
+      <header className="sticky top-0 z-40 bg-slate-950/95 border-b border-border backdrop-blur-md px-4 sm:px-6 py-3 no-print relative">
+        {/* Reading progress bar */}
+        <div
+          className="absolute top-0 left-0 h-[2px] bg-gradient-to-r from-emerald-500 via-emerald-400 to-cyan-400 transition-all duration-75"
+          style={{ width: `${scrollProgress}%` }}
+        />
+
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
           {/* Left: Brand & Navigation */}
           <div className="flex items-center justify-between w-full md:w-auto gap-4">
@@ -254,7 +266,7 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
               <button
                 type="button"
                 onClick={() => setIsMobileTocOpen(true)}
-                className="p-1.5 text-xs font-mono bg-slate-900 border border-border hover:border-accent text-accent rounded flex items-center gap-1 font-bold"
+                className="p-1.5 text-xs font-mono bg-slate-900 border border-border hover:border-accent text-accent rounded flex items-center gap-1 font-bold cursor-pointer"
                 title="Open Table of Contents"
               >
                 <span>TOC</span>
@@ -262,7 +274,7 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
               <button
                 type="button"
                 onClick={handlePrint}
-                className="p-1.5 text-xs font-mono bg-slate-900 border border-border hover:border-accent text-slate-200 rounded flex items-center gap-1"
+                className="p-1.5 text-xs font-mono bg-slate-900 border border-border hover:border-accent text-slate-200 rounded flex items-center gap-1 cursor-pointer"
                 title="Print or Export PDF"
               >
                 <span>PRINT</span>
@@ -301,7 +313,7 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
                   <button
                     type="button"
                     onClick={handleClearSearch}
-                    className="p-0.5 text-slate-400 hover:text-slate-100 text-xs"
+                    className="p-0.5 text-slate-400 hover:text-slate-100 text-xs cursor-pointer"
                     title="Clear search"
                   >
                     ✕
@@ -317,7 +329,7 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
                   type="button"
                   onClick={handlePrevMatch}
                   title="Previous match (Shift+Enter)"
-                  className="px-2 py-1 bg-slate-900 border border-border hover:border-accent text-slate-200 rounded text-xs font-mono"
+                  className="px-2 py-1 bg-slate-900 border border-border hover:border-accent text-slate-200 rounded text-xs font-mono cursor-pointer"
                 >
                   ▲
                 </button>
@@ -325,7 +337,7 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
                   type="button"
                   onClick={handleNextMatch}
                   title="Next match (Enter)"
-                  className="px-2 py-1 bg-slate-900 border border-border hover:border-accent text-slate-200 rounded text-xs font-mono"
+                  className="px-2 py-1 bg-slate-900 border border-border hover:border-accent text-slate-200 rounded text-xs font-mono cursor-pointer"
                 >
                   ▼
                 </button>
@@ -338,14 +350,14 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
             <button
               type="button"
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="px-3 py-1.5 text-xs font-mono bg-slate-900 border border-border hover:border-accent text-slate-300 hover:text-accent rounded transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 text-xs font-mono bg-slate-900 border border-border hover:border-accent text-slate-300 hover:text-accent rounded transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               <span>{isSidebarOpen ? '◀ Hide TOC' : '▶ Show TOC'}</span>
             </button>
             <button
               type="button"
               onClick={handlePrint}
-              className="px-3 py-1.5 text-xs font-mono bg-emerald-950/40 border border-accent/60 hover:bg-accent hover:text-slate-950 text-accent font-bold rounded transition-colors flex items-center gap-1.5"
+              className="px-3 py-1.5 text-xs font-mono bg-emerald-950/40 border border-accent/60 hover:bg-accent hover:text-slate-950 text-accent font-bold rounded transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               <span>PRINT / EXPORT PDF</span>
             </button>
@@ -375,7 +387,7 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
                     key={item.id}
                     type="button"
                     onClick={() => scrollToHeading(item.id)}
-                    className={`block w-full text-left py-1.5 px-2 rounded transition-colors truncate ${
+                    className={`block w-full text-left py-1.5 px-2 rounded transition-colors truncate font-mono cursor-pointer ${
                       isH3 ? 'pl-5 text-[11px] text-slate-400 hover:text-slate-200' : 'font-semibold text-slate-300 hover:text-slate-100'
                     } ${
                       isActive
@@ -396,7 +408,7 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
         <main className="flex-1 w-full min-w-0 study-guide-content">
           <article
             ref={contentRef}
-            className="prose prose-invert max-w-none [&_table]:w-full [&_table]:border-collapse [&_th]:border [&_th]:border-border [&_th]:p-2 [&_th]:bg-slate-900 [&_th]:text-accent [&_td]:border [&_td]:border-border/60 [&_td]:p-2 [&_pre]:bg-slate-950 [&_pre]:border [&_pre]:border-border [&_img]:rounded [&_img]:border [&_img]:border-border [&_img]:max-w-full [&_img]:h-auto [&_a:not(.quiz-action-btn)]:text-accent hover:[&_a:not(.quiz-action-btn)]:underline [&_h1]:text-accent [&_h2]:text-accent [&_h2]:border-b [&_h2]:border-border [&_h2]:pb-2 [&_h2]:mt-10 [&_h3]:text-slate-200 [&_h3]:mt-6"
+            className="prose prose-invert max-w-none font-mono [&_table]:w-full [&_table]:border-collapse [&_th]:border [&_th]:border-border [&_th]:p-2 [&_th]:bg-slate-900 [&_th]:text-accent [&_td]:border [&_td]:border-border/60 [&_td]:p-2 [&_pre]:bg-slate-950 [&_pre]:border [&_pre]:border-border [&_img]:rounded [&_img]:border [&_img]:border-border [&_img]:max-w-full [&_img]:h-auto [&_a:not(.quiz-action-btn)]:text-accent hover:[&_a:not(.quiz-action-btn)]:underline [&_h1]:text-accent [&_h2]:text-accent [&_h2]:border-b [&_h2]:border-border [&_h2]:pb-2 [&_h2]:mt-10 [&_h3]:text-slate-200 [&_h3]:mt-6"
             dangerouslySetInnerHTML={{ __html: initialHtml }}
           />
         </main>

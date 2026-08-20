@@ -411,194 +411,218 @@ function EthernetStandardsQuizContent() {
 
   return (
     <div className="min-h-screen flex flex-col items-center p-4 sm:p-8">
-      <header className="w-full max-w-6xl mb-8 border-b border-border pb-4">
-        <div className="flex flex-wrap justify-between items-center gap-4">
-          <h1 className="text-2xl sm:text-3xl font-bold text-accent">
-            ENT_ROUTER_V1 | Wired Ethernet Standards
-          </h1>
-          <div className="flex items-center gap-4 text-sm font-mono">
-            <Link href="/study-guide#wired-ethernet-standards" className="text-accent hover:underline flex items-center gap-1">
-              [VIEW IN STUDY GUIDE]
-            </Link>
-            <Link href="/" className="text-accent hover:underline">
-              {"<"} BACK TO HUB
-            </Link>
+      {/* Header */}
+      <header className="w-full max-w-6xl mb-8 cyber-glass-panel p-4 sm:p-5 rounded-xl border border-slate-800 shadow-xl flex flex-wrap justify-between items-center gap-4">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
+              DIAGNOSTIC_MODULE
+            </span>
+            <span className="text-xs text-slate-500 font-mono">//</span>
+            <span className="text-xs text-slate-400 font-mono">IEEE_802.3_ETHERNET</span>
           </div>
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <span className="text-emerald-400 font-mono">ENT_ROUTER_V1</span>
+            <span className="text-slate-600 font-light">|</span>
+            <span className="text-slate-200">Wired Ethernet Standards</span>
+          </h1>
         </div>
-        <p className="text-sm text-slate-400 mt-2">
-          Diagnostic Module: IEEE 802.3 Physical &amp; Data-Link Standards Matrix
-        </p>
+        <div className="flex items-center gap-3 text-xs font-mono">
+          <Link
+            href="/study-guide#wired-ethernet-standards"
+            className="px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400 transition-all flex items-center gap-1.5 font-bold"
+          >
+            <span>[STUDY_GUIDE]</span>
+          </Link>
+          <Link
+            href="/"
+            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:text-white hover:border-slate-600 transition-all font-bold"
+          >
+            {"<"} BACK TO HUB
+          </Link>
+        </div>
       </header>
 
-      <main className="w-full max-w-6xl terminal-box space-y-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-border pb-4">
-          <div>
-            <h2 className="text-xl font-bold text-accent underline">
-              802.3 Ethernet Standards Table
+      <main className="w-full max-w-6xl terminal-box border-l-4 border-l-emerald-500 shadow-2xl space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-slate-800/80">
+          <div className="flex items-center gap-2">
+            <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+              [IEEE_802.3_ETHERNET_STANDARDS_MATRIX]
             </h2>
-            <p className="text-xs text-slate-300 mt-1">
-              Select the correct standard specification for each blank cell in the table.
-            </p>
+          </div>
+          <div className="flex items-center gap-2 text-xs font-mono">
+            <span className="text-slate-400">STAGE {stage} OF {BLANK_COUNTS_BY_STAGE.length}</span>
+            <span className="text-slate-600">|</span>
+            <span className="text-cyan-400">{totalBlanks} BLANKS ACTIVE</span>
           </div>
         </div>
 
+        <p className="text-xs sm:text-sm text-slate-400 font-mono">
+          Complete the IEEE 802.3 wired Ethernet specifications for all highlighted blank cells in the matrix table below.
+        </p>
+
         {/* Interactive Matrix Table */}
-        <div className="overflow-x-auto rounded border border-border">
-          <table className="w-full text-left border-collapse text-xs sm:text-sm">
+        <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/80 shadow-inner">
+          <table className="w-full text-left border-collapse text-xs sm:text-sm font-mono">
             <thead>
-            <tr className="bg-slate-900/80 border-b border-border text-accent font-mono">
-              {columns.map((col) => (
-                <th key={col.key} className="p-3 font-bold border-r border-border/50 last:border-r-0 whitespace-nowrap">
-                  {col.label}
-                </th>
-              ))}
-            </tr>
+              <tr className="bg-slate-900/90 border-b border-slate-800 text-emerald-400">
+                {columns.map((col) => (
+                  <th key={col.key} className="p-3 font-bold border-r border-slate-800/60 last:border-r-0 whitespace-nowrap">
+                    {col.label}
+                  </th>
+                ))}
+              </tr>
             </thead>
-            <tbody className="divide-y divide-border/40 font-mono">
-            {standardRows.map((row, rowIdx) => (
-              <tr
-                key={row.id}
-                className={`transition-colors ${
-                  rowIdx % 2 === 0 ? "bg-slate-900/20" : "bg-slate-900/50"
-                } hover:bg-slate-800/40`}
-              >
-                {columns.map((col) => {
-                  // -------- split max distance cell (802.3an / 10GbaseT) --------
-                  if (row.id === 6 && col.key === "maxDistance") {
-                    return (
-                      <td
-                        key={col.key}
-                        className="p-0 border-r border-border/30 last:border-r-0"
-                      >
-                        <div className="flex flex-col divide-y divide-border/30">
-                          {tenGigDistanceSegments.map((segment, idx) => {
-                            const cellKey = `${row.id}_maxDistance_${idx}`;
-                            const isBlank = blankCells.has(cellKey);
-                            const selectedVal = userAnswers[cellKey] || "";
-                            const correct = isCellCorrect(cellKey);
+            <tbody className="divide-y divide-slate-800/60 font-mono">
+              {standardRows.map((row, rowIdx) => (
+                <tr
+                  key={row.id}
+                  className={`transition-colors ${
+                    rowIdx % 2 === 0 ? "bg-slate-900/20" : "bg-slate-900/40"
+                  } hover:bg-slate-800/30`}
+                >
+                  {columns.map((col) => {
+                    // -------- split max distance cell (802.3an / 10GbaseT) --------
+                    if (row.id === 6 && col.key === "maxDistance") {
+                      return (
+                        <td
+                          key={col.key}
+                          className="p-0 border-r border-slate-800/60 last:border-r-0"
+                        >
+                          <div className="flex flex-col divide-y divide-slate-800/60">
+                            {tenGigDistanceSegments.map((segment, idx) => {
+                              const cellKey = `${row.id}_maxDistance_${idx}`;
+                              const isBlank = blankCells.has(cellKey);
+                              const selectedVal = userAnswers[cellKey] || "";
+                              const correct = isCellCorrect(cellKey);
 
-                            return (
-                              <div
-                                key={cellKey}
-                                className={`p-2 transition-colors ${
-                                  isBlank
-                                    ? showResults
-                                      ? correct
-                                        ? "bg-green-950/20"
-                                        : "bg-red-950/20"
-                                      : "bg-slate-950/30"
-                                    : ""
-                                }`}
-                              >
-                                <span className="text-slate-300 mr-1">{segment.label}</span>
-                                {isBlank ? (
-                                  <BlankCell
-                                    options={columnOptions.maxDistance}
-                                    useTextInput={useTextInput}
-                                    showResults={showResults}
-                                    correct={correct}
-                                    correctVal={segment.value}
-                                    value={selectedVal}
-                                    onChange={(val) => handleSelectChange(cellKey, val)}
-                                  />
-                                ) : (
-                                  <span className="text-slate-200">{segment.value}</span>
-                                )}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </td>
-                    );
-                  }
+                              return (
+                                <div
+                                  key={cellKey}
+                                  className={`p-2 transition-colors ${
+                                    isBlank
+                                      ? showResults
+                                        ? correct
+                                          ? "bg-emerald-950/30"
+                                          : "bg-rose-950/30"
+                                        : "bg-slate-950/40"
+                                      : ""
+                                  }`}
+                                >
+                                  <span className="text-slate-400 mr-1.5">{segment.label}</span>
+                                  {isBlank ? (
+                                    <BlankCell
+                                      options={columnOptions.maxDistance}
+                                      useTextInput={useTextInput}
+                                      showResults={showResults}
+                                      correct={correct}
+                                      correctVal={segment.value}
+                                      value={selectedVal}
+                                      onChange={(val) => handleSelectChange(cellKey, val)}
+                                    />
+                                  ) : (
+                                    <span className="text-slate-200 font-bold">{segment.value}</span>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </td>
+                      );
+                    }
 
-                  const cellKey = `${row.id}_${col.key}`;
-                  const isBlank = blankCells.has(cellKey);
-                  const selectedVal = userAnswers[cellKey] || "";
-                  const correctVal = row[col.key];
+                    const cellKey = `${row.id}_${col.key}`;
+                    const isBlank = blankCells.has(cellKey);
+                    const selectedVal = userAnswers[cellKey] || "";
+                    const correctVal = row[col.key];
 
-                  if (!isBlank) {
-                    return (
-                      <td
-                        key={col.key}
-                        className="p-3 border-r border-border/30 last:border-r-0 text-slate-200"
-                      >
-                          <span className={col.key === "tStandard" || col.key === "ieeeStandard" ? "font-bold text-slate-100" : ""}>
+                    if (!isBlank) {
+                      return (
+                        <td
+                          key={col.key}
+                          className="p-3 border-r border-slate-800/60 last:border-r-0 text-slate-200"
+                        >
+                          <span className={col.key === "tStandard" || col.key === "ieeeStandard" ? "font-bold text-white" : ""}>
                             {row[col.key]}
                           </span>
+                        </td>
+                      );
+                    }
+
+                    const correct = isCellCorrect(cellKey);
+
+                    return (
+                      <td
+                        key={col.key}
+                        className={`p-2 border-r border-slate-800/60 last:border-r-0 transition-colors ${
+                          showResults
+                            ? correct
+                              ? "bg-emerald-950/30"
+                              : "bg-rose-950/30"
+                            : "bg-slate-950/40"
+                        }`}
+                      >
+                        <BlankCell
+                          options={columnOptions[col.key]}
+                          useTextInput={useTextInput}
+                          showResults={showResults}
+                          correct={correct}
+                          correctVal={correctVal}
+                          value={selectedVal}
+                          onChange={(val) => handleSelectChange(cellKey, val)}
+                        />
                       </td>
                     );
-                  }
-
-                  const correct = isCellCorrect(cellKey);
-
-                  return (
-                    <td
-                      key={col.key}
-                      className={`p-2 border-r border-border/30 last:border-r-0 transition-colors ${
-                        showResults
-                          ? correct
-                            ? "bg-green-950/20"
-                            : "bg-red-950/20"
-                          : "bg-slate-950/30"
-                      }`}
-                    >
-                      <BlankCell
-                        options={columnOptions[col.key]}
-                        useTextInput={useTextInput}
-                        showResults={showResults}
-                        correct={correct}
-                        correctVal={correctVal}
-                        value={selectedVal}
-                        onChange={(val) => handleSelectChange(cellKey, val)}
-                      />
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
+                  })}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
 
         {/* Validation & Reset Controls */}
-        <div className="pt-4 border-t border-border flex flex-col items-center gap-4">
+        <div className="pt-6 border-t border-slate-800/80 flex flex-col items-center gap-4">
           {!showResults ? (
             <button
               type="button"
               onClick={handleValidate}
               disabled={Object.keys(userAnswers).length === 0}
-              className="px-8 py-2.5 bg-accent text-slate-900 font-bold rounded hover:bg-green-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-mono text-sm tracking-wider cursor-pointer"
+              className="px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-sm rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               VALIDATE STANDARDS TABLE
             </button>
           ) : (
             <div className="w-full text-center space-y-4">
               <div
-                className={`p-4 rounded border ${
+                className={`p-4 rounded-lg border font-mono shadow-lg ${
                   allCorrect
-                    ? "bg-green-950/40 text-green-400 border-green-500"
-                    : "bg-red-950/40 text-red-400 border-red-500"
+                    ? "bg-emerald-950/40 text-emerald-300 border-emerald-500/60 shadow-emerald-950/40"
+                    : "bg-rose-950/40 text-rose-300 border-rose-500/60 shadow-rose-950/40"
                 }`}
               >
-                <div className="font-mono text-sm mb-1">
-                  Score: <span className="font-bold">{correctBlanks}</span> / {totalBlanks}
+                <div className="text-xs mb-1 text-slate-400">
+                  SCORE: <span className="font-bold text-white">{correctBlanks}</span> / {totalBlanks} BLANKS CORRECT
                 </div>
                 {allCorrect ? (
                   <div>
-                    <div className="text-xl font-bold mb-1">
-                      {stage < BLANK_COUNTS_BY_STAGE.length
-                        ? `STAGE ${stage} VERIFIED — READY FOR NEXT LEVEL`
-                        : "MAXIMUM MATRIX PROFICIENCY ACHIEVED"}
+                    <div className="text-base sm:text-lg font-bold mb-1 text-emerald-400 flex items-center justify-center gap-2">
+                      <span>[OK]</span>
+                      <span>
+                        {stage < BLANK_COUNTS_BY_STAGE.length
+                          ? `STAGE ${stage} VERIFIED — READY FOR NEXT LEVEL`
+                          : "MAXIMUM MATRIX PROFICIENCY ACHIEVED"}
+                      </span>
                     </div>
-                    <p className="text-xs text-slate-300">
+                    <p className="text-xs sm:text-sm text-emerald-300/90 font-mono">
                       All {totalBlanks} blank standard parameters accurately verified.
                     </p>
                   </div>
                 ) : (
                   <div>
-                    <div className="text-xl font-bold mb-1">STANDARDS MISMATCH DETECTED</div>
-                    <p className="text-xs text-slate-300">
+                    <div className="text-base sm:text-lg font-bold mb-1 text-rose-400 flex items-center justify-center gap-2">
+                      <span>[!]</span> STANDARDS MISMATCH DETECTED
+                    </div>
+                    <p className="text-xs sm:text-sm text-rose-300/90 font-mono">
                       {totalBlanks - correctBlanks} parameter(s) incorrectly identified. Review flagged cells above.
                     </p>
                   </div>
@@ -610,7 +634,7 @@ function EthernetStandardsQuizContent() {
                   <button
                     type="button"
                     onClick={handleNextStage}
-                    className="px-6 py-2 bg-accent text-slate-900 font-bold rounded hover:bg-green-400 transition-colors font-mono text-xs cursor-pointer"
+                    className="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-sm rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all cursor-pointer"
                   >
                     NEXT STAGE (+ MORE BLANKS)
                   </button>
@@ -618,7 +642,7 @@ function EthernetStandardsQuizContent() {
                 <button
                   type="button"
                   onClick={handleResetCurrentStage}
-                  className="px-6 py-2 border border-accent text-accent font-bold rounded hover:bg-accent/10 transition-colors font-mono text-xs cursor-pointer"
+                  className="px-6 py-2.5 border border-emerald-500/40 hover:border-emerald-400 bg-slate-900/80 hover:bg-slate-800 text-emerald-400 font-bold font-mono text-sm rounded-lg transition-all cursor-pointer"
                 >
                   {allCorrect ? "SCRAMBLE & REPLAY STAGE" : "RETRY STAGE (NEW BLANKS)"}
                 </button>

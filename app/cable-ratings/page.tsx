@@ -181,19 +181,19 @@ function OptionButtons({
         const isSelected = value === opt;
         const isThisCorrect = opt === correctAnswer;
 
-        let btnClasses = "w-full text-left p-2.5 rounded text-xs font-mono border transition-colors ";
+        let btnClasses = "w-full text-left p-2.5 rounded-lg text-xs font-mono border transition-all cursor-pointer ";
         if (showResults) {
           if (isThisCorrect) {
-            btnClasses += "bg-green-950/40 border-green-500 text-green-300 font-bold";
+            btnClasses += "bg-emerald-950/60 border-emerald-500 text-emerald-300 font-bold";
           } else if (isSelected && !isThisCorrect) {
-            btnClasses += "bg-red-950/40 border-red-500 text-red-300 line-through";
+            btnClasses += "bg-rose-950/60 border-rose-500 text-rose-300 line-through";
           } else {
-            btnClasses += "bg-slate-900/30 border-border/40 text-slate-500 opacity-60";
+            btnClasses += "bg-slate-950/40 border-slate-800/40 text-slate-600 opacity-60";
           }
         } else if (isSelected) {
-          btnClasses += "bg-slate-800 border-accent text-accent font-bold";
+          btnClasses += "bg-emerald-950/40 border-emerald-400 text-emerald-300 font-bold shadow-sm";
         } else {
-          btnClasses += "bg-slate-900/50 border-border hover:bg-slate-800 text-slate-300";
+          btnClasses += "bg-slate-950 border-slate-800 hover:border-slate-700 text-slate-300";
         }
 
         return (
@@ -246,35 +246,51 @@ export default function CableRatingsQuiz() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-4 sm:p-8">
-      <header className="w-full max-w-4xl mb-8 border-b border-border pb-4">
-        <div className="flex flex-wrap justify-between items-center gap-4">
-          <h1 className="text-2xl sm:text-3xl font-bold text-accent">ENT_ROUTER_V1 | Cable Ratings</h1>
-          <div className="flex items-center gap-4 text-sm font-mono">
-            <Link href="/study-guide#cable-ratings" className="text-accent hover:underline flex items-center gap-1">
-              [VIEW IN STUDY GUIDE]
-            </Link>
-            <Link href="/" className="text-sm text-accent hover:underline">
-              {"<"} BACK TO HUB
-            </Link>
+    <div className="min-h-screen flex flex-col items-center p-4 sm:p-8 font-mono">
+      {/* Header */}
+      <header className="w-full max-w-4xl mb-8 cyber-glass-panel p-4 sm:p-5 rounded-xl border border-slate-800 shadow-xl flex flex-wrap justify-between items-center gap-4">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
+              DIAGNOSTIC_MODULE
+            </span>
+            <span className="text-xs text-slate-500 font-mono">//</span>
+            <span className="text-xs text-slate-400 font-mono">CABLE_SAFETY_RATINGS</span>
           </div>
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <span className="text-emerald-400 font-mono">ENT_ROUTER_V1</span>
+            <span className="text-slate-600 font-light">|</span>
+            <span className="text-slate-200">Cable Ratings</span>
+          </h1>
         </div>
-        <p className="text-sm text-slate-400 mt-2">
-          Diagnostic Module: Cable Routing (CMP, CMR, CM), Fire Safety & Substitution Hierarchy
-        </p>
+        <div className="flex items-center gap-3 text-xs font-mono">
+          <Link
+            href="/study-guide#cable-ratings"
+            className="px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400 transition-all flex items-center gap-1.5 font-bold"
+          >
+            <span>[STUDY_GUIDE]</span>
+          </Link>
+          <Link
+            href="/"
+            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:text-white hover:border-slate-600 transition-all font-bold"
+          >
+            {"<"} BACK TO HUB
+          </Link>
+        </div>
       </header>
 
-      <main className="w-full max-w-4xl space-y-8">
+      <main className="w-full max-w-4xl space-y-8 font-mono">
         {/* -------- Part 1: zone routing -------- */}
-        <section className="terminal-box">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-4 border-b border-border">
-            <div>
-              <h2 className="text-xl font-bold text-accent underline">Part 1: Blueprint Zone Routing</h2>
-              <p className="text-xs text-slate-400 mt-1">Pick the minimum code-compliant rating for each zone.</p>
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-3 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
+                [PART_01: BLUEPRINT_ZONE_ROUTING]
+              </h2>
             </div>
             {showResults && (
-              <div className="font-mono text-sm px-3 py-1 rounded bg-slate-900 border border-border">
-                Zones: <span className={zoneCorrectCount === zones.length ? "text-green-400 font-bold" : "text-yellow-400 font-bold"}>{zoneCorrectCount}</span> / {zones.length}
+              <div className="font-mono text-xs px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
+                SCORE: <span className={zoneCorrectCount === zones.length ? "text-emerald-400 font-bold" : "text-amber-400 font-bold"}>{zoneCorrectCount}</span> / {zones.length}
               </div>
             )}
           </div>
@@ -372,8 +388,8 @@ export default function CableRatingsQuiz() {
                         ))}
                       </select>
 
-                      {showResults && !correct && <div className="mt-1 text-xs font-mono text-red-400">Expected: <strong>{zone.answer}</strong></div>}
-                      {showResults && correct && <div className="mt-1 text-xs font-mono text-green-400">✓ Correct: {zone.answer}</div>}
+                      {showResults && !correct && <div className="mt-1 text-xs font-mono text-rose-400">Expected: <strong>{zone.answer}</strong></div>}
+                      {showResults && correct && <div className="mt-1 text-xs font-mono text-emerald-400">[OK] Correct: {zone.answer}</div>}
                     </div>
                   </div>
                 </div>
@@ -383,20 +399,20 @@ export default function CableRatingsQuiz() {
         </section>
 
         {/* -------- Part 2: compliance scenarios -------- */}
-        <section className="terminal-box">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-4 border-b border-border">
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-3 border-b border-slate-800/80">
             <div>
-              <h2 className="text-xl font-bold text-accent underline">Part 2: Compliance Scenarios</h2>
-              <p className="text-xs text-slate-400 mt-1">Decide compliant or violation for each inspection.</p>
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">[PART_02: COMPLIANCE_SCENARIOS]</h2>
+              <p className="text-xs text-slate-400 font-mono mt-1">Decide compliant or violation for each inspection.</p>
             </div>
             {showResults && (
-              <div className="font-mono text-sm px-3 py-1 rounded bg-slate-900 border border-border">
-                Scenarios: <span className={scenarioCorrectCount === scenarios.length ? "text-green-400 font-bold" : "text-yellow-400 font-bold"}>{scenarioCorrectCount}</span> / {scenarios.length}
+              <div className="font-mono text-xs px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
+                SCORE: <span className={scenarioCorrectCount === scenarios.length ? "text-emerald-400 font-bold" : "text-amber-400 font-bold"}>{scenarioCorrectCount}</span> / {scenarios.length}
               </div>
             )}
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             {scenarios.map((scen, index) => {
               const userVal = answers[scen.id] || "";
               const correct = isCorrect(scen.id, scen.answer);
@@ -404,14 +420,14 @@ export default function CableRatingsQuiz() {
               return (
                 <div
                   key={scen.id}
-                  className={`p-4 rounded border transition-colors ${
-                    showResults ? (correct ? "border-green-500/60 bg-green-950/20" : "border-red-500/60 bg-red-950/20") : "border-border/60 bg-slate-900/50"
+                  className={`p-4 rounded-lg border transition-all ${
+                    showResults ? (correct ? "border-emerald-500/60 bg-emerald-950/20" : "border-rose-500/60 bg-rose-950/20") : "border-slate-800/80 bg-slate-900/70"
                   }`}
                 >
-                  <span className="text-accent font-mono text-xs font-bold block mb-2">
+                  <span className="text-emerald-400 font-mono text-xs font-bold block mb-2">
                     [INSPECTION #{String(index + 1).padStart(2, "0")}] {scen.scenarioTitle}
                   </span>
-                  <p className="text-sm text-slate-200 font-medium mb-3">&ldquo;{scen.inspectionReport}&rdquo;</p>
+                  <p className="text-xs sm:text-sm text-slate-200 font-medium mb-3 font-mono">&ldquo;{scen.inspectionReport}&rdquo;</p>
 
                   <OptionButtons
                     options={scen.options}
@@ -423,8 +439,8 @@ export default function CableRatingsQuiz() {
                   />
 
                   {showResults && (
-                    <div className={`mt-3 text-xs p-2.5 rounded border ${correct ? "bg-green-950/30 border-green-800/40 text-green-300" : "bg-red-950/30 border-red-800/40 text-red-300"}`}>
-                      <p className="font-bold mb-0.5">{correct ? "✓ CORRECT" : "✗ INCORRECT"}</p>
+                    <div className={`mt-3 text-xs p-2.5 rounded-lg border font-mono ${correct ? "bg-emerald-950/40 border-emerald-800/60 text-emerald-300" : "bg-rose-950/40 border-rose-800/60 text-rose-300"}`}>
+                      <p className="font-bold mb-0.5">{correct ? "[OK] CORRECT" : "[!] INCORRECT"}</p>
                       <p className="text-slate-300">{scen.explanation}</p>
                     </div>
                   )}
@@ -435,20 +451,20 @@ export default function CableRatingsQuiz() {
         </section>
 
         {/* -------- Part 3: specs -------- */}
-        <section className="terminal-box">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-4 border-b border-border">
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-3 border-b border-slate-800/80">
             <div>
-              <h2 className="text-xl font-bold text-accent underline">Part 3: Specs & Mechanics</h2>
-              <p className="text-xs text-slate-400 mt-1">Acronyms, hierarchy, and fire safety mechanics.</p>
+              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">[PART_03: SPECS_&_MECHANICS]</h2>
+              <p className="text-xs text-slate-400 font-mono mt-1">Acronyms, hierarchy, and fire safety mechanics.</p>
             </div>
             {showResults && (
-              <div className="font-mono text-sm px-3 py-1 rounded bg-slate-900 border border-border">
-                Specs: <span className={specCorrectCount === specs.length ? "text-green-400 font-bold" : "text-yellow-400 font-bold"}>{specCorrectCount}</span> / {specs.length}
+              <div className="font-mono text-xs px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
+                SCORE: <span className={specCorrectCount === specs.length ? "text-emerald-400 font-bold" : "text-amber-400 font-bold"}>{specCorrectCount}</span> / {specs.length}
               </div>
             )}
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             {specs.map((spec, index) => {
               const userVal = answers[spec.id] || "";
               const correct = isCorrect(spec.id, spec.answer);
@@ -456,14 +472,14 @@ export default function CableRatingsQuiz() {
               return (
                 <div
                   key={spec.id}
-                  className={`p-4 rounded border transition-colors ${
-                    showResults ? (correct ? "border-green-500/60 bg-green-950/20" : "border-red-500/60 bg-red-950/20") : "border-border/60 bg-slate-900/50"
+                  className={`p-4 rounded-lg border transition-all ${
+                    showResults ? (correct ? "border-emerald-500/60 bg-emerald-950/20" : "border-rose-500/60 bg-rose-950/20") : "border-slate-800/80 bg-slate-900/70"
                   }`}
                 >
-                  <span className="text-accent font-mono text-xs font-bold block mb-2">
+                  <span className="text-emerald-400 font-mono text-xs font-bold block mb-2">
                     [{String(index + 1).padStart(2, "0")}] {spec.category}
                   </span>
-                  <p className="text-sm text-slate-200 font-medium mb-3">{spec.prompt}</p>
+                  <p className="text-xs sm:text-sm text-slate-200 font-medium mb-3 font-mono">{spec.prompt}</p>
 
                   <OptionButtons
                     options={spec.options}
@@ -475,8 +491,8 @@ export default function CableRatingsQuiz() {
                   />
 
                   {showResults && (
-                    <div className={`mt-3 text-xs p-2.5 rounded border ${correct ? "bg-green-950/30 border-green-800/40 text-green-300" : "bg-red-950/30 border-red-800/40 text-red-300"}`}>
-                      <p className="font-bold mb-0.5">{correct ? "✓ CORRECT" : "✗ EXPLANATION"}</p>
+                    <div className={`mt-3 text-xs p-2.5 rounded-lg border font-mono ${correct ? "bg-emerald-950/40 border-emerald-800/60 text-emerald-300" : "bg-rose-950/40 border-rose-800/60 text-rose-300"}`}>
+                      <p className="font-bold mb-0.5">{correct ? "[OK] CORRECT" : "[!] EXPLANATION"}</p>
                       <p className="text-slate-300">{spec.explanation}</p>
                     </div>
                   )}
@@ -487,28 +503,28 @@ export default function CableRatingsQuiz() {
         </section>
 
         {/* -------- validate / reset -------- */}
-        <section className="terminal-box flex flex-col items-center justify-center p-6 text-center space-y-4">
+        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl flex flex-col items-center justify-center p-6 text-center space-y-4">
           {!showResults ? (
             <button
               onClick={handleValidate}
               disabled={!allAnswered}
-              className="px-8 py-3 bg-accent text-slate-950 font-bold font-mono rounded hover:bg-accent/90 transition-colors cursor-pointer w-full sm:w-auto disabled:opacity-40 disabled:cursor-not-allowed"
+              className="px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-sm rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all cursor-pointer w-full sm:w-auto disabled:opacity-40 disabled:cursor-not-allowed"
             >
               VALIDATE ANSWERS
             </button>
           ) : (
             <div className="space-y-4 w-full flex flex-col items-center">
-              <div className={`text-2xl font-bold font-mono ${allCorrect ? "text-green-400" : "text-yellow-400"}`}>
-                {allCorrect ? "SYSTEM_DIAGNOSTIC_PASSED (100%)" : `DIAGNOSTIC_SCORE: ${totalCorrect} / ${totalQuestions} (${Math.round((totalCorrect / totalQuestions) * 100)}%)`}
+              <div className={`text-xl sm:text-2xl font-bold font-mono ${allCorrect ? "text-emerald-400" : "text-amber-400"}`}>
+                {allCorrect ? "[SYSTEM_DIAGNOSTIC_PASSED (100%)]" : `DIAGNOSTIC_SCORE: ${totalCorrect} / ${totalQuestions} (${Math.round((totalCorrect / totalQuestions) * 100)}%)`}
               </div>
-              <p className="text-sm text-slate-300 max-w-lg">
+              <p className="text-xs sm:text-sm text-slate-300 max-w-lg font-mono">
                 {allCorrect
                   ? "Outstanding! You have mastered cable routing, the substitution hierarchy, and fire safety mechanics."
                   : "Review the flagged items above, then reset and try again."}
               </p>
               <button
                 onClick={handleResetAndScramble}
-                className="px-8 py-3 bg-accent text-slate-950 font-bold font-mono rounded hover:bg-accent/90 transition-colors cursor-pointer w-full sm:w-auto"
+                className="px-6 py-2.5 border border-emerald-500/40 hover:border-emerald-400 bg-slate-900/80 hover:bg-slate-800 text-emerald-400 font-bold font-mono text-sm rounded-lg transition-all cursor-pointer w-full sm:w-auto"
               >
                 RESET AND RETRY
               </button>

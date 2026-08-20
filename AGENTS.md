@@ -32,3 +32,6 @@ quizzes. Hard mode scrambles question order, *sometimes* turns some or all quest
 but only if it's reasonably easy to validate the answer to those questions (i.e. "how does this work" or "why does this
 happen" type questions should remain multiple choice but "what frequency does this describe" or "match this definition
 to the correct term" type questions should be type-the-answer.)
+
+## General Rules
+DO NOT use emojis or EM dashes unles explicitly asked to.

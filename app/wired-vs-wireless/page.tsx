@@ -210,43 +210,53 @@ function WiredVsWirelessQuizContent() {
   return (
     <div className="min-h-screen flex flex-col items-center p-4 sm:p-8">
       {/* Header */}
-      <header className="w-full max-w-5xl mb-8 border-b border-border pb-4">
-        <div className="flex flex-wrap justify-between items-center gap-4">
-          <h1 className="text-2xl sm:text-3xl font-bold text-accent">
-            ENT_ROUTER_V1 | Wired vs Wireless
-          </h1>
-          <div className="flex items-center gap-4 text-sm font-mono">
-            <Link
-              href="/study-guide#wired-vs-wireless"
-              className="text-accent hover:underline flex items-center gap-1"
-            >
-              [VIEW IN STUDY GUIDE]
-            </Link>
-            <Link href="/" className="text-accent hover:underline">
-              {"<"} BACK TO HUB
-            </Link>
+      <header className="w-full max-w-5xl mb-8 cyber-glass-panel p-4 sm:p-5 rounded-xl border border-slate-800 shadow-xl flex flex-wrap justify-between items-center gap-4">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
+              DIAGNOSTIC_MODULE
+            </span>
+            <span className="text-xs text-slate-500 font-mono">//</span>
+            <span className="text-xs text-slate-400 font-mono">CONTENTION_CONTROL</span>
           </div>
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
+            <span className="text-emerald-400 font-mono">ENT_ROUTER_V1</span>
+            <span className="text-slate-600 font-light">|</span>
+            <span className="text-slate-200">Wired vs Wireless</span>
+          </h1>
         </div>
-        <p className="text-sm text-slate-400 mt-2">
-          Diagnostic Module: CSMA/CD vs CSMA/CA Contention Traffic Control &amp; Physical Characteristics
-        </p>
+        <div className="flex items-center gap-3 text-xs font-mono">
+          <Link
+            href="/study-guide#wired-vs-wireless"
+            className="px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400 transition-all flex items-center gap-1.5 font-bold"
+          >
+            <span>[STUDY_GUIDE]</span>
+          </Link>
+          <Link
+            href="/"
+            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:text-white hover:border-slate-600 transition-all font-bold"
+          >
+            {"<"} BACK TO HUB
+          </Link>
+        </div>
       </header>
 
       {/* Main Content Area */}
-      <main className="w-full max-w-5xl flex flex-col gap-8">
+      <main className="w-full max-w-5xl flex flex-col gap-8 font-mono">
         {/* Section 1: Contention & Collision Methods */}
-        <section className="terminal-box border-l-4 border-l-cyan-500">
-          <div className="mb-4 pb-3 border-b border-border">
-            <span className="text-xs text-accent font-mono uppercase tracking-wider">[SECTION 1]</span>
-            <h2 className="text-xl font-bold text-slate-100">
-              Contention Methods &amp; Collision Protocols (CSMA/CD vs CSMA/CA)
-            </h2>
-            <p className="text-xs text-slate-400 mt-1">
-              Collision Detection vs Collision Avoidance traffic control mechanisms and transmission dynamics.
-            </p>
+        <section className="terminal-box border-l-4 border-l-cyan-500 shadow-2xl">
+          <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-cyan-400 font-mono">
+                [SECTION_01: CONTENTION_METHODS_&_COLLISION_PROTOCOLS]
+              </h2>
+            </div>
           </div>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
+            Collision Detection (CSMA/CD) vs Collision Avoidance (CSMA/CA) traffic control mechanisms.
+          </p>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             {questions.map((q, idx) => {
               const isCorrect = isQuestionCorrect(q.id, q.answer);
               const userAnswer = generalAnswers[q.id] || "";
@@ -254,50 +264,56 @@ function WiredVsWirelessQuizContent() {
               return (
                 <div
                   key={q.id}
-                  className="border-b border-border/50 pb-5 last:border-0 space-y-3"
+                  className={`p-4 rounded-lg border transition-all ${
+                    showResults
+                      ? isCorrect
+                        ? "border-emerald-500/60 bg-emerald-950/20"
+                        : "border-rose-500/60 bg-rose-950/20"
+                      : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
+                  }`}
                 >
                   <div className="flex items-start gap-3">
-                    <span className="text-accent font-mono text-sm font-bold shrink-0">
-                      [1.{idx + 1}]
+                    <span className="text-xs font-mono font-bold text-cyan-400 bg-cyan-950/40 border border-cyan-900/50 px-2 py-0.5 rounded shrink-0">
+                      #1.{idx + 1}
                     </span>
                     <div className="flex-grow">
-                      <p className="text-sm font-semibold text-slate-200">{q.prompt}</p>
+                      <p className="text-xs sm:text-sm font-semibold text-slate-200 font-mono">{q.prompt}</p>
                       <span className="text-[10px] text-slate-500 font-mono block mt-0.5">
                         Category: {q.category}
                       </span>
-                    </div>
-                  </div>
 
-                  <div className="ml-7 max-w-2xl">
-                    <select
-                      className={`w-full bg-slate-900 border p-2 text-sm rounded font-mono focus:border-accent outline-none ${
-                        showResults
-                          ? isCorrect
-                            ? "border-green-500 text-green-400"
-                            : "border-red-500 text-red-400"
-                          : "border-border text-slate-200"
-                      }`}
-                      value={userAnswer}
-                      onChange={(e) => handleAnswerChange(q.id, e.target.value)}
-                      disabled={showResults}
-                    >
-                      <option value="">-- Select Answer --</option>
-                      {q.options.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
+                      <div className="mt-3 max-w-2xl">
+                        <select
+                          className={`w-full bg-slate-950 border p-2 text-xs sm:text-sm rounded-lg font-mono outline-none transition-colors ${
+                            showResults
+                              ? isCorrect
+                                ? "border-emerald-500 text-emerald-400 bg-emerald-950/30"
+                                : "border-rose-500 text-rose-400 bg-rose-950/30"
+                              : "border-slate-700 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 text-slate-200"
+                          }`}
+                          value={userAnswer}
+                          onChange={(e) => handleAnswerChange(q.id, e.target.value)}
+                          disabled={showResults}
+                        >
+                          <option value="">-- Select Answer --</option>
+                          {q.options.map((opt) => (
+                            <option key={opt} value={opt}>
+                              {opt}
+                            </option>
+                          ))}
+                        </select>
 
-                    {showResults && !isCorrect && (
-                      <div className="text-xs text-red-400 mt-1.5 space-y-0.5">
-                        <div className="font-mono">Expected: {q.answer}</div>
-                        <div className="text-slate-400">{q.explanation}</div>
+                        {showResults && !isCorrect && (
+                          <div className="text-xs text-rose-400 mt-2 font-mono space-y-0.5">
+                            <div>Expected: {q.answer}</div>
+                            <div className="text-slate-400 font-mono">{q.explanation}</div>
+                          </div>
+                        )}
+                        {showResults && isCorrect && (
+                          <div className="text-xs text-emerald-400 mt-2 font-mono">[OK] Verified: {q.explanation}</div>
+                        )}
                       </div>
-                    )}
-                    {showResults && isCorrect && (
-                      <div className="text-xs text-green-400 mt-1">Correct: {q.explanation}</div>
-                    )}
+                    </div>
                   </div>
                 </div>
               );
@@ -306,16 +322,17 @@ function WiredVsWirelessQuizContent() {
         </section>
 
         {/* Section 2: Medium Characteristics Classification */}
-        <section className="terminal-box border-l-4 border-l-amber-500">
-          <div className="mb-4 pb-3 border-b border-border">
-            <span className="text-xs text-accent font-mono uppercase tracking-wider">[SECTION 2]</span>
-            <h2 className="text-xl font-bold text-slate-100">
-              Medium Characteristics Classification (Wired vs Wireless)
-            </h2>
-            <p className="text-xs text-slate-400 mt-1">
-              Classify each operational trait and security attribute as belonging to Wired or Wireless.
-            </p>
+        <section className="terminal-box border-l-4 border-l-amber-500 shadow-2xl">
+          <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-amber-400 font-mono">
+                [SECTION_02: MEDIUM_CHARACTERISTICS_CLASSIFICATION]
+              </h2>
+            </div>
           </div>
+          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
+            Classify each operational trait and security attribute as belonging to Wired or Wireless.
+          </p>
 
           <div className="space-y-4">
             {characteristicMatches.map((m, idx) => {
@@ -325,22 +342,28 @@ function WiredVsWirelessQuizContent() {
               return (
                 <div
                   key={m.id}
-                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-slate-900/50 rounded border border-border/60"
+                  className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-lg border transition-all ${
+                    showResults
+                      ? isCorrect
+                        ? "border-emerald-500/60 bg-emerald-950/20"
+                        : "border-rose-500/60 bg-rose-950/20"
+                      : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
+                  }`}
                 >
                   <div className="flex items-start gap-3">
-                    <span className="text-accent font-mono text-sm font-bold shrink-0">
-                      [2.{idx + 1}]
+                    <span className="text-xs font-mono font-bold text-amber-400 bg-amber-950/40 border border-amber-900/50 px-2 py-0.5 rounded shrink-0">
+                      #2.{idx + 1}
                     </span>
                     <div>
-                      <p className="text-sm text-slate-200">{m.trait}</p>
+                      <p className="text-xs sm:text-sm text-slate-200 font-medium font-mono leading-relaxed">{m.trait}</p>
                       {showResults && !isCorrect && (
-                        <span className="text-xs text-red-400 block mt-1">
+                        <span className="text-xs text-rose-400 font-mono block mt-1">
                           Expected: {m.answer} - {m.explanation}
                         </span>
                       )}
                       {showResults && isCorrect && (
-                        <span className="text-xs text-green-400 block mt-1">
-                          Correct: {m.explanation}
+                        <span className="text-xs text-emerald-400 font-mono block mt-1">
+                          [OK] Correct: {m.explanation}
                         </span>
                       )}
                     </div>
@@ -348,12 +371,12 @@ function WiredVsWirelessQuizContent() {
 
                   <div className="shrink-0 sm:w-48 ml-7 sm:ml-0">
                     <select
-                      className={`w-full bg-slate-900 border p-2 text-xs rounded font-mono focus:border-accent outline-none ${
+                      className={`w-full bg-slate-950 border p-2 text-xs sm:text-sm rounded-lg font-mono outline-none transition-colors ${
                         showResults
                           ? isCorrect
-                            ? "border-green-500 text-green-400"
-                            : "border-red-500 text-red-400"
-                          : "border-border text-slate-200"
+                            ? "border-emerald-500 text-emerald-400 bg-emerald-950/30"
+                            : "border-rose-500 text-rose-400 bg-rose-950/30"
+                          : "border-slate-700 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 text-slate-200"
                       }`}
                       value={userAnswer}
                       onChange={(e) => handleMatchChange(m.id, e.target.value)}
@@ -371,7 +394,7 @@ function WiredVsWirelessQuizContent() {
         </section>
 
         {/* Validation & Control Actions */}
-        <div className="terminal-box bg-slate-900 border-accent/40 flex flex-col items-center gap-4 p-6">
+        <div className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl flex flex-col items-center gap-4 p-6">
           {!showResults ? (
             <button
               type="button"
@@ -380,26 +403,26 @@ function WiredVsWirelessQuizContent() {
                 Object.keys(generalAnswers).length === 0 &&
                 Object.keys(matchAnswers).length === 0
               }
-              className="px-8 py-3 bg-accent text-slate-900 font-bold rounded hover:bg-green-400 transition-colors font-mono text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              className="px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-sm sm:text-base rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              VALIDATE ANSWERS
+              VALIDATE CONFIGURATION
             </button>
           ) : (
             <div className="w-full text-center space-y-4">
               <div
-                className={`p-4 rounded border font-mono ${
+                className={`p-4 rounded-lg border font-mono shadow-lg ${
                   scoreData.isPerfect
-                    ? "border-green-500 bg-green-950/40 text-green-300"
-                    : "border-amber-500 bg-amber-950/40 text-amber-300"
+                    ? "border-emerald-500/60 bg-emerald-950/40 text-emerald-300 shadow-emerald-950/40"
+                    : "border-rose-500/60 bg-rose-950/40 text-rose-300 shadow-rose-950/40"
                 }`}
               >
-                <div className="flex justify-between items-center text-sm sm:text-base">
+                <div className="flex justify-between items-center text-xs sm:text-sm">
                   <span className="font-bold">
                     {scoreData.isPerfect
-                      ? "PERFECT SCORE: ALL ANSWERS CORRECT"
-                      : "ASSESSMENT RESULTS"}
+                      ? "[OK] PERFECT SCORE: ALL ANSWERS SYNCHRONIZED"
+                      : "[!] DIAGNOSTIC MISALIGNMENT DETECTED"}
                   </span>
-                  <span className="text-lg sm:text-xl font-bold">
+                  <span className="text-sm sm:text-base font-bold">
                     {scoreData.earned} / {scoreData.total} ({scoreData.percent}%)
                   </span>
                 </div>
@@ -409,9 +432,9 @@ function WiredVsWirelessQuizContent() {
                 <button
                   type="button"
                   onClick={handleResetAndScramble}
-                  className="px-6 py-2.5 border border-accent text-accent font-bold rounded hover:bg-accent/10 transition-colors font-mono text-sm cursor-pointer"
+                  className="px-6 py-2.5 border border-emerald-500/40 hover:border-emerald-400 bg-slate-900/80 hover:bg-slate-800 text-emerald-400 font-bold font-mono text-sm rounded-lg transition-all cursor-pointer"
                 >
-                  [SCRAMBLE & RESET]
+                  SCRAMBLE & RESET
                 </button>
               </div>
             </div>
