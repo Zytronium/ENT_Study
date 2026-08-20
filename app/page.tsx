@@ -166,6 +166,12 @@ const studyTopics: Array<{
     date: "8/19/26",
     description: "Hexadecimal base-16 number system and converting between hex, binary, and decimal.",
   },
+  {
+    href: "/layer-2-switches",
+    title: "Layer 2 Switches",
+    date: "8/20/26",
+    description: "Layer 2 switch operation, MAC/CAM tables, port mapping, and frame broadcasting.",
+  },
 ];
 
 function formatUptime(totalSeconds: number): string {

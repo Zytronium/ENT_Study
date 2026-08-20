@@ -125,6 +125,12 @@ const TOPIC_QUIZ_MAP: Record<string, { title: string; quizUrl: string; quizName:
     quizName: 'Hexadecimal Conversion Interactive Simulator',
     description: 'Practice converting between hexadecimal, binary, and decimal values.',
   },
+  'layer-2-switches---data-link-layer': {
+    title: 'Layer 2 Switches',
+    quizUrl: '/layer-2-switches',
+    quizName: 'Layer 2 Switches & MAC Tables Quiz',
+    description: 'Test your understanding of Layer 2 switch operations, MAC/CAM tables, port mapping, and frame broadcasting.',
+  },
 };
 
 type Token =

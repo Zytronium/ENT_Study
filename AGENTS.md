@@ -24,7 +24,8 @@ guide. Do not edit the study guide markdown file (public/STUDY_GUIDE.md) unless 
 Quiz questions must ONLY cover material explicitly mentioned in the study guide. Do not include
 questions about topics, concepts, or details that are not present in the study guide content. Try not to make
 the correct answers exact quotes from the study guide unless nessesary, as exact quotes stand out and look more 
-obvious than they should.
+obvious than they should. Try to word questions and answers in a way that they might be worded on the CCNA cert exam.
+Avoid verbose correct answers when the other options are not verbose.
 
 ## Quiz Hard Mode
 After the user has gotten all the correcet answers once, hard mode should activate, the same way it does on other 
@@ -34,4 +35,4 @@ happen" type questions should remain multiple choice but "what frequency does th
 to the correct term" type questions should be type-the-answer.)
 
 ## General Rules
-DO NOT use emojis or EM dashes unles explicitly asked to.
+DO NOT use emojis or EM dashes unles explicitly asked to. Avoid the animate-pulse tailwind class.
