@@ -183,14 +183,12 @@ const studyTopics: Array<{
     title: "Private IP Address Classes",
     date: "8/20/26",
     description: "Private IPv4 address ranges, Class A/B/C allocations, and default subnet masks.",
-    offline: true,
   },
   {
     href: "/ip-address-classes",
     title: "General IP Address Classes",
     date: "8/20/26",
     description: "Class A through E IPv4 classifications, network numbers, Net/Host layouts, subnet masks, and capacities.",
-    offline: true,
   },
 ];
 

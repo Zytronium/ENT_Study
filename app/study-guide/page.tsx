@@ -137,7 +137,7 @@ const TOPIC_QUIZ_MAP: Record<string, { title: string; quizUrl: string; quizName:
     quizName: 'Network Layer & IP Addressing Quiz',
     description: 'Test your understanding of IPv4/IPv6 architecture, address space, public vs private addressing, NAT, and special addresses.',
   },
-/*  'private-ipv4-addresses': {
+  'private-ipv4-addresses': {
     title: 'Private IP Address Classes',
     quizUrl: '/private-ip-classes',
     quizName: 'Private IP Classes Matrix Quiz',
@@ -148,7 +148,7 @@ const TOPIC_QUIZ_MAP: Record<string, { title: string; quizUrl: string; quizName:
     quizUrl: '/ip-address-classes',
     quizName: 'General IP Address Classes Matrix Quiz',
     description: 'Complete the full IPv4 classes matrix across Classes A through E, network numbers, Net/Host layouts, and subnet masks.',
-  },*/
+  },
 };
 
 type Token =
