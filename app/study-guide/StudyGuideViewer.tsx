@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef, useTransition, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useTransition, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 
 export interface TocItem {
@@ -26,11 +26,120 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
   const [scrollProgress, setScrollProgress] = useState(0);
   const [, startTransition] = useTransition();
 
+  const desktopTocRef = useRef<HTMLElement>(null);
+  const mobileTocNavRef = useRef<HTMLElement>(null);
+
   // Keep track of match marks
   const matchesRef = useRef<HTMLElement[]>([]);
 
   // Count only h2 headings (## in Markdown) as main topics
   const topicCount = tocItems.filter((item) => item.level === 2).length;
+
+  // --------------------------------------------------------------------------
+  // Collapsible Sections & Subsections State & Logic
+  // --------------------------------------------------------------------------
+  const [collapsedIds, setCollapsedIds] = useState<Set<string>>(new Set());
+
+  const { visibleTocItems, collapsibleIdSet, parentMap } = useMemo(() => {
+    const collapsible = new Set<string>();
+    const parent = new Map<string, string>();
+    const hierarchyStack: { id: string; level: number }[] = [];
+
+    for (let i = 0; i < tocItems.length; i++) {
+      if (i + 1 < tocItems.length && tocItems[i + 1].level > tocItems[i].level) {
+        collapsible.add(tocItems[i].id);
+      }
+    }
+
+    for (const item of tocItems) {
+      while (hierarchyStack.length > 0 && hierarchyStack[hierarchyStack.length - 1].level >= item.level) {
+        hierarchyStack.pop();
+      }
+      if (hierarchyStack.length > 0) {
+        parent.set(item.id, hierarchyStack[hierarchyStack.length - 1].id);
+      }
+      hierarchyStack.push({ id: item.id, level: item.level });
+    }
+
+    const visible: TocItem[] = [];
+    const ancestorStack: { id: string; level: number; isCollapsedOrParentHidden: boolean }[] = [];
+
+    for (const item of tocItems) {
+      while (ancestorStack.length > 0 && ancestorStack[ancestorStack.length - 1].level >= item.level) {
+        ancestorStack.pop();
+      }
+
+      const p = ancestorStack[ancestorStack.length - 1];
+      const isHiddenByParent = p ? p.isCollapsedOrParentHidden : false;
+
+      if (!isHiddenByParent) {
+        visible.push(item);
+      }
+
+      const isCollapsed = collapsedIds.has(item.id);
+      const isCollapsedOrParentHidden = isHiddenByParent || isCollapsed;
+
+      ancestorStack.push({
+        id: item.id,
+        level: item.level,
+        isCollapsedOrParentHidden,
+      });
+    }
+
+    return { visibleTocItems: visible, collapsibleIdSet: collapsible, parentMap: parent };
+  }, [tocItems, collapsedIds]);
+
+  const highlightedHeadingId = useMemo(() => {
+    if (!activeHeadingId) return '';
+    const visibleIdSet = new Set(visibleTocItems.map((item) => item.id));
+
+    let current: string | undefined = activeHeadingId;
+    while (current) {
+      if (visibleIdSet.has(current)) {
+        return current;
+      }
+      current = parentMap.get(current);
+    }
+    return '';
+  }, [activeHeadingId, visibleTocItems, parentMap]);
+
+  const toggleCollapse = useCallback((id: string) => {
+    setCollapsedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }, []);
+
+  const isAllCollapsed = useMemo(() => {
+    if (collapsibleIdSet.size === 0) return false;
+    for (const id of collapsibleIdSet) {
+      if (!collapsedIds.has(id)) return false;
+    }
+    return true;
+  }, [collapsibleIdSet, collapsedIds]);
+
+  const toggleAllCollapsed = useCallback(() => {
+    setCollapsedIds((prev) => {
+      let allCollapsed = true;
+      if (collapsibleIdSet.size === 0) return prev;
+      for (const id of collapsibleIdSet) {
+        if (!prev.has(id)) {
+          allCollapsed = false;
+          break;
+        }
+      }
+      if (allCollapsed) {
+        return new Set();
+      } else {
+        return new Set(collapsibleIdSet);
+      }
+    });
+  }, [collapsibleIdSet]);
 
   // --------------------------------------------------------------------------
   // ScrollSpy: Track visible heading, scroll progress & 10 REM threshold
@@ -73,6 +182,49 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
       window.removeEventListener('scroll', handleScroll);
     };
   }, [tocItems]);
+
+  // --------------------------------------------------------------------------
+  // Auto-scroll TOC sidebar when active item is scrolled out of view
+  // --------------------------------------------------------------------------
+  useEffect(() => {
+    if (!highlightedHeadingId) return;
+
+    const checkAndScrollIntoView = (container: HTMLElement | null) => {
+      if (!container) return;
+      const activeEl = container.querySelector<HTMLElement>(`[data-toc-id="${highlightedHeadingId}"]`);
+      if (!activeEl) return;
+
+      const containerRect = container.getBoundingClientRect();
+      const activeRect = activeEl.getBoundingClientRect();
+
+      // Check if active item is outside visible container bounds
+      const isVisible =
+        activeRect.top >= containerRect.top + 8 &&
+        activeRect.bottom <= containerRect.bottom - 8;
+
+      if (!isVisible) {
+        const currentScrollTop = container.scrollTop;
+        if (activeRect.top < containerRect.top + 8) {
+          const topDiff = activeRect.top - containerRect.top;
+          container.scrollTo({
+            top: Math.max(0, currentScrollTop + topDiff - 16),
+            behavior: 'smooth',
+          });
+        } else if (activeRect.bottom > containerRect.bottom - 8) {
+          const bottomDiff = activeRect.bottom - containerRect.bottom;
+          container.scrollTo({
+            top: currentScrollTop + bottomDiff + 16,
+            behavior: 'smooth',
+          });
+        }
+      }
+    };
+
+    checkAndScrollIntoView(desktopTocRef.current);
+    if (isMobileTocOpen) {
+      checkAndScrollIntoView(mobileTocNavRef.current);
+    }
+  }, [highlightedHeadingId, isMobileTocOpen]);
 
   // --------------------------------------------------------------------------
   // Search & Term Highlighting
@@ -369,35 +521,90 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
       <div className="max-w-7xl mx-auto w-full flex-grow flex flex-col md:flex-row p-4 sm:p-6 md:p-8 gap-8 items-start">
         {/* Desktop Sticky Sidebar TOC */}
         {isSidebarOpen && (
-          <aside className="hidden md:block w-72 shrink-0 sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto no-print terminal-box text-xs font-mono p-4 border border-border">
+          <aside
+            ref={desktopTocRef}
+            className="hidden md:block w-72 shrink-0 sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto no-print terminal-box text-xs font-mono p-4 border border-border"
+          >
             <div className="flex items-center justify-between border-b border-border pb-2 mb-3">
               <span className="font-bold text-accent uppercase tracking-wider">
                 Table of Contents
               </span>
-              <span className="text-[10px] text-slate-500">{topicCount} topics</span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={toggleAllCollapsed}
+                  className="text-[10px] text-slate-400 hover:text-accent font-mono cursor-pointer transition-colors whitespace-nowrap"
+                  title={isAllCollapsed ? 'Expand all sections' : 'Collapse all sections'}
+                >
+                  {isAllCollapsed ? '[+ EXPAND]' : '[- COLLAPSE]'}
+                </button>
+                <span className="text-[10px] text-slate-500">{topicCount} topics</span>
+              </div>
             </div>
 
             <nav className="space-y-1">
-              {tocItems.map((item) => {
-                const isActive = activeHeadingId === item.id;
-                const isH3 = item.level === 3;
+              {visibleTocItems.map((item) => {
+                const isActive = highlightedHeadingId === item.id;
+                const hasChildren = collapsibleIdSet.has(item.id);
+                const isCollapsed = collapsedIds.has(item.id);
+                const depth = Math.max(0, item.level - 2);
+                const indentRem = depth * 0.75;
+
+                // Opacity scales based on depth (h2 = depth 0 is most solid, deeper levels are progressively more translucent)
+                const baseBgOpacities = [0.65, 0.40, 0.22, 0.10, 0.04];
+                const activeBgOpacities = [0.25, 0.18, 0.12, 0.08, 0.04];
+                const idx = Math.min(depth, baseBgOpacities.length - 1);
+
+                const buttonStyle: React.CSSProperties = {
+                  marginLeft: `${indentRem}rem`,
+                  width: `calc(100% - ${indentRem}rem)`,
+                  backgroundColor: isActive
+                    ? `rgba(34, 197, 94, ${activeBgOpacities[idx]})`
+                    : `rgba(51, 65, 85, ${baseBgOpacities[idx]})`,
+                };
+
+                const textStyleClass =
+                  item.level > 2
+                    ? 'text-[11px] text-slate-400 hover:text-slate-200'
+                    : 'font-semibold text-slate-300 hover:text-slate-100';
 
                 return (
-                  <button
+                  <div
                     key={item.id}
-                    type="button"
+                    data-toc-id={item.id}
                     onClick={() => scrollToHeading(item.id)}
-                    className={`block w-full text-left py-1.5 px-2 rounded transition-colors truncate font-mono cursor-pointer ${
-                      isH3 ? 'pl-5 text-[11px] text-slate-400 hover:text-slate-200' : 'font-semibold text-slate-300 hover:text-slate-100'
-                    } ${
+                    style={buttonStyle}
+                    className={`group flex items-center py-1 px-1.5 rounded transition-colors font-mono cursor-pointer ${
                       isActive
-                        ? 'bg-accent/20 text-accent font-bold border-l-2 border-accent pl-2'
-                        : 'hover:bg-slate-800/60'
+                        ? 'text-accent font-bold border-l-2 border-accent pl-1.5'
+                        : 'hover:!bg-slate-800/60'
                     }`}
-                    title={item.text}
                   >
-                    {item.text}
-                  </button>
+                    {hasChildren ? (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleCollapse(item.id);
+                        }}
+                        className="w-4 h-4 flex items-center justify-center text-[9px] text-slate-400 hover:text-accent rounded hover:bg-slate-700/60 mr-1 shrink-0 cursor-pointer"
+                        title={isCollapsed ? `Expand ${item.text}` : `Collapse ${item.text}`}
+                      >
+                        {isCollapsed ? '▶' : '▼'}
+                      </button>
+                    ) : (
+                      <span className="w-4 mr-1 shrink-0" />
+                    )}
+
+                    <span
+                      className={`flex-1 truncate ${textStyleClass} ${
+                        isActive ? 'text-accent font-bold' : ''
+                      }`}
+                      title={item.text}
+                    >
+                      {item.text}
+                    </span>
+                  </div>
                 );
               })}
             </nav>
@@ -425,33 +632,90 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
                 </span>
                 <span className="text-[10px] text-slate-500">({topicCount} topics)</span>
               </div>
-              <button
-                type="button"
-                onClick={() => setIsMobileTocOpen(false)}
-                className="p-1 text-slate-400 hover:text-slate-100 text-base"
-              >
-                ✕
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={toggleAllCollapsed}
+                  className="text-[11px] text-slate-400 hover:text-accent font-mono cursor-pointer transition-colors whitespace-nowrap"
+                  title={isAllCollapsed ? 'Expand all sections' : 'Collapse all sections'}
+                >
+                  {isAllCollapsed ? '[+ Expand]' : '[- Collapse]'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsMobileTocOpen(false)}
+                  className="p-1 text-slate-400 hover:text-slate-100 text-base"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
 
-            <nav className="space-y-1 flex-grow overflow-y-auto">
-              {tocItems.map((item) => {
-                const isActive = activeHeadingId === item.id;
-                const isH3 = item.level === 3;
+            <nav ref={mobileTocNavRef} className="space-y-1 flex-grow overflow-y-auto">
+              {visibleTocItems.map((item) => {
+                const isActive = highlightedHeadingId === item.id;
+                const hasChildren = collapsibleIdSet.has(item.id);
+                const isCollapsed = collapsedIds.has(item.id);
+                const depth = Math.max(0, item.level - 2);
+                const indentRem = depth * 0.75;
+
+                // Opacity scales based on depth (h2 = depth 0 is most solid, deeper levels are progressively more translucent)
+                const baseBgOpacities = [0.65, 0.40, 0.22, 0.10, 0.04];
+                const activeBgOpacities = [0.25, 0.18, 0.12, 0.08, 0.04];
+                const idx = Math.min(depth, baseBgOpacities.length - 1);
+
+                const buttonStyle: React.CSSProperties = {
+                  marginLeft: `${indentRem}rem`,
+                  width: `calc(100% - ${indentRem}rem)`,
+                  backgroundColor: isActive
+                    ? `rgba(34, 197, 94, ${activeBgOpacities[idx]})`
+                    : `rgba(51, 65, 85, ${baseBgOpacities[idx]})`,
+                };
+
+                const textStyleClass =
+                  item.level > 2
+                    ? 'text-[11px] text-slate-400'
+                    : 'font-bold text-slate-200';
 
                 return (
-                  <button
+                  <div
                     key={item.id}
-                    type="button"
-                    onClick={() => scrollToHeading(item.id)}
-                    className={`block w-full text-left py-2 px-2 rounded transition-colors ${
-                      isH3 ? 'pl-6 text-slate-400' : 'font-bold text-slate-200'
-                    } ${
-                      isActive ? 'bg-accent/20 text-accent border-l-2 border-accent' : 'hover:bg-slate-800'
+                    data-toc-id={item.id}
+                    onClick={() => {
+                      scrollToHeading(item.id);
+                      setIsMobileTocOpen(false);
+                    }}
+                    style={buttonStyle}
+                    className={`group flex items-center py-1.5 px-2 rounded transition-colors font-mono cursor-pointer ${
+                      isActive
+                        ? 'text-accent font-bold border-l-2 border-accent pl-2'
+                        : 'hover:!bg-slate-800'
                     }`}
                   >
-                    {item.text}
-                  </button>
+                    {hasChildren ? (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleCollapse(item.id);
+                        }}
+                        className="w-5 h-5 flex items-center justify-center text-[10px] text-slate-400 hover:text-accent rounded hover:bg-slate-700/50 mr-1.5 shrink-0 cursor-pointer"
+                        title={isCollapsed ? `Expand ${item.text}` : `Collapse ${item.text}`}
+                      >
+                        {isCollapsed ? '▶' : '▼'}
+                      </button>
+                    ) : (
+                      <span className="w-5 mr-1.5 shrink-0" />
+                    )}
+
+                    <span
+                      className={`flex-1 truncate ${textStyleClass} ${
+                        isActive ? 'text-accent font-bold' : ''
+                      }`}
+                    >
+                      {item.text}
+                    </span>
+                  </div>
                 );
               })}
             </nav>

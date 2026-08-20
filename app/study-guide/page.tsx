@@ -131,6 +131,24 @@ const TOPIC_QUIZ_MAP: Record<string, { title: string; quizUrl: string; quizName:
     quizName: 'Layer 2 Switches & MAC Tables Quiz',
     description: 'Test your understanding of Layer 2 switch operations, MAC/CAM tables, port mapping, and frame broadcasting.',
   },
+  'network-layer---ip-addresses': {
+    title: 'Network Layer - IP Addresses',
+    quizUrl: '/network-layer-ip-addresses',
+    quizName: 'Network Layer & IP Addressing Quiz',
+    description: 'Test your understanding of IPv4/IPv6 architecture, address space, public vs private addressing, NAT, and special addresses.',
+  },
+/*  'private-ipv4-addresses': {
+    title: 'Private IP Address Classes',
+    quizUrl: '/private-ip-classes',
+    quizName: 'Private IP Classes Matrix Quiz',
+    description: 'Complete the private IPv4 address allocation chart for Class A, B, and C networks and default subnet masks.',
+  },
+  'ip-address-classes': {
+    title: 'General IP Address Classes',
+    quizUrl: '/ip-address-classes',
+    quizName: 'General IP Address Classes Matrix Quiz',
+    description: 'Complete the full IPv4 classes matrix across Classes A through E, network numbers, Net/Host layouts, and subnet masks.',
+  },*/
 };
 
 type Token =
@@ -249,12 +267,12 @@ function rehypeImageGrid() {
 }
 
 function injectQuizCards(html: string): string {
-  return html.replace(/<h([23])\s+id="([^"]+)"[^>]*>(.*?)<\/h\1>/g, (fullMatch, level, id) => {
+  return html.replace(/<h([1-6])\s+id="([^"]+)"[^>]*>(.*?)<\/h\1>/g, (fullMatch, level, id) => {
     const topic = TOPIC_QUIZ_MAP[id];
     if (!topic) return fullMatch;
 
     const cardHtml = `
-<div class="not-prose my-6 p-4 rounded bg-slate-900 border border-accent/40 shadow-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 quiz-action-card no-print">
+<div class="not-prose my-6 p-4 rounded bg-gradient-to-r from-slate-900  to-slate-950 border border-accent/40 shadow-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 quiz-action-card no-print">
   <div class="space-y-1">
     <div class="flex items-center gap-2">
       <span class="px-2 py-0.5 rounded bg-accent/20 text-accent text-[11px] font-bold tracking-wide border border-accent/30 uppercase">
@@ -280,7 +298,7 @@ function injectQuizCards(html: string): string {
 
 function extractToc(html: string): TocItem[] {
   const toc: TocItem[] = [];
-  const regex = /<h([23])\s+id="([^"]+)"[^>]*>(.*?)<\/h\1>/g;
+  const regex = /<h([2-6])\s+id="([^"]+)"[^>]*>(.*?)<\/h\1>/g;
   let match;
   while ((match = regex.exec(html)) !== null) {
     const level = parseInt(match[1], 10);

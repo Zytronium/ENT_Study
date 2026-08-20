@@ -172,6 +172,26 @@ const studyTopics: Array<{
     date: "8/20/26",
     description: "Layer 2 switch operation, MAC/CAM tables, port mapping, and frame broadcasting.",
   },
+  {
+    href: "/network-layer-ip-addresses",
+    title: "Network Layer - IP Addresses",
+    date: "8/20/26",
+    description: "IPv4/IPv6 architecture, address spaces, public vs private IP addresses, NAT, APIPA, and loopback.",
+  },
+  {
+    href: "/private-ip-classes",
+    title: "Private IP Address Classes",
+    date: "8/20/26",
+    description: "Private IPv4 address ranges, Class A/B/C allocations, and default subnet masks.",
+    offline: true,
+  },
+  {
+    href: "/ip-address-classes",
+    title: "General IP Address Classes",
+    date: "8/20/26",
+    description: "Class A through E IPv4 classifications, network numbers, Net/Host layouts, subnet masks, and capacities.",
+    offline: true,
+  },
 ];
 
 function formatUptime(totalSeconds: number): string {
@@ -235,7 +255,7 @@ export default function Home() {
                 <span className="w-2 h-2 rounded-full bg-emerald-400" />
                 <span className="text-[11px] font-mono text-emerald-400 font-bold tracking-wider">SYS_ONLINE</span>
               </div>
-              <span className="text-xs font-mono text-slate-500">//</span>
+              <span className="text-xs font-mono text-slate-500">{"//"}</span>
               <span className="text-xs font-mono text-slate-400">NODE: TTC_ENT_CORE</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center gap-3">
