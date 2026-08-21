@@ -135,25 +135,27 @@ export default function PracticeTestRunner() {
   const isPassing = percentage >= 80;
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-4 sm:p-8">
+    <div className="min-h-screen flex flex-col items-center pt-8 pb-12 px-3 sm:px-6 sm:py-8 w-full max-w-full overflow-x-hidden">
       {/* Header */}
-      <header className="w-full max-w-5xl mb-8 cyber-glass-panel p-5 sm:p-6 rounded-xl border border-slate-800 shadow-2xl relative overflow-hidden">
+      <header className="w-full max-w-5xl mb-8 cyber-glass-panel p-4 sm:p-6 rounded-xl border border-slate-800 shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-emerald-500/20 via-emerald-400 to-cyan-500/20" />
 
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div>
-            <div className="flex items-center gap-2.5 mb-2">
-              <span className="cyber-badge cyber-badge-emerald">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sm:gap-6">
+          <div className="w-full md:w-auto">
+            <div className="flex flex-wrap items-center gap-2 mb-2">
+              <span className="cyber-badge cyber-badge-emerald shrink-0">
                 <span className="w-2 h-2 rounded-full bg-emerald-400" />
                 MASTER_EVALUATION
               </span>
-              <span className="text-xs font-mono text-slate-500">{"//"}</span>
-              <span className="text-xs font-mono text-cyan-400">CCNA_COMPREHENSIVE_ASSESSMENT</span>
+              <span className="text-xs font-mono text-slate-500 hidden xs:inline">{"//"}</span>
+              <span className="text-[11px] sm:text-xs font-mono text-cyan-400 break-all xs:break-normal">
+                CCNA_COMPREHENSIVE_ASSESSMENT
+              </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center gap-3 font-mono">
+            <h1 className="text-xl sm:text-3xl font-bold tracking-tight text-white flex flex-wrap items-baseline gap-2 sm:gap-3 font-mono">
               <span className="text-emerald-400">ENT_PRACTICE_TEST</span>
               <span className="text-slate-600 font-light hidden sm:inline">|</span>
-              <span className="text-slate-300 text-xl sm:text-2xl font-semibold">60-Point Master Exam</span>
+              <span className="text-slate-300 text-lg sm:text-2xl font-semibold">60-Point Master Exam</span>
             </h1>
             <p className="text-xs sm:text-sm text-slate-400 mt-1 font-mono">
               Randomized evaluation pulled from all study modules. Includes interactive activities and alternate question formulations.
