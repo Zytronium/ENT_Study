@@ -27,15 +27,15 @@ interface WANScenarioMatch {
 const initialPart1Questions: WANQuestion[] = [
   {
     id: "wan-pots-acronym",
-    prompt: "What does the acronym 'POTS' or 'POT lines' stand for in telecommunications?",
+    prompt: "What does the acronym 'POTS' stand for in telecommunications?",
     options: [
-      "Plain Old Telephone Service lines",
+      "Plain Old Telephone Service",
       "Packet Optical Transmission System",
       "Private Open Telephony Standard",
       "Point of Termination System",
     ],
-    answer: "Plain Old Telephone Service lines",
-    explanation: "POTS stands for Plain Old Telephone lines (or Plain Old Telephone Service), providing analog voice connections over legacy copper wiring.",
+    answer: "Plain Old Telephone Service",
+    explanation: "POTS stands for Plain Old Telephone Service, providing analog voice connections over legacy copper wiring.",
   },
   {
     id: "wan-pots-signal-type",
