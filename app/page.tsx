@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
+import { GlobalAnalyticsResponse } from "@/lib/practice-test/analytics-types";
 
 interface StudyTopicLinkProps {
   href: string;
@@ -213,7 +214,22 @@ export default function Home() {
   const [isMasteryMode, setIsMasteryMode] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [uptimeSeconds, setUptimeSeconds] = useState(0);
+  const [examStats, setExamStats] = useState<GlobalAnalyticsResponse | null>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch("/api/practice-test/analytics")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load analytics");
+        return res.json();
+      })
+      .then((data: GlobalAnalyticsResponse) => {
+        setExamStats(data);
+      })
+      .catch((err) => {
+        console.warn("Could not load exam analytics:", err);
+      });
+  }, []);
 
   useEffect(() => {
     const update = () => setUptimeSeconds(Math.floor((Date.now() - DEPLOY_TIME) / 1000));
@@ -344,12 +360,20 @@ export default function Home() {
         {/* Featured Master Practice Test Card */}
         <section className="terminal-box border-l-4 border-l-cyan-400 shadow-xl bg-slate-900/90 p-5 sm:p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
+            <div className="flex flex-wrap items-center gap-2 mb-1.5">
               <span className="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-950/40 border border-cyan-900/50 px-1.5 py-0.5 rounded">
                 COMPREHENSIVE_ASSESSMENT
               </span>
               <span className="text-xs text-slate-500 font-mono">{"//"}</span>
               <span className="text-xs text-slate-400 font-mono">60_POINT_EXAM</span>
+              {examStats && examStats.totalAttempts > 0 && (
+                <>
+                  <span className="text-xs text-slate-500 font-mono hidden sm:inline">{"//"}</span>
+                  <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
+                    {examStats.totalAttempts.toLocaleString()} ATTEMPTS RECORDED | {examStats.averagePercentage}% AVG ACCURACY
+                  </span>
+                </>
+              )}
             </div>
             <h2 className="text-lg sm:text-xl font-bold text-white font-mono flex items-center gap-2">
               <span className="text-cyan-400">Master Practice Exam</span>

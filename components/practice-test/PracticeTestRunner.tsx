@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { ActivePracticeItem, MasterTableActivity } from "@/lib/practice-test/types";
 import { generatePracticeTest } from "@/lib/practice-test/generator";
+import { ExamSubmissionResponse, GlobalAnalyticsResponse } from "@/lib/practice-test/analytics-types";
 import ReusableTableQuiz, { checkCellCorrect, isCellEligible } from "./ReusableTableQuiz";
 import WireOrderingActivity, { Wire } from "./WireOrderingActivity";
 
@@ -17,6 +18,25 @@ export default function PracticeTestRunner() {
 
   const [showResults, setShowResults] = useState(false);
   const [activeFilter, setActiveFilter] = useState<"all" | "incorrect" | "activities">("all");
+
+  // Analytics state
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionResult, setSubmissionResult] = useState<ExamSubmissionResponse | null>(null);
+  const [globalStats, setGlobalStats] = useState<GlobalAnalyticsResponse | null>(null);
+
+  useEffect(() => {
+    fetch("/api/practice-test/analytics")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load analytics");
+        return res.json();
+      })
+      .then((data: GlobalAnalyticsResponse) => {
+        setGlobalStats(data);
+      })
+      .catch((err) => {
+        console.warn("Could not load global test analytics:", err);
+      });
+  }, []);
 
   const totalPoints = useMemo(() => {
     return items.reduce((sum, item) => sum + item.points, 0);
@@ -106,6 +126,8 @@ export default function PracticeTestRunner() {
 
   const handleResetAndGenerateNew = () => {
     setShowResults(false);
+    setSubmissionResult(null);
+    setIsSubmitting(false);
     setQuestionAnswers({});
     setTableAnswers({});
     setWireOrders({});
@@ -115,10 +137,44 @@ export default function PracticeTestRunner() {
 
   const handleRetakeSame = () => {
     setShowResults(false);
+    setSubmissionResult(null);
+    setIsSubmitting(false);
     setQuestionAnswers({});
     setTableAnswers({});
     setWireOrders({});
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleSubmitTest = async () => {
+    setShowResults(true);
+    setIsSubmitting(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    try {
+      const res = await fetch("/api/practice-test/attempts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ score, totalPoints }),
+      });
+      if (res.ok) {
+        const data: ExamSubmissionResponse = await res.json();
+        setSubmissionResult(data);
+        if (data.stats) {
+          setGlobalStats((prev) => ({
+            totalAttempts: data.stats!.totalAttempts,
+            averagePercentage: data.stats!.averagePercentage,
+            averageScore: prev?.averageScore ?? Math.round((data.stats!.averagePercentage / 100) * 60 * 10) / 10,
+            passRate: data.stats!.passRate,
+          }));
+        }
+      } else {
+        setSubmissionResult({ success: true, offline: true });
+      }
+    } catch {
+      setSubmissionResult({ success: true, offline: true });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const filteredItems = useMemo(() => {
@@ -175,7 +231,7 @@ export default function PracticeTestRunner() {
 
         {/* Telemetry Bar */}
         <div className="mt-5 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-slate-400">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             <span className="flex items-center gap-1.5">
               <span className="text-slate-600">EXAM_ITEMS:</span>
               <span className="text-cyan-400 font-bold">{items.length} Units ({totalPoints} Points Total)</span>
@@ -187,6 +243,16 @@ export default function PracticeTestRunner() {
                 {items.filter((i) => i.type === "activity").length} (10 pts each)
               </span>
             </span>
+            {globalStats && globalStats.totalAttempts > 0 && (
+              <>
+                <span className="hidden sm:inline text-slate-700">|</span>
+                <span className="flex items-center gap-1.5">
+                  <span className="text-slate-600">COMMUNITY_TELEMETRY:</span>
+                  <span className="text-cyan-400 font-bold">{globalStats.totalAttempts.toLocaleString()} Attempts</span>
+                  <span className="text-slate-500">({globalStats.averagePercentage}% Avg)</span>
+                </span>
+              </>
+            )}
           </div>
 
           {showResults && (
@@ -228,6 +294,38 @@ export default function PracticeTestRunner() {
                   {percentage}% OVERALL ACCURACY
                 </span>
               </div>
+            </div>
+
+            {/* Percentile Rank Telemetry */}
+            <div className="p-3.5 rounded-lg bg-slate-900/80 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs font-mono">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span className="text-slate-500">{"//"} PERCENTILE_RANK:</span>
+                {isSubmitting ? (
+                  <span className="text-cyan-400 font-bold">[SYNCING TELEMETRY...]</span>
+                ) : submissionResult && !submissionResult.offline && typeof submissionResult.percentile === "number" ? (
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="px-2 py-0.5 rounded bg-cyan-950/60 border border-cyan-800 text-cyan-300 font-bold">
+                      TOP {Math.max(1, Math.round(100 - submissionResult.percentile))}%
+                    </span>
+                    <span className="text-slate-400">
+                      Scored higher than {submissionResult.percentile}% of all {submissionResult.stats?.totalAttempts ? `${submissionResult.stats.totalAttempts.toLocaleString()} ` : ""}recorded attempts
+                    </span>
+                  </div>
+                ) : (
+                  <span className="text-slate-400">
+                    [OFFLINE_MODE] Score calculated locally. Database telemetry offline.
+                  </span>
+                )}
+              </div>
+              {globalStats && globalStats.totalAttempts > 0 && !submissionResult?.offline && (
+                <div className="text-slate-400 text-[11px] shrink-0">
+                  <span className="text-slate-600">GLOBAL_AVG:</span>{" "}
+                  <span className="text-emerald-400 font-bold">{globalStats.averagePercentage}%</span>
+                  <span className="text-slate-700 mx-1.5">|</span>
+                  <span className="text-slate-600">PASS_RATE:</span>{" "}
+                  <span className="text-cyan-400 font-bold">{globalStats.passRate}%</span>
+                </div>
+              )}
             </div>
 
             {/* Filter Buttons */}
@@ -451,13 +549,11 @@ export default function PracticeTestRunner() {
             {!showResults ? (
               <button
                 type="button"
-                onClick={() => {
-                  setShowResults(true);
-                  window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono text-sm font-bold shadow-lg shadow-emerald-950/40 hover:shadow-emerald-900/60 transition-all cursor-pointer"
+                disabled={isSubmitting}
+                onClick={handleSubmitTest}
+                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 disabled:bg-emerald-800 text-slate-950 font-mono text-sm font-bold shadow-lg shadow-emerald-950/40 hover:shadow-emerald-900/60 transition-all cursor-pointer disabled:cursor-not-allowed"
               >
-                [SUBMIT PRACTICE TEST FOR EVALUATION]
+                {isSubmitting ? "[EVALUATING & SYNCING...]" : "[SUBMIT PRACTICE TEST FOR EVALUATION]"}
               </button>
             ) : (
               <button
