@@ -52,7 +52,7 @@ const standardRows: EthernetStandardRow[] = [
     maxDistance: "200m",
     speed: "10 Mb/s",
     cableType: "Thinnet (thin coax)",
-    minCategory: "—",
+    minCategory: "-",
     connectors: "T-connectors, BNC connectors, terminators",
   },
   {
@@ -62,7 +62,7 @@ const standardRows: EthernetStandardRow[] = [
     maxDistance: "500m",
     speed: "10 Mb/s",
     cableType: "Thicknet (thick coax)",
-    minCategory: "—",
+    minCategory: "-",
     connectors: "Vampire Taps",
   },
   {
@@ -120,7 +120,7 @@ const columnOptions: Record<ColumnKey, string[]> = {
   maxDistance: ["55m", "100m", "200m", "500m"],
   speed: ["10 Mb/s", "100 Mb/s", "1 Gb/s", "10 Gb/s"],
   cableType: ["Thicknet (thick coax)", "Thinnet (thin coax)", "Twisted pair"],
-  minCategory: ["—", "Cat3 or better", "Cat5 or better", "Cat5e or better"],
+  minCategory: ["Cat3 or better", "Cat5 or better", "Cat5e or better"],
   connectors: [
     "RJ45",
     "RJ45/RJ11",
@@ -129,7 +129,7 @@ const columnOptions: Record<ColumnKey, string[]> = {
   ],
 };
 
-const BLANK_COUNTS_BY_STAGE = [6, 12, 18, 26, 34, 43];
+const BLANK_COUNTS_BY_STAGE = [6, 12, 18, 26, 34, 41];
 const TEXT_INPUT_UNLOCK_ATTEMPTS = 1;
 
 function getAllCellKeysForRow(row: EthernetStandardRow): string[] {
@@ -141,7 +141,10 @@ function getAllCellKeysForRow(row: EthernetStandardRow): string[] {
       keys.push(`${row.id}_${col.key}`);
     }
   });
-  return keys;
+  return keys.filter((key) => {
+    const ans = getCorrectAnswerForKey(key);
+    return ans !== "-" && ans !== "—";
+  });
 }
 
 function generateBlankSet(stageNum: number): Set<string> {
@@ -152,8 +155,10 @@ function generateBlankSet(stageNum: number): Set<string> {
   if (targetCount >= standardRows.length) {
     standardRows.forEach((row) => {
       const rowKeys = getAllCellKeysForRow(row);
-      const randomKey = rowKeys[Math.floor(Math.random() * rowKeys.length)];
-      selectedKeys.add(randomKey);
+      if (rowKeys.length > 0 && selectedKeys.size < targetCount) {
+        const randomKey = rowKeys[Math.floor(Math.random() * rowKeys.length)];
+        selectedKeys.add(randomKey);
+      }
     });
   }
 
