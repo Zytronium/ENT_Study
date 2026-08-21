@@ -1,0 +1,14 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Master Practice Test | Enterprise Networking Technologies",
+  description: "60-point randomized CCNA enterprise networking practice exam featuring interactive activities, table matrix completion, and alternating question formulations.",
+};
+
+export default function PracticeTestLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return children;
+}

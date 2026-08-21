@@ -340,7 +340,33 @@ export default function Home() {
       </header>
 
       {/* Main Modules Grid Container */}
-      <main className="w-full max-w-5xl">
+      <main className="w-full max-w-5xl space-y-6">
+        {/* Featured Master Practice Test Card */}
+        <section className="terminal-box border-l-4 border-l-cyan-400 shadow-xl bg-slate-900/90 p-5 sm:p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="text-[10px] font-mono font-bold text-cyan-400 bg-cyan-950/40 border border-cyan-900/50 px-1.5 py-0.5 rounded">
+                COMPREHENSIVE_ASSESSMENT
+              </span>
+              <span className="text-xs text-slate-500 font-mono">{"//"}</span>
+              <span className="text-xs text-slate-400 font-mono">60_POINT_EXAM</span>
+            </div>
+            <h2 className="text-lg sm:text-xl font-bold text-white font-mono flex items-center gap-2">
+              <span className="text-cyan-400">Master Practice Exam</span>
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-400 mt-1 font-mono">
+              Test your CCNA knowledge so far with a randomized 60-point practice exam covering the networking concepts you&apos;ve learned.
+            </p>
+          </div>
+          <Link
+            href="/practice-test"
+            className="w-full md:w-auto shrink-0 px-5 py-2.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-mono text-xs font-bold transition-all shadow-lg shadow-cyan-950/40 hover:shadow-cyan-900/60 flex items-center justify-center gap-2"
+          >
+            <span>[START MASTER TEST]</span>
+            <span>→</span>
+          </Link>
+        </section>
+
         <section className="terminal-box border-l-4 border-l-emerald-500 shadow-xl">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-3 border-b border-slate-800/80">
             <div className="flex items-center gap-2">
