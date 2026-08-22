@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
-import Link from "next/link";
-
-// ---------------------------------------------------------------------------
-// TYPES & DATA STRUCTURES
-// ---------------------------------------------------------------------------
+import { useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import MultiSectionQuiz, { MultiSectionConfig } from "@/components/study-quiz/MultiSectionQuiz";
+import { QuestionQuizItem } from "@/components/study-quiz/QuestionQuiz";
 
 export type SecurityOptionKey = "OPEN" | "WEP" | "WPA" | "WPA2" | "WPA3" | "WPS";
 
@@ -55,7 +53,6 @@ export const ALL_SECURITY_OPTIONS: Record<SecurityOptionKey, SecurityOptionMeta>
   },
 };
 
-// Scenarios for the pretend router setup
 export interface RouterScenario {
   id: string;
   name: string;
@@ -64,8 +61,8 @@ export interface RouterScenario {
   frequencyBand: string;
   channel: string;
   clientEnvironment: string;
-  targetSecureOption: "WPA2" | "WPA3"; // Always one, never both
-  insecureOptions: SecurityOptionKey[]; // Exactly 3 insecure options
+  targetSecureOption: "WPA2" | "WPA3";
+  insecureOptions: SecurityOptionKey[];
 }
 
 const ROUTER_SCENARIOS: RouterScenario[] = [
@@ -126,39 +123,43 @@ const ROUTER_SCENARIOS: RouterScenario[] = [
   },
 ];
 
-// Security Knowledge Questions
-interface SecurityQuestion {
-  id: string;
-  prompt: string;
-  options: string[];
-  answer: string;
-  explanation: string;
-}
-
-const initialSecurityQuestions: SecurityQuestion[] = [
+const initialSecurityQuestions: QuestionQuizItem[] = [
   {
     id: "sec-q1-wpa2-cipher",
+    category: "Encryption Standards",
     prompt: "Which robust symmetric encryption algorithm is utilized by WPA2 (and approved by the US DoD)?",
     options: ["AES", "TKIP", "RC4", "DES"],
     answer: "AES",
     explanation: "WPA2 uses AES (Advanced Encryption Standard), which is used by the US Department of Defense and considered secure.",
+    canTypeInHardMode: true,
+    aliases: ["aes", "advanced encryption standard", "aes encryption", "aes-256", "aes 256"],
+    keywords: ["aes"],
   },
   {
     id: "sec-q2-wpa-flaw",
+    category: "Vulnerabilities",
     prompt: "What key mechanism does original legacy WPA utilize that renders it insecure and easily hackable today?",
     options: ["TKIP", "AES-256", "Diffie-Hellman", "RSA-4096"],
     answer: "TKIP",
     explanation: "Original WPA relied on TKIP (Temporal Key Integrity Protocol), which is no longer secure and is easily hackable.",
+    canTypeInHardMode: true,
+    aliases: ["tkip", "temporal key integrity protocol"],
+    keywords: ["tkip"],
   },
   {
     id: "sec-q3-dod-standard",
+    category: "Enterprise Standards",
     prompt: "Which Wi-Fi security standard is used by the US Department of Defense?",
     options: ["WPA2", "WEP", "WPA", "WPS"],
     answer: "WPA2",
     explanation: "WPA2 uses AES encryption and is utilized by the US Department of Defense.",
+    canTypeInHardMode: true,
+    aliases: ["wpa2", "wpa 2", "wpa-2", "wpa2-psk", "wpa2 enterprise"],
+    keywords: ["wpa2"],
   },
   {
     id: "sec-q5-open-danger",
+    category: "Open Networks",
     prompt: "Why should you never connect to an Open Wi-Fi network?",
     options: [
       "Open networks lack encryption, allowing hackers to steal data and deploy malicious honeypots",
@@ -168,9 +169,11 @@ const initialSecurityQuestions: SecurityQuestion[] = [
     ],
     answer: "Open networks lack encryption, allowing hackers to steal data and deploy malicious honeypots",
     explanation: "Open networks lack encryption, allowing data theft and potential rogue honeypots.",
+    canTypeInHardMode: false,
   },
   {
     id: "sec-q6-wps-flaw",
+    category: "Vulnerabilities",
     prompt: "What is the assessment of WPS (Wi-Fi Protected Setup)?",
     options: [
       "Easy to set up, but very insecure",
@@ -180,20 +183,11 @@ const initialSecurityQuestions: SecurityQuestion[] = [
     ],
     answer: "Easy to set up, but very insecure",
     explanation: "WPS was designed for easy push-button/PIN configuration, but is known to be very insecure.",
+    canTypeInHardMode: false,
   },
 ];
 
-// Frequency & Channel Questions
-interface FrequencyQuestion {
-  category: "Channels & Overlap" | "RF Propagation" | "Interference & Speed";
-  id: string;
-  prompt: string;
-  options: string[];
-  answer: string;
-  explanation: string;
-}
-
-const initialFrequencyQuestions: FrequencyQuestion[] = [
+const initialFrequencyQuestions: QuestionQuizItem[] = [
   {
     id: "freq-24-total-channels",
     category: "Channels & Overlap",
@@ -201,6 +195,9 @@ const initialFrequencyQuestions: FrequencyQuestion[] = [
     options: ["11 channels", "3 channels", "25 channels", "14 channels"],
     answer: "11 channels",
     explanation: "The 2.4 GHz spectrum has 11 channels total in standard North American Wi-Fi allocation.",
+    canTypeInHardMode: true,
+    aliases: ["11", "11 channels", "11 total channels", "11 total"],
+    keywords: ["11"],
   },
   {
     id: "freq-24-non-overlap",
@@ -209,6 +206,18 @@ const initialFrequencyQuestions: FrequencyQuestion[] = [
     options: ["Channels 1, 6, and 11", "Channels 1, 2, and 3", "Channels 2, 7, and 11", "Channels 6, 8, and 11"],
     answer: "Channels 1, 6, and 11",
     explanation: "In the 2.4 GHz band, only Channels 1, 6, and 11 are non-overlapping with sufficient spectrum separation.",
+    canTypeInHardMode: true,
+    aliases: [
+      "1, 6, and 11",
+      "1, 6, 11",
+      "1 6 11",
+      "channels 1, 6, and 11",
+      "channels 1, 6, 11",
+      "1,6,11",
+      "1/6/11",
+      "channel 1, 6, 11",
+    ],
+    keywords: ["1", "6", "11"],
   },
   {
     id: "freq-5-non-overlap",
@@ -217,6 +226,9 @@ const initialFrequencyQuestions: FrequencyQuestion[] = [
     options: ["25 channels", "11 channels", "3 channels", "8 channels"],
     answer: "25 channels",
     explanation: "5 GHz provides 25 non-overlapping channels, greatly reducing co-channel interference.",
+    canTypeInHardMode: true,
+    aliases: ["25", "25 channels", "25 non-overlapping channels", "25 non overlapping"],
+    keywords: ["25"],
   },
   {
     id: "freq-penetration-distance",
@@ -225,6 +237,9 @@ const initialFrequencyQuestions: FrequencyQuestion[] = [
     options: ["2.4 GHz", "5 GHz", "60 GHz", "900 MHz"],
     answer: "2.4 GHz",
     explanation: "2.4 GHz uses longer wavelengths, allowing it to go farther and penetrate solid walls better than 5 GHz.",
+    canTypeInHardMode: true,
+    aliases: ["2.4 ghz", "2.4ghz", "2.4", "2.4 g"],
+    keywords: ["2.4"],
   },
   {
     id: "freq-speed-comparison",
@@ -233,6 +248,9 @@ const initialFrequencyQuestions: FrequencyQuestion[] = [
     options: ["2.4 GHz", "5 GHz", "60 GHz", "900 MHz"],
     answer: "5 GHz",
     explanation: "5 GHz has wider channel bandwidths and higher frequency transmission, making it generally faster than 2.4 GHz.",
+    canTypeInHardMode: true,
+    aliases: ["5 ghz", "5ghz", "5", "5 g"],
+    keywords: ["5"],
   },
   {
     id: "freq-interference-sources",
@@ -246,10 +264,10 @@ const initialFrequencyQuestions: FrequencyQuestion[] = [
     ],
     answer: "2.4 GHz is shared by many devices",
     explanation: "2.4 GHz is crowded with consumer electronics like microwave ovens, Bluetooth gear, and cordless landlines.",
+    canTypeInHardMode: false,
   },
 ];
 
-// Helper functions for shuffling
 function shuffleArray<T>(arr: T[]): T[] {
   const copy = [...arr];
   for (let i = copy.length - 1; i > 0; i--) {
@@ -259,553 +277,170 @@ function shuffleArray<T>(arr: T[]): T[] {
   return copy;
 }
 
-// Generate the 4 options for a router scenario:
-// Exactly one of WPA2 or WPA3, and 3 insecure options from (Open, WEP, WPA, WPS)
 function generateRouterOptions(scenario: RouterScenario): SecurityOptionMeta[] {
   const secureKey: SecurityOptionKey = scenario.targetSecureOption;
   const secureOption = ALL_SECURITY_OPTIONS[secureKey];
-
-  // Pick 3 insecure options from the scenario's list
   const insecureKeys: SecurityOptionKey[] = scenario.insecureOptions.slice(0, 3);
   const insecureOptions = insecureKeys.map((k) => ALL_SECURITY_OPTIONS[k]);
-
-  // Combine and shuffle: exactly 4 options, strictly containing WPA2 OR WPA3 (never both)
-  const combined = [secureOption, ...insecureOptions];
-  return shuffleArray(combined);
+  return shuffleArray([secureOption, ...insecureOptions]);
 }
 
-// ---------------------------------------------------------------------------
-// MAIN QUIZ COMPONENT
-// ---------------------------------------------------------------------------
+function RouterSimSection({
+  showResults,
+  onValidate,
+}: {
+  showResults: boolean;
+  onValidate: (allCorrect: boolean, score: number, total: number) => void;
+}) {
+  const [scenario, setScenario] = useState<RouterScenario>(() => ROUTER_SCENARIOS[0]);
+  const [options, setOptions] = useState<SecurityOptionMeta[]>(() => generateRouterOptions(ROUTER_SCENARIOS[0]));
+  const [selected, setSelected] = useState<SecurityOptionKey | "">("");
 
-function getRandomScenario(): { scenario: RouterScenario; options: SecurityOptionMeta[] } {
-  const randomIdx = Math.floor(Math.random() * ROUTER_SCENARIOS.length);
-  const scenario = ROUTER_SCENARIOS[randomIdx];
-  return {
-    scenario,
-    options: generateRouterOptions(scenario),
+  const isCorrect = selected === scenario.targetSecureOption;
+
+  const handleSelect = (key: SecurityOptionKey) => {
+    setSelected(key);
   };
-}
 
-export default function Wireless80211Page() {
-  // State
-  const [initialSetup] = useState(() => getRandomScenario());
-  const [currentScenario, setCurrentScenario] = useState<RouterScenario>(() => initialSetup.scenario);
-  const [routerOptions, setRouterOptions] = useState<SecurityOptionMeta[]>(() => initialSetup.options);
-  const [selectedSecurityOption, setSelectedSecurityOption] = useState<SecurityOptionKey | "">("");
-
-  // General Questions State
-  const [securityQuestions, setSecurityQuestions] = useState<SecurityQuestion[]>(() =>
-    shuffleArray(initialSecurityQuestions).map((q) => ({
-      ...q,
-      options: shuffleArray(q.options),
-    }))
-  );
-  const [frequencyQuestions, setFrequencyQuestions] = useState<FrequencyQuestion[]>(() =>
-    shuffleArray(initialFrequencyQuestions).map((q) => ({
-      ...q,
-      options: shuffleArray(q.options),
-    }))
-  );
-
-  // General Answers: key = questionId
-  const [generalAnswers, setGeneralAnswers] = useState<Record<string, string>>({});
-
-  const [showResults, setShowResults] = useState<boolean>(false);
-
-  const handleNextRandomScenario = useCallback(() => {
+  const handleShuffle = () => {
     const randomIdx = Math.floor(Math.random() * ROUTER_SCENARIOS.length);
     const sc = ROUTER_SCENARIOS[randomIdx];
-    setCurrentScenario(sc);
-    setRouterOptions(generateRouterOptions(sc));
-    setSelectedSecurityOption("");
-    setShowResults(false);
-  }, []);
-
-  // Answer change handlers
-  const handleAnswerChange = (id: string, value: string) => {
-    setGeneralAnswers((prev) => ({ ...prev, [id]: value }));
-  };
-
-  // Answer validation helper
-  const isQuestionCorrect = useCallback(
-    (id: string, correctAnswer: string) => {
-      return (generalAnswers[id] || "") === correctAnswer;
-    },
-    [generalAnswers]
-  );
-
-  // Router Setup Evaluation
-  const isRouterSecurityCorrect = useMemo(() => {
-    if (!selectedSecurityOption) return false;
-    // The correct option is the target secure option (WPA2 or WPA3) present in the pretend setup
-    return selectedSecurityOption === currentScenario.targetSecureOption;
-  }, [selectedSecurityOption, currentScenario]);
-
-  // Scoring
-  const secQuestionsCorrect = securityQuestions.filter((q) =>
-    isQuestionCorrect(q.id, q.answer)
-  ).length;
-
-  const freqQuestionsCorrect = frequencyQuestions.filter((q) =>
-    isQuestionCorrect(q.id, q.answer)
-  ).length;
-
-  const totalQuestions =
-    1 + // Router setup question
-    securityQuestions.length +
-    frequencyQuestions.length;
-
-  const totalCorrect =
-    (isRouterSecurityCorrect ? 1 : 0) +
-    secQuestionsCorrect +
-    freqQuestionsCorrect;
-
-  const allPassed = totalCorrect === totalQuestions;
-
-  const handleValidate = () => {
-    setShowResults(true);
-  };
-
-  const handleResetAndScramble = () => {
-    setSecurityQuestions(
-      shuffleArray(initialSecurityQuestions).map((q) => ({
-        ...q,
-        options: shuffleArray(q.options),
-      }))
-    );
-    setFrequencyQuestions(
-      shuffleArray(initialFrequencyQuestions).map((q) => ({
-        ...q,
-        options: shuffleArray(q.options),
-      }))
-    );
-
-    // Re-generate router options with random scenario
-    const randomIdx = Math.floor(Math.random() * ROUTER_SCENARIOS.length);
-    const sc = ROUTER_SCENARIOS[randomIdx];
-    setCurrentScenario(sc);
-    setRouterOptions(generateRouterOptions(sc));
-
-    setGeneralAnswers({});
-    setSelectedSecurityOption("");
-    setShowResults(false);
+    setScenario(sc);
+    setOptions(generateRouterOptions(sc));
+    setSelected("");
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-4 sm:p-8">
-      {/* HEADER */}
-      <header className="w-full max-w-5xl mb-8 cyber-glass-panel p-4 sm:p-5 rounded-xl border border-slate-800 shadow-xl flex flex-wrap justify-between items-center gap-4">
-        <div className="flex flex-col">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
-              DIAGNOSTIC_MODULE
-            </span>
-            <span className="text-xs text-slate-500 font-mono">//</span>
-            <span className="text-xs text-slate-400 font-mono">RF_&_ROUTER_SECURITY</span>
+    <div className="space-y-6 font-mono">
+      <div className="bg-slate-950/80 p-4 sm:p-6 rounded-xl border border-slate-800 space-y-4">
+        <div className="flex flex-wrap justify-between items-center gap-2 pb-3 border-b border-slate-800">
+          <div>
+            <div className="text-xs text-slate-400">TARGET ACCESS POINT:</div>
+            <div className="text-sm font-bold text-emerald-400">{scenario.name}</div>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-            <span className="text-emerald-400 font-mono">ENT_ROUTER_V1</span>
-            <span className="text-slate-600 font-light">|</span>
-            <span className="text-slate-200">Wireless 802.11</span>
-          </h1>
-        </div>
-        <div className="flex items-center gap-3 text-xs font-mono">
-          <Link
-            href="/study-guide#wireless-80211"
-            className="px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400 transition-all flex items-center gap-1.5 font-bold"
+          <button
+            type="button"
+            onClick={handleShuffle}
+            className="px-2.5 py-1 text-xs border border-slate-700 bg-slate-900 text-slate-300 hover:text-white rounded"
           >
-            <span>[STUDY_GUIDE]</span>
-          </Link>
-          <Link
-            href="/"
-            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:text-white hover:border-slate-600 transition-all font-bold"
-          >
-            {"<"} BACK TO HUB
-          </Link>
+            RANDOMIZE SCENARIO
+          </button>
         </div>
-      </header>
 
-      <main className="w-full max-w-5xl space-y-8 font-mono">
-        {/* ================================================================= */}
-        {/* SECTION 1: PRETEND ROUTER SETUP (WI-FI SECURITY CONFIGURATION)    */}
-        {/* ================================================================= */}
-        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4 pb-3 border-b border-slate-800/80">
-            <div className="flex items-center gap-2">
-              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
-                [SECTION_01: ROUTER_SECURITY_CONFIGURATION_SIMULATOR]
-              </h2>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={handleNextRandomScenario}
-                className="text-xs px-3 py-1.5 bg-slate-950 hover:bg-slate-800 text-cyan-400 border border-slate-800 hover:border-cyan-500/50 rounded-lg font-mono transition-colors cursor-pointer"
-                title="Load another pretend router scenario"
-              >
-                [NEXT AP PROFILE]
-              </button>
-            </div>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          <div><span className="text-slate-500">SSID:</span> <span className="text-slate-200">{scenario.ssid}</span></div>
+          <div><span className="text-slate-500">Band:</span> <span className="text-slate-200">{scenario.frequencyBand}</span></div>
+          <div><span className="text-slate-500">Channel:</span> <span className="text-slate-200">{scenario.channel}</span></div>
+          <div><span className="text-slate-500">Firmware:</span> <span className="text-slate-200">{scenario.firmware}</span></div>
+        </div>
 
-          <p className="text-xs sm:text-sm text-slate-300 font-mono mb-4 leading-relaxed">
-            Configure the simulated Access Point below. Review operating parameters and select the{" "}
-            <strong className="text-emerald-400 font-bold">best security option</strong> for this Wi-Fi network setup.
-          </p>
+        <div className="p-3 bg-slate-900/60 rounded border border-slate-800/80 text-xs text-slate-300">
+          <span className="text-cyan-400 font-bold">Requirement:</span> {scenario.clientEnvironment}
+        </div>
 
-          {/* ROUTER GUI SIMULATOR BOX */}
-          <div className="bg-slate-950 border border-slate-800 rounded-xl p-4 sm:p-6 shadow-inner space-y-6">
-            {/* Router Top Status Bar */}
-            <div className="flex flex-wrap justify-between items-center bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-lg text-xs font-mono">
-              <div className="flex items-center gap-2">
-                <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span className="text-emerald-400 font-bold">{currentScenario.firmware}</span>
-              </div>
-              <div className="text-slate-400">
-                AP Mode: <span className="text-slate-200 font-semibold">Infrastructure BSSID</span>
-              </div>
-            </div>
+        <div className="pt-2">
+          <div className="text-xs text-slate-400 mb-2 font-bold">SELECT SECURITY ENCRYPTION MODE:</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {options.map((opt) => {
+              const isSelected = selected === opt.key;
+              const isOptCorrect = opt.key === scenario.targetSecureOption;
 
-            {/* Router Hardware & Wireless Parameters Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-900/60 p-4 rounded-lg border border-slate-800/80">
-              <div>
-                <span className="text-xs text-slate-500 block font-mono">Access Point / Profile Name</span>
-                <span className="text-sm font-bold text-slate-200">{currentScenario.name}</span>
-              </div>
-              <div>
-                <span className="text-xs text-slate-500 block font-mono">Wireless SSID (Network Name)</span>
-                <span className="text-sm font-bold text-emerald-400 font-mono tracking-wide">
-                  &ldquo;{currentScenario.ssid}&rdquo;
-                </span>
-              </div>
-              <div>
-                <span className="text-xs text-slate-500 block font-mono">Operating Radio Band</span>
-                <span className="text-sm font-semibold text-slate-300">{currentScenario.frequencyBand}</span>
-              </div>
-              <div>
-                <span className="text-xs text-slate-500 block font-mono">Assigned Broadcast Channel</span>
-                <span className="text-sm font-semibold text-slate-300">{currentScenario.channel}</span>
-              </div>
-              <div className="md:col-span-2 text-xs text-slate-400 border-t border-slate-800 pt-2">
-                <span className="font-bold text-slate-300">Environment Requirement: </span>
-                {currentScenario.clientEnvironment}
-              </div>
-            </div>
-
-            {/* 4 Security Options Selection Grid */}
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <label className="text-xs sm:text-sm font-bold text-slate-200 font-mono">
-                  Select Wireless Security Mode:
-                </label>
-                <span className="text-xs text-slate-500 font-mono">
-                  Target: Best Security Option
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {routerOptions.map((opt) => {
-                  const isSelected = selectedSecurityOption === opt.key;
-                  const isOptionTarget = opt.key === currentScenario.targetSecureOption;
-
-                  let cardBorderClass = "border-slate-800 bg-slate-900/80 hover:border-slate-700";
-                  if (isSelected) {
-                    cardBorderClass = "border-emerald-500 bg-emerald-950/40 ring-1 ring-emerald-400 text-emerald-300";
-                  }
-                  if (showResults) {
-                    if (isOptionTarget) {
-                      cardBorderClass = "border-emerald-500 bg-emerald-950/60 ring-2 ring-emerald-400 text-emerald-300";
-                    } else if (isSelected && !isOptionTarget) {
-                      cardBorderClass = "border-rose-500 bg-rose-950/60 ring-2 ring-rose-400 text-rose-300";
-                    }
-                  }
-
-                  return (
-                    <button
-                      key={opt.key}
-                      type="button"
-                      disabled={showResults}
-                      onClick={() => setSelectedSecurityOption(opt.key)}
-                      className={`p-3.5 rounded-lg border text-left transition-all flex items-center justify-between cursor-pointer disabled:cursor-default ${cardBorderClass}`}
-                    >
-                      <span className="font-mono font-bold text-sm text-slate-100 flex items-center gap-2.5">
-                        <span
-                          className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
-                            isSelected ? "border-emerald-400 bg-emerald-400" : "border-slate-600"
-                          }`}
-                        >
-                          {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-slate-950" />}
-                        </span>
-                        {opt.label}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Feedback on Router Setup */}
-            {showResults && (
-              <div
-                className={`p-4 rounded-lg border text-xs sm:text-sm font-mono shadow-lg ${
-                  isRouterSecurityCorrect
-                    ? "bg-emerald-950/40 border-emerald-500/60 text-emerald-300 shadow-emerald-950/40"
-                    : "bg-rose-950/40 border-rose-500/60 text-rose-300 shadow-rose-950/40"
-                }`}
-              >
-                <div className="font-bold text-sm mb-1 flex items-center gap-2">
-                  <span>{isRouterSecurityCorrect ? "✓" : "⚠"}</span>
-                  <span>
-                    {isRouterSecurityCorrect
-                      ? "[ROUTER CONFIGURATION OPTIMAL]"
-                      : "[SECURITY CONFIGURATION FLAW DETECTED]"}
-                  </span>
-                </div>
-                <p className="font-sans leading-relaxed">
-                  {isRouterSecurityCorrect ? (
-                    <>
-                      Correct. <strong>{ALL_SECURITY_OPTIONS[currentScenario.targetSecureOption].label}</strong> is the best security choice for this configuration profile.
-                    </>
-                  ) : (
-                    <>
-                      The selected option (
-                      {selectedSecurityOption
-                        ? ALL_SECURITY_OPTIONS[selectedSecurityOption].label
-                        : "None selected"}
-                      ) is insecure or suboptimal. The best option for this AP setup is{" "}
-                      <strong>{ALL_SECURITY_OPTIONS[currentScenario.targetSecureOption].label}</strong>.
-                    </>
-                  )}
-                </p>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* ================================================================= */}
-        {/* SECTION 2: SECURITY PROTOCOLS & CRYPTOGRAPHIC STANDARDS           */}
-        {/* ================================================================= */}
-        <section className="terminal-box border-l-4 border-l-cyan-500 shadow-2xl">
-          <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800/80">
-            <div className="flex items-center gap-2">
-              <h2 className="text-base sm:text-lg font-bold text-cyan-400 font-mono">
-                [SECTION_02: WIRELESS_SECURITY_PROTOCOLS_&_THREATS]
-              </h2>
-            </div>
-          </div>
-          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
-            Verify your understanding of WEP, WPA, WPA2, WPA3, Open Wi-Fi risks, and WPS vulnerabilities.
-          </p>
-
-          <div className="space-y-4">
-            {securityQuestions.map((q, idx) => {
-              const isCorrect = isQuestionCorrect(q.id, q.answer);
-              const userAnswer = generalAnswers[q.id] || "";
+              let btnClasses = "w-full text-left p-3 rounded-lg text-xs font-mono border transition-all cursor-pointer ";
+              if (showResults) {
+                if (isOptCorrect) {
+                  btnClasses += "bg-emerald-950/60 border-emerald-500 text-emerald-300 font-bold";
+                } else if (isSelected && !isOptCorrect) {
+                  btnClasses += "bg-rose-950/60 border-rose-500 text-rose-300 line-through";
+                } else {
+                  btnClasses += "bg-slate-950/40 border-slate-800/40 text-slate-600 opacity-60";
+                }
+              } else if (isSelected) {
+                btnClasses += "bg-emerald-950/40 border-emerald-400 text-emerald-300 font-bold shadow-sm";
+              } else {
+                btnClasses += "bg-slate-950 border-slate-800 hover:border-slate-700 text-slate-300";
+              }
 
               return (
-                <div
-                  key={q.id}
-                  className={`p-4 rounded-lg border transition-all ${
-                    showResults
-                      ? isCorrect
-                        ? "border-emerald-500/60 bg-emerald-950/20"
-                        : "border-rose-500/60 bg-rose-950/20"
-                      : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
-                  }`}
+                <button
+                  key={opt.key}
+                  type="button"
+                  disabled={showResults}
+                  onClick={() => {
+                    handleSelect(opt.key);
+                    onValidate(opt.key === scenario.targetSecureOption, opt.key === scenario.targetSecureOption ? 1 : 0, 1);
+                  }}
+                  className={btnClasses}
                 >
-                  <div className="flex items-start gap-3">
-                    <span className="text-xs font-mono font-bold text-cyan-400 bg-cyan-950/40 border border-cyan-900/50 px-2 py-0.5 rounded shrink-0">
-                      #2.{idx + 1}
-                    </span>
-                    <div className="flex-grow">
-                      <p className="text-xs sm:text-sm font-semibold text-slate-200 mb-3 font-mono">{q.prompt}</p>
-
-                      <div className="max-w-xl">
-                        <select
-                          className={`w-full bg-slate-950 border p-2 text-xs sm:text-sm rounded-lg font-mono outline-none transition-colors ${
-                            showResults
-                              ? isCorrect
-                                ? "border-emerald-500 text-emerald-400 bg-emerald-950/30"
-                                : "border-rose-500 text-rose-400 bg-rose-950/30"
-                              : "border-slate-700 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 text-slate-200"
-                          }`}
-                          value={userAnswer}
-                          onChange={(e) => handleAnswerChange(q.id, e.target.value)}
-                          disabled={showResults}
-                        >
-                          <option value="">-- Select Security Parameter --</option>
-                          {q.options.map((opt) => (
-                            <option key={opt} value={opt}>
-                              {opt}
-                            </option>
-                          ))}
-                        </select>
-
-                        {showResults && !isCorrect && (
-                          <div className="text-xs text-rose-400 mt-2 font-mono space-y-0.5">
-                            <div>Expected: {q.answer}</div>
-                            <div className="text-slate-400 font-mono">{q.explanation}</div>
-                          </div>
-                        )}
-                        {showResults && isCorrect && (
-                          <div className="text-xs text-emerald-400 mt-2 font-mono">[OK] Correct: {q.explanation}</div>
-                        )}
-                      </div>
-                    </div>
+                  <div className="font-bold flex items-center justify-between">
+                    <span>{opt.label}</span>
+                    <span>{isSelected ? "[●]" : "[ ]"}</span>
                   </div>
-                </div>
+                  <div className="text-[11px] text-slate-400 mt-1">{opt.notes}</div>
+                </button>
               );
             })}
           </div>
-        </section>
-
-        {/* ================================================================= */}
-        {/* SECTION 3: 2.4 GHz vs 5 GHz FREQUENCIES & CHANNELS               */}
-        {/* ================================================================= */}
-        <section className="terminal-box border-l-4 border-l-amber-500 shadow-2xl">
-          <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800/80">
-            <div className="flex items-center gap-2">
-              <h2 className="text-base sm:text-lg font-bold text-amber-400 font-mono">
-                [SECTION_03: RADIO_FREQUENCIES_&_CHANNELS_2_4_VS_5_GHZ]
-              </h2>
-            </div>
-          </div>
-          <p className="text-xs sm:text-sm text-slate-400 font-mono mb-6">
-            Test channel overlap, propagation physics, range, wall penetration, and environmental interference sources.
-          </p>
-
-          <div className="space-y-4">
-            {frequencyQuestions.map((q, idx) => {
-              const isCorrect = isQuestionCorrect(q.id, q.answer);
-              const userAnswer = generalAnswers[q.id] || "";
-
-              return (
-                <div
-                  key={q.id}
-                  className={`p-4 rounded-lg border transition-all ${
-                    showResults
-                      ? isCorrect
-                        ? "border-emerald-500/60 bg-emerald-950/20"
-                        : "border-rose-500/60 bg-rose-950/20"
-                      : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
-                  }`}
-                >
-                  <div className="flex items-start gap-3">
-                    <span className="text-xs font-mono font-bold text-amber-400 bg-amber-950/40 border border-amber-900/50 px-2 py-0.5 rounded shrink-0">
-                      #3.{idx + 1}
-                    </span>
-                    <div className="flex-grow">
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <span className="text-[11px] bg-slate-950 text-slate-400 font-mono px-2 py-0.5 rounded border border-slate-800">
-                          {q.category}
-                        </span>
-                      </div>
-                      <p className="text-xs sm:text-sm font-semibold text-slate-200 mb-3 font-mono">{q.prompt}</p>
-
-                      <div className="max-w-xl">
-                        <select
-                          className={`w-full bg-slate-950 border p-2 text-xs sm:text-sm rounded-lg font-mono outline-none transition-colors ${
-                            showResults
-                              ? isCorrect
-                                ? "border-emerald-500 text-emerald-400 bg-emerald-950/30"
-                                : "border-rose-500 text-rose-400 bg-rose-950/30"
-                              : "border-slate-700 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 text-slate-200"
-                          }`}
-                          value={userAnswer}
-                          onChange={(e) => handleAnswerChange(q.id, e.target.value)}
-                          disabled={showResults}
-                        >
-                          <option value="">-- Select RF Specification --</option>
-                          {q.options.map((opt) => (
-                            <option key={opt} value={opt}>
-                              {opt}
-                            </option>
-                          ))}
-                        </select>
-
-                        {showResults && !isCorrect && (
-                          <div className="text-xs text-rose-400 mt-2 font-mono space-y-0.5">
-                            <div>Expected: {q.answer}</div>
-                            <div className="text-slate-400 font-mono">{q.explanation}</div>
-                          </div>
-                        )}
-                        {showResults && isCorrect && (
-                          <div className="text-xs text-emerald-400 mt-2 font-mono">[OK] Correct: {q.explanation}</div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* ================================================================= */}
-        {/* VALIDATION & CONTROL ACTIONS                                      */}
-        {/* ================================================================= */}
-        <div className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl flex flex-col items-center gap-4 p-6">
-          {!showResults ? (
-            <button
-              type="button"
-              onClick={handleValidate}
-              className="px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-sm sm:text-base rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all cursor-pointer"
-            >
-              VALIDATE WIRELESS 802.11 CONFIGURATION
-            </button>
-          ) : (
-            <div className="w-full text-center space-y-4">
-              <div
-                className={`p-5 rounded-lg border font-mono shadow-lg ${
-                  allPassed
-                    ? "bg-emerald-950/40 text-emerald-300 border-emerald-500/60 shadow-emerald-950/40"
-                    : "bg-rose-950/40 text-rose-300 border-rose-500/60 shadow-rose-950/40"
-                }`}
-              >
-                <div className="text-lg sm:text-xl font-bold mb-2 flex items-center justify-center gap-2">
-                  <span>{allPassed ? "[OK]" : "[!]"}</span>
-                  <span>{allPassed ? "SYSTEM VALIDATION PASSED" : "DIAGNOSTIC MISMATCH DETECTED"}</span>
-                </div>
-                <p className="text-xs sm:text-sm mb-3 text-slate-300 font-mono">
-                  Score: {totalCorrect} / {totalQuestions} (
-                  {Math.round((totalCorrect / totalQuestions) * 100)}%)
-                </p>
-
-                {/* Breakdown by section */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-mono text-left max-w-2xl mx-auto bg-slate-950/80 p-3 rounded-lg border border-slate-800">
-                  <div className={isRouterSecurityCorrect ? "text-emerald-400" : "text-rose-400"}>
-                    Sec 1 Router: {isRouterSecurityCorrect ? "1/1" : "0/1"}
-                  </div>
-                  <div className={secQuestionsCorrect === securityQuestions.length ? "text-emerald-400" : "text-amber-400"}>
-                    Sec 2 Protocols: {secQuestionsCorrect}/{securityQuestions.length}
-                  </div>
-                  <div className={freqQuestionsCorrect === frequencyQuestions.length ? "text-emerald-400" : "text-amber-400"}>
-                    Sec 3 RF/Freq: {freqQuestionsCorrect}/{frequencyQuestions.length}
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap justify-center gap-4">
-                <button
-                  type="button"
-                  onClick={handleResetAndScramble}
-                  className="px-6 py-2.5 border border-emerald-500/40 hover:border-emerald-400 bg-slate-900/80 hover:bg-slate-800 text-emerald-400 font-bold font-mono text-sm rounded-lg transition-all cursor-pointer"
-                >
-                  RESET FIRMWARE & SCRAMBLE
-                </button>
-                <button
-                  type="button"
-                  onClick={handleNextRandomScenario}
-                  className="px-6 py-2.5 bg-slate-900 border border-slate-700 text-slate-200 hover:text-white hover:border-slate-500 font-bold rounded-lg transition-all font-mono text-sm cursor-pointer"
-                >
-                  TEST NEW AP SCENARIO
-                </button>
-              </div>
-            </div>
-          )}
         </div>
-      </main>
+
+        {showResults && (
+          <div className={`p-3 rounded text-xs border ${isCorrect ? "bg-emerald-950/30 border-emerald-800/50 text-emerald-300" : "bg-rose-950/30 border-rose-800/50 text-rose-300"}`}>
+            <div className="font-bold">
+              {isCorrect ? "[OK] SECURE CONFIGURATION APPLIED" : `[!] INSECURE PROTOCOL SELECTED - Recommended: ${scenario.targetSecureOption}`}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
+  );
+}
+
+const sections: MultiSectionConfig[] = [
+  {
+    id: "sec-router-sim",
+    title: "ROUTER_SECURITY_CONFIGURATION",
+    subtitle: "[PART_01: WIRELESS_AP_SIMULATION]",
+    description: "Inspect the access point specifications and deploy the optimal wireless encryption standard (WPA2 or WPA3).",
+    type: "custom",
+    renderCustom: (props) => <RouterSimSection {...props} />,
+  },
+  {
+    id: "sec-security-specs",
+    title: "SECURITY_STANDARDS_&_CIPHERS",
+    subtitle: "[PART_02: ENCRYPTION_&_SECURITY_MECHANICS]",
+    description: "Validate encryption algorithms, legacy vulnerabilities (WEP, TKIP), and open network security rules.",
+    type: "questions",
+    questions: initialSecurityQuestions,
+  },
+  {
+    id: "sec-frequency-channels",
+    title: "SPECTRUM_CHANNELS_&_PROPAGATION",
+    subtitle: "[PART_03: SPECTRUM_CHANNELS_&_PROPAGATION]",
+    description: "Validate 2.4 GHz non-overlapping channels (1, 6, 11), 5 GHz spectrum channels, and physical wall penetration traits.",
+    type: "questions",
+    questions: initialFrequencyQuestions,
+  },
+];
+
+function Wireless80211Content() {
+  const searchParams = useSearchParams();
+  const isMastery = searchParams.get("mastery") === "true";
+
+  return (
+    <MultiSectionQuiz
+      moduleTag="DIAGNOSTIC_MODULE"
+      moduleCode="802.11_WIRELESS_SECURITY"
+      title="Wireless 802.11 & Security"
+      studyGuideHref="/study-guide#wireless-80211"
+      sections={sections}
+      initialHardMode={isMastery}
+    />
+  );
+}
+
+export default function Wireless80211Page() {
+  return (
+    <Suspense fallback={null}>
+      <Wireless80211Content />
+    </Suspense>
   );
 }

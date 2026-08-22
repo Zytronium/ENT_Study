@@ -53,9 +53,32 @@ export default function PracticeTestRunner() {
         const correctVal = item.answer.trim().toLowerCase();
         let isCorrect = userVal === correctVal;
 
+        if (!isCorrect) {
+          const norm = userVal.replace(/[\s-]+/g, "");
+          const correctNorm = correctVal.replace(/[\s-]+/g, "");
+          if (norm === correctNorm) {
+            isCorrect = true;
+          }
+        }
+
         if (!isCorrect && item.aliases && item.aliases.length > 0) {
           const norm = userVal.replace(/[\s-]+/g, "");
-          isCorrect = item.aliases.some((alias) => alias.toLowerCase().replace(/[\s-]+/g, "") === norm);
+          isCorrect = item.aliases.some(
+            (alias) => alias.toLowerCase().replace(/[\s-]+/g, "") === norm || alias.toLowerCase().trim() === userVal
+          );
+        }
+
+        if (!isCorrect && item.keywords && item.keywords.length > 0) {
+          const userTokens = userVal.replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter(Boolean);
+          const norm = userVal.replace(/[\s-]+/g, "");
+          isCorrect = item.keywords.every((kw) => {
+            const kwClean = kw.trim().toLowerCase();
+            const kwNorm = kwClean.replace(/[\s-]+/g, "");
+            if (kwClean.includes(" ")) {
+              return userVal.includes(kwClean) || norm.includes(kwNorm);
+            }
+            return userTokens.includes(kwClean) || userVal.includes(kwClean) || norm.includes(kwNorm);
+          });
         }
 
         const pts = isCorrect ? item.points : 0;

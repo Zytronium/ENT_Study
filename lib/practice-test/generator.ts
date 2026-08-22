@@ -1,4 +1,4 @@
-import { ActivePracticeItem, MasterActivity, MasterTableActivity, ModuleId } from "./types";
+import { ActivePracticeItem, MasterTableActivity, ModuleId } from "./types";
 import { MASTER_ACTIVITIES, MASTER_QUESTIONS } from "./registry";
 
 export function isCellEligible(val: unknown): boolean {
@@ -134,6 +134,7 @@ export function generatePracticeTest(options?: PracticeTestOptions): ActivePract
         answer: wording.answer,
         explanation: wording.explanation,
         aliases: wording.aliases,
+        keywords: wording.keywords,
         canTypeInHardMode: wording.canTypeInHardMode,
         points: 2,
       });
@@ -166,6 +167,7 @@ export function generatePracticeTest(options?: PracticeTestOptions): ActivePract
         answer: wording.answer,
         explanation: wording.explanation,
         aliases: wording.aliases,
+        keywords: wording.keywords,
         canTypeInHardMode: wording.canTypeInHardMode,
         points: 2,
       });

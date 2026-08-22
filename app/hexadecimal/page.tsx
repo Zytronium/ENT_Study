@@ -136,7 +136,7 @@ function HexadecimalContent() {
     setFeedback("");
     setShowHexTable(false);
     setShowGuide(false);
-  }, []);
+  }, [setShowHexTable, setShowGuide]);
 
   const handleCheck = () => {
     const results = challenges.map((challenge, index) => {
@@ -185,7 +185,7 @@ function HexadecimalContent() {
             <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
               DIAGNOSTIC_MODULE
             </span>
-            <span className="text-xs text-slate-500 font-mono">//</span>
+            <span className="text-xs text-slate-500 font-mono">{"//"}</span>
             <span className="text-xs text-slate-400 font-mono">BASE_16_CONVERSION</span>
           </div>
           <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">

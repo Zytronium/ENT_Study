@@ -1,105 +1,107 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import MultiSectionQuiz, { MultiSectionConfig } from "@/components/study-quiz/MultiSectionQuiz";
+import { QuestionQuizItem } from "@/components/study-quiz/QuestionQuiz";
 
 type CableRating = "CMP (Plenum)" | "CMR (Riser)" | "CM (General Use)";
 const CABLE_RATINGS: CableRating[] = ["CMP (Plenum)", "CMR (Riser)", "CM (General Use)"];
 
-interface ZoneChallenge {
-  id: string;
-  tag: string;
-  zoneTitle: string;
-  hazard: string;
-  answer: CableRating;
-}
-
-interface ComplianceScenario {
-  id: string;
-  scenarioTitle: string;
-  inspectionReport: string;
-  options: string[];
-  answer: string;
-  explanation: string;
-}
-
-interface SpecQuestion {
-  id: string;
-  category: string;
-  prompt: string;
-  options: string[];
-  answer: string;
-  explanation: string;
-}
-
 // -------- question data --------
 
-const initialZones: ZoneChallenge[] = [
+const initialZones: QuestionQuizItem[] = [
   {
     id: "zone-drop-ceiling-f2",
-    tag: "ZONE-A",
-    zoneTitle: "Floor 2 Drop Ceiling (HVAC Return Air Plenum)",
-    hazard: "Air-handling space, burning cable smoke circulates building-wide via ductwork.",
+    category: "ZONE-A",
+    prompt: "Floor 2 Drop Ceiling (HVAC Return Air Plenum): Air-handling space, burning cable smoke circulates building-wide via ductwork.",
+    options: CABLE_RATINGS,
     answer: "CMP (Plenum)",
+    explanation: "Air-handling return air spaces require CMP (Plenum) cables because they produce low smoke and non-toxic fumes in a fire.",
+    canTypeInHardMode: true,
+    aliases: ["cmp", "plenum", "cmp plenum", "cmp (plenum)"],
+    keywords: ["cmp"],
   },
   {
     id: "zone-riser-shaft-f1-f2",
-    tag: "ZONE-B",
-    zoneTitle: "Vertical Utility Shaft Between Floors 1 & 2",
-    hazard: "Acts as a chimney in a fire, cables must stop flames climbing floor to floor.",
+    category: "ZONE-B",
+    prompt: "Vertical Utility Shaft Between Floors 1 & 2: Acts as a chimney in a fire, cables must stop flames climbing floor to floor.",
+    options: CABLE_RATINGS,
     answer: "CMR (Riser)",
+    explanation: "Vertical shafts between floors require CMR (Riser) rated cables to prevent fire from traveling vertically between floors.",
+    canTypeInHardMode: true,
+    aliases: ["cmr", "riser", "cmr riser", "cmr (riser)"],
+    keywords: ["cmr"],
   },
   {
     id: "zone-cubicle-patch-f1",
-    tag: "ZONE-D",
-    zoneTitle: "Floor 1 Office Desk Run (Patch Cord)",
-    hazard: "Single-room horizontal run, no HVAC or floor slab penetration.",
+    category: "ZONE-D",
+    prompt: "Floor 1 Office Desk Run (Patch Cord): Single-room horizontal run, no HVAC or floor slab penetration.",
+    options: CABLE_RATINGS,
     answer: "CM (General Use)",
+    explanation: "Standard patch runs across a single open room or within furniture channels only require CM (General Use) cable.",
+    canTypeInHardMode: true,
+    aliases: ["cm", "general use", "general", "cm general use", "cm (general use)"],
+    keywords: ["cm"],
   },
   {
     id: "zone-raised-floor-server",
-    tag: "ZONE-C",
-    zoneTitle: "Floor 1 Server Room Raised Floor (Underfloor HVAC Plenum)",
-    hazard: "Underfloor HVAC air circulation, non-plenum cables release poisonous gases into the server room.",
+    category: "ZONE-C",
+    prompt: "Floor 1 Server Room Raised Floor (Underfloor HVAC Plenum): Underfloor HVAC air circulation, non-plenum cables release poisonous gases into the server room.",
+    options: CABLE_RATINGS,
     answer: "CMP (Plenum)",
+    explanation: "Raised flooring used for environmental air distribution is classified as a plenum space and requires CMP cable.",
+    canTypeInHardMode: true,
+    aliases: ["cmp", "plenum", "cmp plenum", "cmp (plenum)"],
+    keywords: ["cmp"],
   },
   {
     id: "zone-elevator-chase",
-    tag: "ZONE-E",
-    zoneTitle: "Multi-Story Elevator Shaft Penetration",
-    hazard: "Open vertical shaft, requires flame-retardant properties to stop vertical flame climb.",
+    category: "ZONE-E",
+    prompt: "Multi-Story Elevator Shaft Penetration: Open vertical shaft, requires flame-retardant properties to stop vertical flame climb.",
+    options: CABLE_RATINGS,
     answer: "CMR (Riser)",
+    explanation: "Vertical multi-story penetrations require CMR (Riser) to stop fire from rapidly ascending between floors.",
+    canTypeInHardMode: true,
+    aliases: ["cmr", "riser", "cmr riser", "cmr (riser)"],
+    keywords: ["cmr"],
   },
 ];
 
-const initialScenarios: ComplianceScenario[] = [
+const initialScenarios: QuestionQuizItem[] = [
   {
     id: "scen-cmp-in-riser",
-    scenarioTitle: "Plenum Cable in Vertical Riser Shaft",
-    inspectionReport: "A contractor ran CMP (Plenum) rated cable inside a vertical wall chase between Floor 1 and Floor 2 instead of CMR.",
+    category: "Substitution Review",
+    prompt: "Plenum Cable in Vertical Riser Shaft: A contractor ran CMP (Plenum) rated cable inside a vertical wall chase between Floor 1 and Floor 2 instead of CMR.",
     options: ["Compliant", "Violation"],
     answer: "Compliant",
     explanation: "CMP outranks CMR in the substitution hierarchy, so it may legally replace CMR or CM anywhere.",
+    canTypeInHardMode: true,
+    aliases: ["compliant", "valid", "allowed", "pass", "yes", "compliant substitution"],
   },
   {
     id: "scen-cm-in-drop-ceiling",
-    scenarioTitle: "Standard CM Cable in HVAC Return Ceiling",
-    inspectionReport: "An installer ran standard CM (General Use) patch cabling above a drop ceiling that serves as the HVAC return air plenum.",
+    category: "Substitution Review",
+    prompt: "Standard CM Cable in HVAC Return Ceiling: An installer ran standard CM (General Use) patch cabling above a drop ceiling that serves as the HVAC return air plenum.",
     options: ["Compliant", "Violation"],
     answer: "Violation",
     explanation: "CM produces dense toxic smoke when burned; only CMP is rated for plenum air-handling spaces.",
+    canTypeInHardMode: true,
+    aliases: ["violation", "invalid", "not allowed", "fail", "no", "non-compliant", "noncompliant"],
   },
   {
     id: "scen-cmr-for-desktop",
-    scenarioTitle: "Riser Cable Used for Desktop Patch Run",
-    inspectionReport: "An IT department uses leftover CMR (Riser) spool cable for short patch cables connecting desktops to wall jacks.",
+    category: "Substitution Review",
+    prompt: "Riser Cable Used for Desktop Patch Run: An IT department uses leftover CMR (Riser) spool cable for short patch cables connecting desktops to wall jacks.",
     options: ["Compliant", "Violation"],
     answer: "Compliant",
     explanation: "CMR outranks CM, so by the downward substitution rule it may be used anywhere CM is specified.",
+    canTypeInHardMode: true,
+    aliases: ["compliant", "valid", "allowed", "pass", "yes", "compliant substitution"],
   },
 ];
 
-const initialSpecQuestions: SpecQuestion[] = [
+const initialSpecQuestions: QuestionQuizItem[] = [
   {
     id: "spec-substitution-hierarchy",
     category: "Code Substitution Hierarchy",
@@ -111,200 +113,82 @@ const initialSpecQuestions: SpecQuestion[] = [
       "All ratings are fully interchangeable",
     ],
     answer: "CMP can substitute for CMR and CM; CMR can substitute for CM; CM cannot substitute for either",
-    explanation: "The hierarchy is CMP > CMR > CM. Higher-rated cable may always substitute downward, never the reverse.",
+    explanation: "Higher fire-safety ratings can substitute for lower ratings (CMP > CMR > CM), but lower ratings can never substitute for higher ratings.",
+    canTypeInHardMode: false,
   },
   {
-    id: "spec-plenum-space",
-    category: "Fire Safety Mechanics",
-    prompt: "Why are CMP cables required in plenum spaces?",
+    id: "spec-fume-toxicity",
+    category: "Toxicity & Combustion",
+    prompt: "Why is CMP required in plenum spaces instead of CMR or CM?",
     options: [
-      "Plenum spaces circulate HVAC air, so smoke and toxic fumes spread rapidly building-wide",
-      "Plenum spaces are underground and prone to moisture",
-      "Plenum spaces carry high-voltage electrical current",
-      "Plenum spaces are sealed server cabinets",
+      "CMP jacket material produces significantly less smoke and toxic fumes when burned",
+      "CMP supports higher gigabit throughput bandwidth",
+      "CMP has thicker copper cores that resist physical tearing",
+      "CMP cables are completely waterproof against flooded ducts",
     ],
-    answer: "Plenum spaces circulate HVAC air, so smoke and toxic fumes spread rapidly building-wide",
-    explanation: "Plenum spaces feed HVAC return/supply air, so CMP's low-smoke, low-toxicity jacket keeps burning cable from poisoning the whole building's air supply.",
+    answer: "CMP jacket material produces significantly less smoke and toxic fumes when burned",
+    explanation: "Because plenum spaces circulate HVAC air throughout the entire facility, cable in these areas must not produce poisonous fumes or dense smoke when burned.",
+    canTypeInHardMode: false,
   },
   {
-    id: "spec-riser-purpose",
-    category: "Fire Safety Mechanics",
-    prompt: "Why are CMR cables specifically engineered for vertical runs between floors?",
+    id: "spec-vertical-shaft-chimney",
+    category: "Fire Mechanics",
+    prompt: "What primary fire safety hazard do CMR (Riser) rated cables prevent?",
     options: [
-      "To prevent fire from spreading vertically floor to floor (chimney effect)",
-      "To stop Ethernet signal loss caused by gravity",
-      "To shield against lightning EMP",
-      "To resist plumbing leaks in wall chases",
+      "Fire spreading vertically between floors via vertical shafts",
+      "Electrical sparking from unshielded twisted pair wires",
+      "High voltage surges jumping to building structural steel",
+      "Radio frequency interference leaking into elevator communications",
     ],
-    answer: "To prevent fire from spreading vertically floor to floor (chimney effect)",
+    answer: "Fire spreading vertically between floors via vertical shafts",
     explanation: "Vertical shafts act like chimneys during a fire. CMR's flame-retardant jacket is rated to stop vertical fire spread between floors.",
+    canTypeInHardMode: false,
   },
 ];
 
-// -------- helpers --------
+const sections: MultiSectionConfig[] = [
+  {
+    id: "sec-zones",
+    title: "INSTALLATION_ZONE_CLASSIFICATION",
+    subtitle: "[PART_01: INSTALLATION_ZONE_CLASSIFICATION]",
+    description: "Assign the minimum required cable fire safety rating (CMP, CMR, or CM) for each facility installation zone.",
+    extraContent: <FacilityBlueprint />,
+    type: "questions",
+    questions: initialZones,
+  },
+  {
+    id: "sec-compliance",
+    title: "BUILDING_CODE_COMPLIANCE_REVIEW",
+    subtitle: "[PART_02: COMPLIANCE_REVIEW]",
+    description: "Evaluate the cabling inspection reports against National Electrical Code (NEC) fire safety standards.",
+    type: "questions",
+    questions: initialScenarios,
+  },
+  {
+    id: "sec-specs",
+    title: "CODE_SPEC_&_HIERARCHY_VALIDATION",
+    subtitle: "[PART_03: CODE_SPEC_VALIDATION]",
+    description: "Validate your knowledge of substitution rules, toxicity hazards, and riser fire mechanics.",
+    type: "questions",
+    questions: initialSpecQuestions,
+  },
+];
 
-function shuffleArray<T>(array: T[]): T[] {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-}
+// -------- blueprint diagram (restored from legacy layout) --------
 
-function scrambleAllQuestions(zones: ZoneChallenge[], scenarios: ComplianceScenario[], specs: SpecQuestion[]) {
-  return {
-    zones: shuffleArray(zones),
-    scenarios: shuffleArray(scenarios).map((s) => ({ ...s, options: shuffleArray(s.options) })),
-    specs: shuffleArray(specs).map((q) => ({ ...q, options: shuffleArray(q.options) })),
-  };
-}
-
-function OptionButtons({
-                         options,
-                         value,
-                         onSelect,
-                         disabled,
-                         showResults,
-                         correctAnswer,
-                       }: {
-  options: string[];
-  value: string;
-  onSelect: (v: string) => void;
-  disabled: boolean;
-  showResults: boolean;
-  correctAnswer: string;
-}) {
+function FacilityBlueprint() {
   return (
-    <div className="space-y-2">
-      {options.map((opt) => {
-        const isSelected = value === opt;
-        const isThisCorrect = opt === correctAnswer;
-
-        let btnClasses = "w-full text-left p-2.5 rounded-lg text-xs font-mono border transition-all cursor-pointer ";
-        if (showResults) {
-          if (isThisCorrect) {
-            btnClasses += "bg-emerald-950/60 border-emerald-500 text-emerald-300 font-bold";
-          } else if (isSelected && !isThisCorrect) {
-            btnClasses += "bg-rose-950/60 border-rose-500 text-rose-300 line-through";
-          } else {
-            btnClasses += "bg-slate-950/40 border-slate-800/40 text-slate-600 opacity-60";
-          }
-        } else if (isSelected) {
-          btnClasses += "bg-emerald-950/40 border-emerald-400 text-emerald-300 font-bold shadow-sm";
-        } else {
-          btnClasses += "bg-slate-950 border-slate-800 hover:border-slate-700 text-slate-300";
-        }
-
-        return (
-          <button key={opt} type="button" disabled={disabled} onClick={() => onSelect(opt)} className={btnClasses}>
-            <span className="mr-2 font-bold">{isSelected ? "[●]" : "[ ]"}</span>
-            {opt}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-export default function CableRatingsQuiz() {
-  const [zones, setZones] = useState<ZoneChallenge[]>(() => shuffleArray(initialZones));
-  const [scenarios, setScenarios] = useState<ComplianceScenario[]>(() =>
-    shuffleArray(initialScenarios).map((s) => ({ ...s, options: shuffleArray(s.options) }))
-  );
-  const [specs, setSpecs] = useState<SpecQuestion[]>(() =>
-    shuffleArray(initialSpecQuestions).map((q) => ({ ...q, options: shuffleArray(q.options) }))
-  );
-
-  const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [showResults, setShowResults] = useState(false);
-
-  const handleAnswerChange = (id: string, value: string) => {
-    setAnswers((prev) => ({ ...prev, [id]: value }));
-  };
-
-  const isCorrect = (id: string, correctAnswer: string) => answers[id] === correctAnswer;
-
-  const zoneCorrectCount = zones.filter((z) => isCorrect(z.id, z.answer)).length;
-  const scenarioCorrectCount = scenarios.filter((s) => isCorrect(s.id, s.answer)).length;
-  const specCorrectCount = specs.filter((sp) => isCorrect(sp.id, sp.answer)).length;
-
-  const totalQuestions = zones.length + scenarios.length + specs.length;
-  const totalCorrect = zoneCorrectCount + scenarioCorrectCount + specCorrectCount;
-  const allCorrect = totalCorrect === totalQuestions;
-  const allAnswered = totalCorrect >= 0 && Object.keys(answers).length >= totalQuestions;
-
-  const handleValidate = () => setShowResults(true);
-
-  const handleResetAndScramble = () => {
-    const next = scrambleAllQuestions(initialZones, initialScenarios, initialSpecQuestions);
-    setZones(next.zones);
-    setScenarios(next.scenarios);
-    setSpecs(next.specs);
-    setAnswers({});
-    setShowResults(false);
-  };
-
-  return (
-    <div className="min-h-screen flex flex-col items-center p-4 sm:p-8 font-mono">
-      {/* Header */}
-      <header className="w-full max-w-4xl mb-8 cyber-glass-panel p-4 sm:p-5 rounded-xl border border-slate-800 shadow-xl flex flex-wrap justify-between items-center gap-4">
-        <div className="flex flex-col">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
-              DIAGNOSTIC_MODULE
-            </span>
-            <span className="text-xs text-slate-500 font-mono">//</span>
-            <span className="text-xs text-slate-400 font-mono">CABLE_SAFETY_RATINGS</span>
-          </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-            <span className="text-emerald-400 font-mono">ENT_ROUTER_V1</span>
-            <span className="text-slate-600 font-light">|</span>
-            <span className="text-slate-200">Cable Ratings</span>
-          </h1>
+    <div className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl mb-8">
+      <div className="mb-2 -mx-3 sm:mx-0 p-3 sm:p-4 rounded bg-slate-950 border border-border/80 font-mono text-xs overflow-hidden">
+        <div className="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
+          <span className="text-accent font-bold uppercase tracking-wider text-xs sm:text-sm">
+            [FACILITY BLUEPRINT: 2-STORY COMMERCIAL CROSS-SECTION]
+          </span>
+          <span className="text-slate-500 text-[10px] sm:text-xs">HVAC &amp; RISER SCHEMATIC</span>
         </div>
-        <div className="flex items-center gap-3 text-xs font-mono">
-          <Link
-            href="/study-guide#cable-ratings"
-            className="px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400 transition-all flex items-center gap-1.5 font-bold"
-          >
-            <span>[STUDY_GUIDE]</span>
-          </Link>
-          <Link
-            href="/"
-            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:text-white hover:border-slate-600 transition-all font-bold"
-          >
-            {"<"} BACK TO HUB
-          </Link>
-        </div>
-      </header>
 
-      <main className="w-full max-w-4xl space-y-8 font-mono">
-        {/* -------- Part 1: zone routing -------- */}
-        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-3 border-b border-slate-800/80">
-            <div className="flex items-center gap-2">
-              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
-                [PART_01: BLUEPRINT_ZONE_ROUTING]
-              </h2>
-            </div>
-            {showResults && (
-              <div className="font-mono text-xs px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
-                SCORE: <span className={zoneCorrectCount === zones.length ? "text-emerald-400 font-bold" : "text-amber-400 font-bold"}>{zoneCorrectCount}</span> / {zones.length}
-              </div>
-            )}
-          </div>
-
-          <div className="mb-6 -mx-3 sm:mx-0 p-3 sm:p-4 rounded bg-slate-950 border border-border/80 font-mono text-xs overflow-hidden">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
-              <span className="text-accent font-bold uppercase tracking-wider text-xs sm:text-sm">
-                [FACILITY BLUEPRINT: 2-STORY COMMERCIAL CROSS-SECTION]
-              </span>
-              <span className="text-slate-500 text-[10px] sm:text-xs">HVAC &amp; RISER SCHEMATIC</span>
-            </div>
-
-            <div className="overflow-x-auto py-1">
-              <pre className="text-[7.65px] xs:text-[9px] sm:text-[11.5px] md:text-[13px] leading-[1.15] sm:leading-relaxed font-mono select-none text-slate-400 mx-auto w-fit">
+        <div className="overflow-x-auto py-1">
+          <pre className="text-[7.65px] xs:text-[9px] sm:text-[11.5px] md:text-[13px] leading-[1.15] sm:leading-relaxed font-mono select-none text-slate-400 mx-auto w-fit">
 {`+========================================================================+
 |                       `}<span className="text-cyan-400 font-bold">[ROOFTOP HVAC AIR HANDLER]</span>{`                       |
 +========================================================================+
@@ -327,211 +211,48 @@ export default function CableRatingsQuiz() {
 +=======================================================+================+
 | `}<span className="text-slate-500 font-bold">================== GROUND CONCRETE FOUNDATION ========================</span>{` |
 +========================================================================+`}
-              </pre>
-            </div>
+          </pre>
+        </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3 pt-3 border-t border-slate-800/80 text-[11px]">
-              <div className="flex items-center gap-1.5 text-cyan-400">
-                <span className="w-2 h-2 rounded-full bg-cyan-400 shrink-0" />
-                <span><strong>ZONE-A &amp; ZONE-C:</strong> Plenum Air Spaces</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-amber-400">
-                <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
-                <span><strong>ZONE-B &amp; ZONE-E:</strong> Vertical Risers</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-emerald-400">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
-                <span><strong>ZONE-D:</strong> General Desk Run</span>
-              </div>
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-3 pt-3 border-t border-slate-800/80 text-[11px]">
+          <div className="flex items-center gap-1.5 text-cyan-400">
+            <span className="w-2 h-2 rounded-full bg-cyan-400 shrink-0" />
+            <span><strong>ZONE-A &amp; ZONE-C:</strong> Plenum Air Spaces</span>
           </div>
-
-          <div className="space-y-4">
-            {zones.map((zone) => {
-              const userVal = answers[zone.id] || "";
-              const correct = isCorrect(zone.id, zone.answer);
-
-              return (
-                <div
-                  key={zone.id}
-                  className={`p-4 rounded border transition-colors ${
-                    showResults ? (correct ? "border-green-500/60 bg-green-950/20" : "border-red-500/60 bg-red-950/20") : "border-border/60 bg-slate-900/50"
-                  }`}
-                >
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div className="flex items-start gap-3 grow">
-                      <span className="px-2 py-0.5 rounded bg-slate-800 text-accent font-mono text-xs font-bold shrink-0 mt-0.5">{zone.tag}</span>
-                      <div>
-                        <h3 className="text-sm text-slate-200 font-bold">{zone.zoneTitle}</h3>
-                        <p className="text-xs text-slate-400 italic mt-0.5">Hazard: {zone.hazard}</p>
-                      </div>
-                    </div>
-
-                    <div className="w-full md:w-64 shrink-0">
-                      <select
-                        disabled={showResults}
-                        value={userVal}
-                        onChange={(e) => handleAnswerChange(zone.id, e.target.value)}
-                        className={`w-full bg-slate-900 border p-2 text-sm rounded font-mono outline-none transition-colors ${
-                          showResults
-                            ? correct
-                              ? "border-green-500 text-green-400 bg-green-950/30"
-                              : "border-red-500 text-red-400 bg-red-950/30"
-                            : "border-border focus:border-accent text-slate-200"
-                        }`}
-                      >
-                        <option value="">-- Select Cable Rating --</option>
-                        {CABLE_RATINGS.map((rating) => (
-                          <option key={rating} value={rating}>
-                            {rating}
-                          </option>
-                        ))}
-                      </select>
-
-                      {showResults && !correct && <div className="mt-1 text-xs font-mono text-rose-400">Expected: <strong>{zone.answer}</strong></div>}
-                      {showResults && correct && <div className="mt-1 text-xs font-mono text-emerald-400">[OK] Correct: {zone.answer}</div>}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="flex items-center gap-1.5 text-amber-400">
+            <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
+            <span><strong>ZONE-B &amp; ZONE-E:</strong> Vertical Risers</span>
           </div>
-        </section>
-
-        {/* -------- Part 2: compliance scenarios -------- */}
-        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-3 border-b border-slate-800/80">
-            <div>
-              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">[PART_02: COMPLIANCE_SCENARIOS]</h2>
-              <p className="text-xs text-slate-400 font-mono mt-1">Decide compliant or violation for each inspection.</p>
-            </div>
-            {showResults && (
-              <div className="font-mono text-xs px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
-                SCORE: <span className={scenarioCorrectCount === scenarios.length ? "text-emerald-400 font-bold" : "text-amber-400 font-bold"}>{scenarioCorrectCount}</span> / {scenarios.length}
-              </div>
-            )}
+          <div className="flex items-center gap-1.5 text-emerald-400">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
+            <span><strong>ZONE-D:</strong> General Desk Run</span>
           </div>
-
-          <div className="space-y-4">
-            {scenarios.map((scen, index) => {
-              const userVal = answers[scen.id] || "";
-              const correct = isCorrect(scen.id, scen.answer);
-
-              return (
-                <div
-                  key={scen.id}
-                  className={`p-4 rounded-lg border transition-all ${
-                    showResults ? (correct ? "border-emerald-500/60 bg-emerald-950/20" : "border-rose-500/60 bg-rose-950/20") : "border-slate-800/80 bg-slate-900/70"
-                  }`}
-                >
-                  <span className="text-emerald-400 font-mono text-xs font-bold block mb-2">
-                    [INSPECTION #{String(index + 1).padStart(2, "0")}] {scen.scenarioTitle}
-                  </span>
-                  <p className="text-xs sm:text-sm text-slate-200 font-medium mb-3 font-mono">&ldquo;{scen.inspectionReport}&rdquo;</p>
-
-                  <OptionButtons
-                    options={scen.options}
-                    value={userVal}
-                    onSelect={(v) => handleAnswerChange(scen.id, v)}
-                    disabled={showResults}
-                    showResults={showResults}
-                    correctAnswer={scen.answer}
-                  />
-
-                  {showResults && (
-                    <div className={`mt-3 text-xs p-2.5 rounded-lg border font-mono ${correct ? "bg-emerald-950/40 border-emerald-800/60 text-emerald-300" : "bg-rose-950/40 border-rose-800/60 text-rose-300"}`}>
-                      <p className="font-bold mb-0.5">{correct ? "[OK] CORRECT" : "[!] INCORRECT"}</p>
-                      <p className="text-slate-300">{scen.explanation}</p>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* -------- Part 3: specs -------- */}
-        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6 pb-3 border-b border-slate-800/80">
-            <div>
-              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">[PART_03: SPECS_&_MECHANICS]</h2>
-              <p className="text-xs text-slate-400 font-mono mt-1">Acronyms, hierarchy, and fire safety mechanics.</p>
-            </div>
-            {showResults && (
-              <div className="font-mono text-xs px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-slate-300">
-                SCORE: <span className={specCorrectCount === specs.length ? "text-emerald-400 font-bold" : "text-amber-400 font-bold"}>{specCorrectCount}</span> / {specs.length}
-              </div>
-            )}
-          </div>
-
-          <div className="space-y-4">
-            {specs.map((spec, index) => {
-              const userVal = answers[spec.id] || "";
-              const correct = isCorrect(spec.id, spec.answer);
-
-              return (
-                <div
-                  key={spec.id}
-                  className={`p-4 rounded-lg border transition-all ${
-                    showResults ? (correct ? "border-emerald-500/60 bg-emerald-950/20" : "border-rose-500/60 bg-rose-950/20") : "border-slate-800/80 bg-slate-900/70"
-                  }`}
-                >
-                  <span className="text-emerald-400 font-mono text-xs font-bold block mb-2">
-                    [{String(index + 1).padStart(2, "0")}] {spec.category}
-                  </span>
-                  <p className="text-xs sm:text-sm text-slate-200 font-medium mb-3 font-mono">{spec.prompt}</p>
-
-                  <OptionButtons
-                    options={spec.options}
-                    value={userVal}
-                    onSelect={(v) => handleAnswerChange(spec.id, v)}
-                    disabled={showResults}
-                    showResults={showResults}
-                    correctAnswer={spec.answer}
-                  />
-
-                  {showResults && (
-                    <div className={`mt-3 text-xs p-2.5 rounded-lg border font-mono ${correct ? "bg-emerald-950/40 border-emerald-800/60 text-emerald-300" : "bg-rose-950/40 border-rose-800/60 text-rose-300"}`}>
-                      <p className="font-bold mb-0.5">{correct ? "[OK] CORRECT" : "[!] EXPLANATION"}</p>
-                      <p className="text-slate-300">{spec.explanation}</p>
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* -------- validate / reset -------- */}
-        <section className="terminal-box border-l-4 border-l-emerald-500 shadow-2xl flex flex-col items-center justify-center p-6 text-center space-y-4">
-          {!showResults ? (
-            <button
-              onClick={handleValidate}
-              disabled={!allAnswered}
-              className="px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-sm rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all cursor-pointer w-full sm:w-auto disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              VALIDATE ANSWERS
-            </button>
-          ) : (
-            <div className="space-y-4 w-full flex flex-col items-center">
-              <div className={`text-xl sm:text-2xl font-bold font-mono ${allCorrect ? "text-emerald-400" : "text-amber-400"}`}>
-                {allCorrect ? "[SYSTEM_DIAGNOSTIC_PASSED (100%)]" : `DIAGNOSTIC_SCORE: ${totalCorrect} / ${totalQuestions} (${Math.round((totalCorrect / totalQuestions) * 100)}%)`}
-              </div>
-              <p className="text-xs sm:text-sm text-slate-300 max-w-lg font-mono">
-                {allCorrect
-                  ? "Outstanding! You have mastered cable routing, the substitution hierarchy, and fire safety mechanics."
-                  : "Review the flagged items above, then reset and try again."}
-              </p>
-              <button
-                onClick={handleResetAndScramble}
-                className="px-6 py-2.5 border border-emerald-500/40 hover:border-emerald-400 bg-slate-900/80 hover:bg-slate-800 text-emerald-400 font-bold font-mono text-sm rounded-lg transition-all cursor-pointer w-full sm:w-auto"
-              >
-                RESET AND RETRY
-              </button>
-            </div>
-          )}
-        </section>
-      </main>
+        </div>
+      </div>
     </div>
+  );
+}
+
+function CableRatingsContent() {
+  const searchParams = useSearchParams();
+  const isMastery = searchParams.get("mastery") === "true";
+
+  return (
+      <MultiSectionQuiz
+        moduleTag="DIAGNOSTIC_MODULE"
+        moduleCode="CABLE_SAFETY_RATINGS"
+        title="Cable Ratings (CMP vs CMR vs CM)"
+        studyGuideHref="/study-guide#cable-ratings"
+        sections={sections}
+        initialHardMode={isMastery}
+      />
+  );
+}
+
+export default function CableRatingsQuiz() {
+  return (
+    <Suspense fallback={null}>
+      <CableRatingsContent />
+    </Suspense>
   );
 }

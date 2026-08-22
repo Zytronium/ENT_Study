@@ -1,33 +1,12 @@
 "use client";
 
-import { useState, useCallback, Suspense, useMemo } from "react";
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
+import TabbedQuiz, { QuizTab } from "@/components/study-quiz/TabbedQuiz";
+import TableWithBlanksQuiz, { TableColumn, TableRow } from "@/components/study-quiz/TableWithBlanksQuiz";
+import QuestionQuiz, { QuestionQuizItem } from "@/components/study-quiz/QuestionQuiz";
 
-interface IPClassRow {
-  id: number;
-  ipClass: string;
-  networkNumber: string;
-  netHost: string;
-  subnetMask: string;
-  possibleNetworks: string;
-  possibleHosts: string;
-}
-
-type ColumnKey =
-  | "ipClass"
-  | "networkNumber"
-  | "netHost"
-  | "subnetMask"
-  | "possibleNetworks"
-  | "possibleHosts";
-
-interface ColumnConfig {
-  key: ColumnKey;
-  label: string;
-}
-
-const columns: ColumnConfig[] = [
+const columns: TableColumn[] = [
   { key: "ipClass", label: "Class" },
   { key: "networkNumber", label: "Network Number" },
   { key: "netHost", label: "Net/Host" },
@@ -36,7 +15,7 @@ const columns: ColumnConfig[] = [
   { key: "possibleHosts", label: "Possible Hosts" },
 ];
 
-const ipClassRows: IPClassRow[] = [
+const ipClassRows: TableRow[] = [
   {
     id: 1,
     ipClass: "A",
@@ -84,7 +63,7 @@ const ipClassRows: IPClassRow[] = [
   },
 ];
 
-const columnOptions: Record<ColumnKey, string[]> = {
+const columnOptions: Record<string, string[]> = {
   ipClass: ["A", "B", "C", "D", "E"],
   networkNumber: ["1-126 (or 127)", "128-191", "192-223", "224-239", "240-254"],
   netHost: ["N.H.H.H", "N.N.H.H", "N.N.N.H"],
@@ -94,131 +73,8 @@ const columnOptions: Record<ColumnKey, string[]> = {
 };
 
 const BLANK_COUNTS_BY_STAGE = [6, 11, 16, 22];
-const TEXT_INPUT_UNLOCK_ATTEMPTS = 1;
 
-function getAllCellKeysForRow(row: IPClassRow): string[] {
-  return columns
-    .map((col) => `${row.id}_${col.key}`)
-    .filter((key) => getCorrectAnswerForKey(key) !== "-");
-}
-
-function generateBlankSet(stageNum: number): Set<string> {
-  const targetCount = BLANK_COUNTS_BY_STAGE[Math.min(stageNum - 1, BLANK_COUNTS_BY_STAGE.length - 1)];
-  const selectedKeys = new Set<string>();
-
-  ipClassRows.forEach((row) => {
-    const rowKeys = getAllCellKeysForRow(row);
-    if (rowKeys.length > 0 && selectedKeys.size < targetCount) {
-      const randomKey = rowKeys[Math.floor(Math.random() * rowKeys.length)];
-      selectedKeys.add(randomKey);
-    }
-  });
-
-  const allKeys = ipClassRows.flatMap((row) => getAllCellKeysForRow(row));
-  const remainingCandidates = allKeys
-    .filter((key) => !selectedKeys.has(key))
-    .sort(() => Math.random() - 0.5);
-
-  for (const key of remainingCandidates) {
-    if (selectedKeys.size >= targetCount) break;
-    selectedKeys.add(key);
-  }
-
-  return selectedKeys;
-}
-
-function getColKeyFromCellKey(key: string): ColumnKey {
-  const parts = key.split("_");
-  return parts[1] as ColumnKey;
-}
-
-function getCorrectAnswerForKey(key: string): string {
-  const parts = key.split("_");
-  const rowId = parseInt(parts[0], 10);
-  const colKey = parts[1] as ColumnKey;
-  const row = ipClassRows.find((r) => r.id === rowId);
-  return row ? row[colKey] : "";
-}
-
-function normalizeNetNumber(input: string): string {
-  return input
-    .trim()
-    .toLowerCase()
-    .replace(/\s+/g, "")
-    .replace(/–/g, "-")
-    .replace(/to/g, "-");
-}
-
-function normalizeCapacity(input: string): string {
-  let s = input
-    .trim()
-    .toLowerCase()
-    .replace(/,/g, "")
-    .replace(/[-_]/g, "")
-    .replace(/\s+/g, "");
-  s = s.replace(/(hosts?|networks?|nets?)$/g, "");
-  s = s.replace(/millions?/g, "m").replace(/mil\b/g, "m");
-  s = s.replace(/thousands?/g, "k");
-  if (s === "16000000") return "16m";
-  if (s === "2000000") return "2m";
-  if (s === "16000") return "16k";
-  if (s === "65000") return "65k";
-  return s;
-}
-
-function isTextAnswerCorrect(key: string, correct: string, userInput: string): boolean {
-  if (!userInput.trim()) return false;
-  const colKey = getColKeyFromCellKey(key);
-  const user = userInput.trim().toLowerCase();
-  const corr = correct.trim().toLowerCase();
-
-  if (colKey === "ipClass") {
-    const clean = user.replace(/^class\s*/i, "").toUpperCase();
-    return clean === correct.toUpperCase();
-  }
-
-  if (colKey === "networkNumber") {
-    const cleanU = normalizeNetNumber(userInput);
-    if (correct === "1-126 (or 127)") {
-      return (
-        cleanU === "1-126(or127)" ||
-        cleanU === "1-126" ||
-        cleanU === "1-127" ||
-        cleanU === "1to126" ||
-        cleanU === "1to127"
-      );
-    }
-    return cleanU === normalizeNetNumber(correct);
-  }
-
-  if (colKey === "netHost") {
-    const cleanU = user.replace(/[\s.]+/g, "").toUpperCase();
-    const cleanC = corr.replace(/[\s.]+/g, "").toUpperCase();
-    return cleanU === cleanC;
-  }
-
-  if (colKey === "subnetMask") {
-    return user === corr;
-  }
-
-  if (colKey === "possibleNetworks" || colKey === "possibleHosts") {
-    return normalizeCapacity(user) === normalizeCapacity(corr);
-  }
-
-  return user === corr;
-}
-
-interface ConceptualQuestion {
-  id: string;
-  prompt: string;
-  answer: string;
-  options: string[];
-  aliases: string[];
-  explanation: string;
-  canTypeInHardMode: boolean;
-}
-
-const CONCEPTUAL_QUESTIONS: ConceptualQuestion[] = [
+const conceptualQuestions: QuestionQuizItem[] = [
   {
     id: "cq-class-d-purpose",
     prompt: "What is the designated purpose of Class D IPv4 addresses (224-239)?",
@@ -231,6 +87,7 @@ const CONCEPTUAL_QUESTIONS: ConceptualQuestion[] = [
       "labs",
       "documentation and labs",
     ],
+    keywords: ["documentation", "labs"],
     explanation: "According to the study guide, Class D (224-239) is designated for documentation/labs.",
     canTypeInHardMode: true,
   },
@@ -240,6 +97,7 @@ const CONCEPTUAL_QUESTIONS: ConceptualQuestion[] = [
     answer: "Experimental",
     options: ["Experimental", "Documentation/labs", "Public ISP backbones", "Home network LANs"],
     aliases: ["experimental", "experiment", "experiments", "experimentation"],
+    keywords: ["experimental"],
     explanation: "Class E (240-254) is designated for experimental use.",
     canTypeInHardMode: true,
   },
@@ -248,7 +106,8 @@ const CONCEPTUAL_QUESTIONS: ConceptualQuestion[] = [
     prompt: "What is the Net/Host octet structure for a standard Class B IPv4 network?",
     answer: "N.N.H.H",
     options: ["N.N.H.H", "N.H.H.H", "N.N.N.H", "N.N.N.N"],
-    aliases: ["n.n.h.h", "nnhh", "n-n-h-h"],
+    aliases: ["n.n.h.h", "nnhh", "n-n-h-h", "n.n.h.h."],
+    keywords: ["n.n.h.h"],
     explanation: "Class B uses the first 2 octets for Network ID and the last 2 octets for Host ID (N.N.H.H).",
     canTypeInHardMode: true,
   },
@@ -258,6 +117,7 @@ const CONCEPTUAL_QUESTIONS: ConceptualQuestion[] = [
     answer: "254",
     options: ["254", "65k", "16M", "126"],
     aliases: ["254", "254 hosts", "254 host addresses"],
+    keywords: ["254"],
     explanation: "A Class C network has 8 host bits, providing 254 possible host addresses.",
     canTypeInHardMode: true,
   },
@@ -267,6 +127,7 @@ const CONCEPTUAL_QUESTIONS: ConceptualQuestion[] = [
     answer: "126",
     options: ["126", "16k", "2M", "254"],
     aliases: ["126", "126 networks"],
+    keywords: ["126"],
     explanation: "Class A provides 126 possible networks (ranges 1-126).",
     canTypeInHardMode: true,
   },
@@ -275,614 +136,64 @@ const CONCEPTUAL_QUESTIONS: ConceptualQuestion[] = [
     prompt: "What first-octet network number range defines Class B IPv4 addressing?",
     answer: "128-191",
     options: ["128-191", "1-126 (or 127)", "192-223", "224-239"],
-    aliases: ["128-191", "128 - 191", "128 to 191"],
+    aliases: ["128-191", "128 - 191", "128 to 191", "128-191."],
+    keywords: ["128-191"],
     explanation: "Class B network numbers range from 128 through 191.",
     canTypeInHardMode: true,
   },
 ];
 
-function shuffleArray<T>(array: T[]): T[] {
-  const arr = [...array];
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-function normalizeInput(str: string): string {
-  return str
-    .toLowerCase()
-    .replace(/[^\w\s]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function validateConceptualInput(question: ConceptualQuestion, input: string): boolean {
-  if (!input) return false;
-  if (input === question.answer) return true;
-  const clean = normalizeInput(input);
-  if (clean === normalizeInput(question.answer)) return true;
-  return question.aliases.some((alias) => clean === normalizeInput(alias));
-}
-
-function BlankCell({
-  options,
-  useTextInput,
-  showResults,
-  correct,
-  correctVal,
-  value,
-  onChange,
-}: {
-  options: string[];
-  useTextInput: boolean;
-  showResults: boolean;
-  correct: boolean;
-  correctVal: string;
-  value: string;
-  onChange: (val: string) => void;
-}) {
-  const stateClass = showResults
-    ? correct
-      ? "border-green-500 text-green-400 font-bold"
-      : "border-red-500 text-red-400 font-bold"
-    : value
-      ? "border-accent text-slate-100"
-      : "border-border/80 focus:border-accent text-slate-300";
-
-  return (
-    <div className="flex flex-col gap-1 min-w-[130px]">
-      {useTextInput ? (
-        <input
-          type="text"
-          disabled={showResults}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="Type your answer"
-          className={`w-full bg-slate-900 border p-1.5 text-xs rounded font-mono outline-none transition-colors ${stateClass}`}
-        />
-      ) : (
-        <select
-          disabled={showResults}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className={`w-full bg-slate-900 border p-1.5 text-xs rounded font-mono outline-none transition-colors ${stateClass}`}
-        >
-          <option value="">-- Select --</option>
-          {options.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
-      )}
-      {showResults && !correct && (
-        <span className="text-[10px] text-red-400 font-mono leading-tight">
-          Expected: {correctVal}
-        </span>
-      )}
-    </div>
-  );
-}
-
-function IPAddressClassesQuizContent() {
+function IPAddressClassesContent() {
   const searchParams = useSearchParams();
   const isMastery = searchParams.get("mastery") === "true";
-  const initialStage = isMastery ? BLANK_COUNTS_BY_STAGE.length : 1;
 
-  const [activeTab, setActiveTab] = useState<"table" | "questions">("table");
-  const [stage, setStage] = useState(initialStage);
-  const [blankCells, setBlankCells] = useState<Set<string>>(() => generateBlankSet(initialStage));
-  const [tableAnswers, setTableAnswers] = useState<Record<string, string>>({});
-  const [conceptAnswers, setConceptAnswers] = useState<Record<string, string>>({});
-  const [showTableResults, setShowTableResults] = useState(false);
-  const [showConceptResults, setShowConceptResults] = useState(false);
-  const [completedStages, setCompletedStages] = useState<number[]>([]);
-  const [hasPassedConceptsOnce, setHasPassedConceptsOnce] = useState<boolean>(false);
-
-  const useTableTextInput = isMastery || completedStages.length >= TEXT_INPUT_UNLOCK_ATTEMPTS;
-  const useConceptTextInput = isMastery || hasPassedConceptsOnce;
-
-  const [conceptQuestions, setConceptQuestions] = useState<ConceptualQuestion[]>(() =>
-    isMastery ? shuffleArray(CONCEPTUAL_QUESTIONS) : CONCEPTUAL_QUESTIONS
-  );
-
-  const shuffledConceptOptions = useMemo(() => {
-    const map: Record<string, string[]> = {};
-    conceptQuestions.forEach((q) => {
-      map[q.id] = shuffleArray(q.options);
-    });
-    return map;
-  }, [conceptQuestions]);
-
-  const startStage = useCallback((stageNum: number) => {
-    setStage(stageNum);
-    setBlankCells(generateBlankSet(stageNum));
-    setTableAnswers({});
-    setShowTableResults(false);
-  }, []);
-
-  const handleNextStage = () => {
-    const nextStage = stage < BLANK_COUNTS_BY_STAGE.length ? stage + 1 : stage;
-    startStage(nextStage);
-  };
-
-  const handleResetCurrentStage = () => {
-    setBlankCells(generateBlankSet(stage));
-    setTableAnswers({});
-    setShowTableResults(false);
-  };
-
-  const handleCellChange = (cellKey: string, value: string) => {
-    setTableAnswers((prev) => ({ ...prev, [cellKey]: value }));
-  };
-
-  const handleConceptChange = (questionId: string, value: string) => {
-    setConceptAnswers((prev) => ({ ...prev, [questionId]: value }));
-  };
-
-  const isCellCorrect = (key: string): boolean => {
-    const correct = getCorrectAnswerForKey(key);
-    const userVal = tableAnswers[key] || "";
-    if (useTableTextInput) {
-      return isTextAnswerCorrect(key, correct, userVal);
-    }
-    return userVal === correct;
-  };
-
-  const totalBlanks = blankCells.size;
-  let correctBlanks = 0;
-  blankCells.forEach((key) => {
-    if (isCellCorrect(key)) {
-      correctBlanks++;
-    }
-  });
-
-  let correctConcepts = 0;
-  conceptQuestions.forEach((q) => {
-    if (validateConceptualInput(q, conceptAnswers[q.id] || "")) {
-      correctConcepts++;
-    }
-  });
-
-  const allTableCorrect = showTableResults && correctBlanks === totalBlanks;
-  const allConceptsCorrect = showConceptResults && correctConcepts === conceptQuestions.length;
-
-  const handleValidateTable = () => {
-    setShowTableResults(true);
-    if (correctBlanks === totalBlanks && !completedStages.includes(stage)) {
-      setCompletedStages((prev) => [...prev, stage]);
-    }
-  };
-
-  const handleValidateConcepts = () => {
-    setShowConceptResults(true);
-    if (correctConcepts === conceptQuestions.length && !hasPassedConceptsOnce) {
-      setHasPassedConceptsOnce(true);
-    }
-  };
-
-  const handleResetConcepts = () => {
-    setConceptAnswers({});
-    setShowConceptResults(false);
-    setConceptQuestions(shuffleArray(CONCEPTUAL_QUESTIONS));
-  };
+  const tabs: QuizTab[] = [
+    {
+      id: "table",
+      label: "[01_CLASS_MATRIX]",
+      content: (
+        <TableWithBlanksQuiz
+          heading="[IPV4_CLASS_ARCHITECTURE_MATRIX]"
+          description="Fill in missing network numbers, net/host structures, subnet masks, and network/host capacities across classes A through E."
+          columns={columns}
+          rows={ipClassRows}
+          columnOptions={columnOptions}
+          blankCountsByStage={BLANK_COUNTS_BY_STAGE}
+          initialHardMode={isMastery}
+          hideHeader={true}
+        />
+      ),
+    },
+    {
+      id: "questions",
+      label: "[02_CONCEPT_ASSESSMENT]",
+      content: (
+        <QuestionQuiz
+          heading="[IPV4_CONCEPTUAL_ASSESSMENT]"
+          description="Evaluate your core understanding of IPv4 class boundaries, designated purposes, and network/host allocations."
+          questions={conceptualQuestions}
+          initialHardMode={isMastery}
+          hideHeader={true}
+        />
+      ),
+    },
+  ];
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-4 sm:p-8">
-      {/* Header */}
-      <header className="w-full max-w-6xl mb-8 cyber-glass-panel p-4 sm:p-5 rounded-xl border border-slate-800 shadow-xl flex flex-wrap justify-between items-center gap-4">
-        <div className="flex flex-col">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
-              DIAGNOSTIC_MODULE
-            </span>
-            <span className="text-xs text-slate-500 font-mono">{"//"}</span>
-            <span className="text-xs text-slate-400 font-mono">CLASSFUL_IP_ARCHITECTURE</span>
-          </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-            <span className="text-emerald-400 font-mono">ENT_ROUTER_V1</span>
-            <span className="text-slate-600 font-light">|</span>
-            <span className="text-slate-200">IP Address Classes</span>
-          </h1>
-        </div>
-        <div className="flex items-center gap-3 text-xs font-mono">
-          <Link
-            href="/study-guide#ip-address-classes"
-            className="px-3 py-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/30 text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400 transition-all flex items-center gap-1.5 font-bold"
-          >
-            <span>[STUDY_GUIDE]</span>
-          </Link>
-          <Link
-            href="/"
-            className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 hover:text-white hover:border-slate-600 transition-all font-bold"
-          >
-            {"<"} BACK TO HUB
-          </Link>
-        </div>
-      </header>
-
-      <main className="w-full max-w-6xl terminal-box border-l-4 border-l-emerald-500 shadow-2xl space-y-6 font-mono">
-        {/* Navigation Tabs */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-800/80">
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setActiveTab("table")}
-              className={`px-4 py-2 rounded-lg font-mono text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
-                activeTab === "table"
-                  ? "bg-emerald-500/20 border border-emerald-500 text-emerald-400 shadow-sm shadow-emerald-950/50"
-                  : "bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700"
-              }`}
-            >
-              <span>[MATRIX_TABLE]</span>
-              <span className="text-[11px] px-1.5 py-0.5 rounded bg-slate-950 border border-slate-800 text-slate-400 font-normal">
-                {showTableResults
-                  ? `${correctBlanks}/${totalBlanks}`
-                  : `${Object.values(tableAnswers).filter((v) => v.trim() !== "").length}/${totalBlanks}`}
-              </span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab("questions")}
-              className={`px-4 py-2 rounded-lg font-mono text-xs sm:text-sm font-bold transition-all flex items-center gap-2 cursor-pointer ${
-                activeTab === "questions"
-                  ? "bg-cyan-500/20 border border-cyan-500 text-cyan-400 shadow-sm shadow-cyan-950/50"
-                  : "bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700"
-              }`}
-            >
-              <span>[KNOWLEDGE_CHECKS]</span>
-              <span className="text-[11px] px-1.5 py-0.5 rounded bg-slate-950 border border-slate-800 text-slate-400 font-normal">
-                {showConceptResults
-                  ? `${correctConcepts}/${conceptQuestions.length}`
-                  : `${Object.values(conceptAnswers).filter((v) => v.trim() !== "").length}/${conceptQuestions.length}`}
-              </span>
-            </button>
-          </div>
-          <div className="text-xs font-mono text-slate-400">
-            ACTIVE_TAB: <span className="font-bold text-slate-200">{activeTab === "table" ? "TABLE MATRIX" : "DIAGNOSTIC QUESTIONS"}</span>
-          </div>
-        </div>
-
-        {/* Table Tab Panel */}
-        <div className={activeTab === "table" ? "space-y-6" : "hidden"}>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pb-3 border-b border-slate-800/80">
-            <div className="flex items-center gap-2">
-              <h2 className="text-base sm:text-lg font-bold text-emerald-400 font-mono">
-                [GENERAL_IP_CLASSES_MATRIX]
-              </h2>
-            </div>
-            <div className="flex items-center gap-2 text-xs font-mono">
-              <span className="text-slate-400">STAGE {stage} OF {BLANK_COUNTS_BY_STAGE.length}</span>
-              <span className="text-slate-600">|</span>
-              <span className="text-cyan-400">{totalBlanks} BLANKS ACTIVE</span>
-            </div>
-          </div>
-
-          <p className="text-xs sm:text-sm text-slate-400 font-mono">
-            Complete the classful IPv4 table across Classes A through E, network number ranges, Net/Host layouts, subnet masks, network capacities, and host capacities across all highlighted blank cells in the matrix table below.
-          </p>
-
-          {/* Interactive Matrix Table */}
-          <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/80 shadow-inner">
-            <table className="w-full text-left border-collapse text-xs sm:text-sm font-mono">
-              <thead>
-                <tr className="bg-slate-900/90 border-b border-slate-800 text-emerald-400">
-                  {columns.map((col) => (
-                    <th key={col.key} className="p-3 font-bold border-r border-slate-800/60 last:border-r-0 whitespace-nowrap">
-                      {col.label}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800/60 font-mono">
-                {ipClassRows.map((row, rowIdx) => (
-                  <tr
-                    key={row.id}
-                    className={`transition-colors ${
-                      rowIdx % 2 === 0 ? "bg-slate-900/20" : "bg-slate-900/40"
-                    } hover:bg-slate-800/30`}
-                  >
-                    {columns.map((col) => {
-                      const cellKey = `${row.id}_${col.key}`;
-                      const isBlank = blankCells.has(cellKey);
-                      const selectedVal = tableAnswers[cellKey] || "";
-                      const correctVal = row[col.key];
-
-                      if (!isBlank) {
-                        return (
-                          <td
-                            key={col.key}
-                            className="p-3 border-r border-slate-800/60 last:border-r-0 text-slate-200"
-                          >
-                            <span className={col.key === "ipClass" ? "font-bold text-white" : ""}>
-                              {col.key === "ipClass" ? `Class ${row[col.key]}` : row[col.key]}
-                            </span>
-                          </td>
-                        );
-                      }
-
-                      const correct = isCellCorrect(cellKey);
-
-                      return (
-                        <td
-                          key={col.key}
-                          className={`p-2 border-r border-slate-800/60 last:border-r-0 transition-colors ${
-                            showTableResults
-                              ? correct
-                                ? "bg-emerald-950/30"
-                                : "bg-rose-950/30"
-                              : "bg-slate-950/40"
-                          }`}
-                        >
-                          <BlankCell
-                            options={columnOptions[col.key]}
-                            useTextInput={useTableTextInput}
-                            showResults={showTableResults}
-                            correct={correct}
-                            correctVal={correctVal}
-                            value={selectedVal}
-                            onChange={(val) => handleCellChange(cellKey, val)}
-                          />
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Table Validation & Reset Controls */}
-          <div className="pt-6 border-t border-slate-800/80 flex flex-col items-center gap-4">
-            {!showTableResults ? (
-              <button
-                type="button"
-                onClick={handleValidateTable}
-                disabled={Object.keys(tableAnswers).length === 0}
-                className="px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-sm rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              >
-                VALIDATE IP CLASSES MATRIX
-              </button>
-            ) : (
-              <div className="w-full text-center space-y-4">
-                <div
-                  className={`p-4 rounded-lg border font-mono shadow-lg ${
-                    allTableCorrect
-                      ? "bg-emerald-950/40 text-emerald-300 border-emerald-500/60 shadow-emerald-950/40"
-                      : "bg-rose-950/40 text-rose-300 border-rose-500/60 shadow-rose-950/40"
-                  }`}
-                >
-                  <div className="text-xs mb-1 text-slate-400">
-                    SCORE: <span className="font-bold text-white">{correctBlanks}</span> / {totalBlanks} BLANKS CORRECT
-                  </div>
-                  {allTableCorrect ? (
-                    <div>
-                      <div className="text-base sm:text-lg font-bold mb-1 text-emerald-400 flex items-center justify-center gap-2">
-                        <span>[OK]</span>
-                        <span>
-                          {stage < BLANK_COUNTS_BY_STAGE.length
-                            ? `STAGE ${stage} VERIFIED — READY FOR NEXT LEVEL`
-                            : "MAXIMUM MATRIX PROFICIENCY ACHIEVED"}
-                        </span>
-                      </div>
-                      <p className="text-xs sm:text-sm text-emerald-300/90 font-mono">
-                        All {totalBlanks} blank classful IPv4 parameters accurately verified.
-                      </p>
-                    </div>
-                  ) : (
-                    <div>
-                      <div className="text-base sm:text-lg font-bold mb-1 text-rose-400 flex items-center justify-center gap-2">
-                        <span>[!]</span> MATRIX MISMATCH DETECTED
-                      </div>
-                      <p className="text-xs sm:text-sm text-rose-300/90 font-mono">
-                        {totalBlanks - correctBlanks} parameter(s) incorrectly identified. Review flagged cells above.
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex flex-wrap justify-center gap-4">
-                  {allTableCorrect && stage < BLANK_COUNTS_BY_STAGE.length && (
-                    <button
-                      type="button"
-                      onClick={handleNextStage}
-                      className="px-6 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-sm rounded-lg shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all cursor-pointer"
-                    >
-                      NEXT STAGE (+ MORE BLANKS)
-                    </button>
-                  )}
-                  <button
-                    type="button"
-                    onClick={handleResetCurrentStage}
-                    className="px-6 py-2.5 border border-emerald-500/40 hover:border-emerald-400 bg-slate-900/80 hover:bg-slate-800 text-emerald-400 font-bold font-mono text-sm rounded-lg transition-all cursor-pointer"
-                  >
-                    {allTableCorrect ? "SCRAMBLE & REPLAY STAGE" : "RETRY STAGE (NEW BLANKS)"}
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Questions Tab Panel */}
-        <div className={activeTab === "questions" ? "space-y-6" : "hidden"}>
-          <div className="pb-3 border-b border-slate-800/80">
-            <h3 className="text-sm sm:text-base font-bold text-cyan-400 font-mono">
-              [DIAGNOSTIC_KNOWLEDGE_CHECKS]
-            </h3>
-            <p className="text-xs text-slate-400 font-mono mt-1">
-              Verify class ranges, capacity metrics, and designated purposes across all five IPv4 classes.
-            </p>
-          </div>
-
-          <div className="space-y-4">
-            {conceptQuestions.map((q, idx) => {
-              const selected = conceptAnswers[q.id] || "";
-              const isCorrect = validateConceptualInput(q, selected);
-              const shouldType = useConceptTextInput && q.canTypeInHardMode;
-
-              return (
-                <div
-                  key={q.id}
-                  className={`p-4 rounded-lg border transition-all ${
-                    showConceptResults
-                      ? isCorrect
-                        ? "border-emerald-500/60 bg-emerald-950/20"
-                        : "border-rose-500/60 bg-rose-950/20"
-                      : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
-                  }`}
-                >
-                  <div className="flex items-start gap-3">
-                    <span className="text-xs font-mono font-bold text-cyan-400 bg-cyan-950/40 border border-cyan-900/50 px-2 py-0.5 rounded shrink-0">
-                      #{idx + 1}
-                    </span>
-                    <div className="flex-1">
-                      <p className="text-xs sm:text-sm text-slate-200 font-medium mb-3">{q.prompt}</p>
-
-                      {shouldType ? (
-                        <div className="mt-2">
-                          <input
-                            type="text"
-                            disabled={showConceptResults}
-                            value={selected}
-                            onChange={(e) => handleConceptChange(q.id, e.target.value)}
-                            placeholder="Type the answer..."
-                            className="w-full bg-slate-950 border border-slate-700 p-2.5 rounded-lg font-mono text-xs sm:text-sm text-slate-100 outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 disabled:opacity-60"
-                          />
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
-                          {shuffledConceptOptions[q.id].map((opt) => {
-                            const isOptionSelected = selected === opt;
-                            const isOptionCorrect = opt === q.answer;
-
-                            let btnStyle =
-                              "bg-slate-950 border-slate-800 text-slate-300 hover:border-cyan-500/50 hover:text-white";
-                            if (showConceptResults) {
-                              if (isOptionCorrect) {
-                                btnStyle = "bg-emerald-950/60 border-emerald-500 text-emerald-300 font-bold";
-                              } else if (isOptionSelected && !isOptionCorrect) {
-                                btnStyle = "bg-rose-950/60 border-rose-500 text-rose-300 line-through";
-                              } else {
-                                btnStyle = "bg-slate-950/40 border-slate-800/40 text-slate-600 opacity-60";
-                              }
-                            } else if (isOptionSelected) {
-                              btnStyle = "bg-cyan-950/40 border-cyan-400 text-cyan-300 font-bold shadow-sm";
-                            }
-
-                            return (
-                              <button
-                                key={opt}
-                                type="button"
-                                disabled={showConceptResults}
-                                onClick={() => handleConceptChange(q.id, opt)}
-                                className={`text-left p-2.5 rounded-lg text-xs font-mono border transition-all flex items-center justify-between cursor-pointer disabled:cursor-default ${btnStyle}`}
-                              >
-                                <span>{opt}</span>
-                                {showConceptResults && isOptionCorrect && (
-                                  <span className="text-emerald-400 text-xs font-bold">[OK]</span>
-                                )}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-
-                      {showConceptResults && (
-                        <div
-                          className={`mt-3 text-xs p-2.5 rounded-lg border font-mono ${
-                            isCorrect
-                              ? "bg-emerald-950/40 text-emerald-300 border-emerald-800/60"
-                              : "bg-rose-950/40 text-rose-300 border-rose-800/60"
-                          }`}
-                        >
-                          <span className="font-bold">
-                            {isCorrect ? "[OK] VALIDATED: " : "[!] ERROR: "}
-                          </span>
-                          <span>{q.explanation}</span>
-                          {!isCorrect && shouldType && (
-                            <div className="mt-1 text-slate-300">
-                              Expected: <span className="font-bold text-emerald-400">{q.answer}</span>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Diagnostic Questions Validation & Reset Controls */}
-          <div className="pt-6 border-t border-slate-800/80 flex flex-col items-center gap-4">
-            {!showConceptResults ? (
-              <button
-                type="button"
-                onClick={handleValidateConcepts}
-                disabled={Object.keys(conceptAnswers).length === 0}
-                className="px-8 py-3 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold font-mono text-sm rounded-lg shadow-lg shadow-cyan-950/50 hover:shadow-cyan-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-              >
-                VALIDATE KNOWLEDGE CHECKS
-              </button>
-            ) : (
-              <div className="w-full text-center space-y-4">
-                <div
-                  className={`p-4 rounded-lg border font-mono shadow-lg ${
-                    allConceptsCorrect
-                      ? "bg-emerald-950/40 text-emerald-300 border-emerald-500/60 shadow-emerald-950/40"
-                      : "bg-rose-950/40 text-rose-300 border-rose-500/60 shadow-rose-950/40"
-                  }`}
-                >
-                  <div className="text-xs mb-1 text-slate-400">
-                    SCORE: <span className="font-bold text-white">{correctConcepts}</span> / {conceptQuestions.length} CHECKS CORRECT
-                  </div>
-                  {allConceptsCorrect ? (
-                    <div>
-                      <div className="text-base sm:text-lg font-bold mb-1 text-emerald-400 flex items-center justify-center gap-2">
-                        <span>[OK]</span>
-                        <span>ALL DIAGNOSTIC CHECKS VERIFIED</span>
-                      </div>
-                      <p className="text-xs sm:text-sm text-emerald-300/90 font-mono">
-                        All conceptual knowledge checks accurately answered.
-                      </p>
-                    </div>
-                  ) : (
-                    <div>
-                      <div className="text-base sm:text-lg font-bold mb-1 text-rose-400 flex items-center justify-center gap-2">
-                        <span>[!]</span> KNOWLEDGE CHECK ERRORS DETECTED
-                      </div>
-                      <p className="text-xs sm:text-sm text-rose-300/90 font-mono">
-                        {conceptQuestions.length - correctConcepts} check(s) incorrectly answered. Review flagged items above.
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex flex-wrap justify-center gap-4">
-                  <button
-                    type="button"
-                    onClick={handleResetConcepts}
-                    className="px-6 py-2.5 border border-cyan-500/40 hover:border-cyan-400 bg-slate-900/80 hover:bg-slate-800 text-cyan-400 font-bold font-mono text-sm rounded-lg transition-all cursor-pointer"
-                  >
-                    {allConceptsCorrect ? "SCRAMBLE & REPLAY CHECKS" : "RETRY KNOWLEDGE CHECKS"}
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </main>
-    </div>
+    <TabbedQuiz
+      moduleTag="DIAGNOSTIC_MODULE"
+      moduleCode="IPV4_CLASS_SYSTEM"
+      title="IP Address Classes"
+      studyGuideHref="/study-guide#ip-address-classes"
+      tabs={tabs}
+    />
   );
 }
 
-export default function IPAddressClassesPage() {
+export default function IPAddressClassesQuiz() {
   return (
     <Suspense fallback={null}>
-      <IPAddressClassesQuizContent />
+      <IPAddressClassesContent />
     </Suspense>
   );
 }

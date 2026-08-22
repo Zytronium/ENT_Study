@@ -3,9 +3,10 @@ import assert from "node:assert/strict";
 import { MASTER_QUESTIONS } from "../lib/practice-test/questions";
 import { MASTER_ACTIVITIES } from "../lib/practice-test/registry";
 import { generatePracticeTest } from "../lib/practice-test/generator";
+import { ModuleId } from "../lib/practice-test/types";
 
 describe("Master Questions Coverage & Quality", () => {
-  const ALL_MODULE_IDS = [
+  const ALL_MODULE_IDS: ModuleId[] = [
     "osi-model",
     "networking-tools",
     "modem-router",
@@ -47,7 +48,7 @@ describe("Master Questions Coverage & Quality", () => {
     const coveredModules = new Set(MASTER_QUESTIONS.map((q) => q.moduleId));
     for (const modId of ALL_MODULE_IDS) {
       assert.ok(
-        coveredModules.has(modId as any),
+        coveredModules.has(modId),
         `Module "${modId}" is missing from MASTER_QUESTIONS`
       );
       const count = MASTER_QUESTIONS.filter((q) => q.moduleId === modId).length;

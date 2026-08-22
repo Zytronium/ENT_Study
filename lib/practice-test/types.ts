@@ -28,6 +28,7 @@ export interface QuestionWording {
   answer: string;
   explanation: string;
   aliases?: string[];
+  keywords?: string[];
   canTypeInHardMode?: boolean;
 }
 
@@ -87,6 +88,7 @@ export type ActivePracticeItem =
       answer: string;
       explanation: string;
       aliases?: string[];
+      keywords?: string[];
       canTypeInHardMode?: boolean;
       points: 2;
     }

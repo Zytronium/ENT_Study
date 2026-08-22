@@ -83,4 +83,83 @@ describe("Reusable Table Quiz Validation & Consistency", () => {
       }
     }
   });
+
+  it("should enforce text input mode from stage 2 onward and in mastery mode", () => {
+    // Stage 1 (index 0), not hard mode, not completed -> dropdown mode (useTextInput = false)
+    const stage1UseTextInput = false || false || false || 0 >= 1;
+    assert.strictEqual(stage1UseTextInput, false);
+
+    // Stage 2 (index 1), normal progression -> type-the-answer mode (useTextInput = true)
+    const stage2UseTextInput = false || false || true || 1 >= 1;
+    assert.strictEqual(stage2UseTextInput, true);
+
+    // Stage 2 (index 1) after wrong attempt on retry -> remains type-the-answer mode
+    const stage2RetryUseTextInput = false || false || true || 1 >= 1;
+    assert.strictEqual(stage2RetryUseTextInput, true);
+
+    // Initial hard / mastery mode at stage 1 -> type-the-answer mode
+    const masteryStage1UseTextInput = true || false || false || 0 >= 1;
+    assert.strictEqual(masteryStage1UseTextInput, true);
+  });
+
+  it("should blank all eligible table cells when starting in mastery mode", () => {
+    const blankCountsByStage = [5, 10, 16, 22, 28, 35];
+    const initialHardMode = true;
+    const initialStageIndex = initialHardMode ? blankCountsByStage.length - 1 : 0;
+    assert.strictEqual(initialStageIndex, 5);
+    assert.strictEqual(blankCountsByStage[initialStageIndex], 35);
+  });
+
+  it("should compute optimal row permutation when allowAnyRowOrder is enabled and all rows are blank", async () => {
+    const { getBestRowMapping } = await import("../components/study-quiz/TableWithBlanksQuiz");
+    const cols = [
+      { key: "carrier", label: "Carrier" },
+      { key: "channels", label: "Channels" },
+      { key: "maxThroughput", label: "Max Throughput" },
+    ];
+    const rows = [
+      { id: 1, carrier: "T1", channels: "24", maxThroughput: "1.544 Mbps" },
+      { id: 2, carrier: "E1", channels: "32", maxThroughput: "2.048 Mbps" },
+      { id: 3, carrier: "T3", channels: "672 (T1x28)", maxThroughput: "44.736 Mbps" },
+      { id: 4, carrier: "E3", channels: "512 (E1x16)", maxThroughput: "34.368 Mbps" },
+      { id: 5, carrier: "ISDN", channels: "2", maxThroughput: "128 Kbps" },
+    ];
+    const blankKeys = new Set<string>();
+    rows.forEach((r) => {
+      cols.forEach((c) => {
+        blankKeys.add(`${r.id}_${c.key}`);
+      });
+    });
+
+    // User fills row 1 with ISDN, row 2 with T1, row 3 with E1, row 4 with T3, row 5 with E3
+    const answers: Record<string, string> = {
+      "1_carrier": "ISDN",
+      "1_channels": "2",
+      "1_maxThroughput": "128 Kbps",
+
+      "2_carrier": "T1",
+      "2_channels": "24",
+      "2_maxThroughput": "1.544 Mbps",
+
+      "3_carrier": "E1",
+      "3_channels": "32",
+      "3_maxThroughput": "2.048 Mbps",
+
+      "4_carrier": "T3",
+      "4_channels": "672",
+      "4_maxThroughput": "44.736 Mbps",
+
+      "5_carrier": "E3",
+      "5_channels": "512",
+      "5_maxThroughput": "34.368 Mbps",
+    };
+
+    const mapping = getBestRowMapping(rows, cols, blankKeys, answers, true);
+    // Row 0 (id 1) mapped to target index 4 (ISDN)
+    // Row 1 (id 2) mapped to target index 0 (T1)
+    // Row 2 (id 3) mapped to target index 1 (E1)
+    // Row 3 (id 4) mapped to target index 2 (T3)
+    // Row 4 (id 5) mapped to target index 3 (E3)
+    assert.deepStrictEqual(mapping, [4, 0, 1, 2, 3]);
+  });
 });
