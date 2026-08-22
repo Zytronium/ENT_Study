@@ -375,12 +375,12 @@ export default function TableWithBlanksQuiz({
       )}
 
       {/* Table Container with horizontal scroll */}
-      <div className="overflow-x-auto rounded-lg border border-slate-800 bg-slate-950/90 shadow-xl">
-        <table className="w-full text-left text-xs font-mono border-collapse min-w-[650px]">
+      <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/90 shadow-inner">
+        <table className="w-full text-left border-collapse text-xs sm:text-sm font-mono">
           <thead>
-            <tr className="bg-slate-900/90 border-b border-slate-800 text-slate-300">
+            <tr className="bg-slate-900/90 border-b border-slate-800 text-emerald-400">
               {columns.map((col) => (
-                <th key={col.key} className="p-3 font-bold border-r border-slate-800/60 last:border-r-0">
+                <th key={col.key} className="p-3 font-bold border-r border-slate-800/60 last:border-r-0 whitespace-nowrap">
                   {col.label}
                 </th>
               ))}
@@ -390,7 +390,12 @@ export default function TableWithBlanksQuiz({
             {rows.map((row, rowIdx) => {
               const targetRow = rows[rowMapping[rowIdx]];
               return (
-                <tr key={row.id} className="hover:bg-slate-900/40 transition-colors">
+                <tr
+                  key={row.id}
+                  className={`transition-colors ${
+                    rowIdx % 2 === 0 ? "bg-slate-900/20" : "bg-slate-900/40"
+                  } hover:bg-slate-800/30`}
+                >
                   {columns.map((col) => {
                     const segs = row.cellSegments?.[col.key];
 
@@ -398,8 +403,8 @@ export default function TableWithBlanksQuiz({
                     if (segs && segs.length > 0) {
                       const targetSegs = targetRow?.cellSegments?.[col.key];
                       return (
-                        <td key={col.key} className="p-2.5 border-r border-slate-800/60 last:border-r-0 align-top">
-                          <div className="space-y-2">
+                        <td key={col.key} className="p-2 border-r border-slate-800/60 last:border-r-0 align-top min-w-[140px]">
+                          <div className="space-y-1.5">
                             {segs.map((seg) => {
                               const cellKey = `${row.id}_${col.key}__${seg.key}`;
                               const isBlank = blankKeys.has(cellKey);
@@ -408,9 +413,17 @@ export default function TableWithBlanksQuiz({
                               const targetSeg = targetSegs?.find((s) => s.key === seg.key);
                               const expectedSegVal = targetSeg ? targetSeg.value : seg.value;
 
+                              const segStateClass = showResults
+                                ? isCorrect
+                                  ? "border-emerald-500 text-emerald-400 font-bold bg-emerald-950/20"
+                                  : "border-rose-500 text-rose-400 font-bold bg-rose-950/20"
+                                : userVal
+                                ? "border-emerald-500/70 text-slate-100 bg-slate-900"
+                                : "border-slate-700 hover:border-emerald-500/50 text-slate-300 bg-slate-900";
+
                               return (
-                                <div key={seg.key} className="p-1.5 bg-slate-900/80 rounded border border-slate-800/60">
-                                  <span className="block text-[10px] text-slate-400 font-semibold mb-1">
+                                <div key={seg.key} className="p-1.5 bg-slate-900/80 rounded border border-slate-800/60 flex flex-col gap-1">
+                                  <span className="block text-[10px] text-slate-400 font-semibold">
                                     {seg.label}:
                                   </span>
                                   {isBlank ? (
@@ -420,27 +433,15 @@ export default function TableWithBlanksQuiz({
                                         value={userVal}
                                         onChange={(e) => handleCellChange(cellKey, e.target.value)}
                                         disabled={showResults}
-                                        placeholder="Value..."
-                                        className={`w-full p-1.5 text-xs font-mono rounded outline-none border transition-colors ${
-                                          showResults
-                                            ? isCorrect
-                                              ? "border-emerald-500 text-emerald-400 bg-emerald-950/40"
-                                              : "border-rose-500 text-rose-400 bg-rose-950/40"
-                                            : "border-slate-700 bg-slate-950 text-slate-200 focus:border-emerald-400"
-                                        }`}
+                                        placeholder="Type answer..."
+                                        className={`w-full border p-1.5 text-xs rounded font-mono outline-none transition-colors ${segStateClass}`}
                                       />
                                     ) : (
                                       <select
                                         value={userVal}
                                         onChange={(e) => handleCellChange(cellKey, e.target.value)}
                                         disabled={showResults}
-                                        className={`w-full p-1.5 text-xs font-mono rounded outline-none border transition-colors ${
-                                          showResults
-                                            ? isCorrect
-                                              ? "border-emerald-500 text-emerald-400 bg-emerald-950/40"
-                                              : "border-rose-500 text-rose-400 bg-rose-950/40"
-                                            : "border-slate-700 bg-slate-950 text-slate-200 focus:border-emerald-400"
-                                        }`}
+                                        className={`w-full border p-1.5 text-xs rounded font-mono outline-none transition-colors ${segStateClass}`}
                                       >
                                         <option value="">-- Select --</option>
                                         {(seg.options || columnOptions[col.key] || []).map((opt) => (
@@ -451,12 +452,14 @@ export default function TableWithBlanksQuiz({
                                       </select>
                                     )
                                   ) : (
-                                    <span className="text-slate-200 font-medium">{seg.value}</span>
+                                    <span className={`text-slate-300 font-mono text-xs ${!isCellEligible(seg.value) ? "text-slate-600 italic" : ""}`}>
+                                      {seg.value}
+                                    </span>
                                   )}
                                   {showResults && isBlank && !isCorrect && (
-                                    <div className="text-[10px] text-emerald-400 font-bold mt-1">
-                                      Ans: {expectedSegVal}
-                                    </div>
+                                    <span className="text-[10px] text-rose-400 font-mono leading-tight">
+                                      Expected: {expectedSegVal}
+                                    </span>
                                   )}
                                 </div>
                               );
@@ -475,55 +478,60 @@ export default function TableWithBlanksQuiz({
                     const isCorrect = results.map[cellKey];
                     const options = columnOptions[col.key] || [];
 
+                    if (!isBlank) {
+                      return (
+                        <td
+                          key={col.key}
+                          className={`p-3 border-r border-slate-800/60 last:border-r-0 text-slate-300 font-mono ${
+                            !isCellEligible(rawVal) ? "text-slate-600 italic" : ""
+                          }`}
+                        >
+                          {String(rawVal ?? "-")}
+                        </td>
+                      );
+                    }
+
+                    const stateClass = showResults
+                      ? isCorrect
+                        ? "border-emerald-500 text-emerald-400 font-bold bg-emerald-950/20"
+                        : "border-rose-500 text-rose-400 font-bold bg-rose-950/20"
+                      : userVal
+                      ? "border-emerald-500/70 text-slate-100 bg-slate-900"
+                      : "border-slate-700 hover:border-emerald-500/50 text-slate-300 bg-slate-900";
+
                     return (
-                      <td key={col.key} className="p-2.5 border-r border-slate-800/60 last:border-r-0 align-middle">
-                        {isBlank ? (
-                          <div>
-                            {useTextInput ? (
-                              <input
-                                type="text"
-                                value={userVal}
-                                onChange={(e) => handleCellChange(cellKey, e.target.value)}
-                                disabled={showResults}
-                                placeholder="Type..."
-                                className={`w-full min-w-[90px] p-1.5 text-xs font-mono rounded outline-none border transition-colors ${
-                                  showResults
-                                    ? isCorrect
-                                      ? "border-emerald-500 text-emerald-400 bg-emerald-950/40"
-                                      : "border-rose-500 text-rose-400 bg-rose-950/40"
-                                    : "border-slate-700 bg-slate-950 text-slate-200 focus:border-emerald-400"
-                                }`}
-                              />
-                            ) : (
-                              <select
-                                value={userVal}
-                                onChange={(e) => handleCellChange(cellKey, e.target.value)}
-                                disabled={showResults}
-                                className={`w-full min-w-[100px] p-1.5 text-xs font-mono rounded outline-none border transition-colors ${
-                                  showResults
-                                    ? isCorrect
-                                      ? "border-emerald-500 text-emerald-400 bg-emerald-950/40"
-                                      : "border-rose-500 text-rose-400 bg-rose-950/40"
-                                    : "border-slate-700 bg-slate-950 text-slate-200 focus:border-emerald-400"
-                                }`}
-                              >
-                                <option value="">-- Select --</option>
-                                {options.map((opt) => (
-                                  <option key={opt} value={opt}>
-                                    {opt}
-                                  </option>
-                                ))}
-                              </select>
-                            )}
-                            {showResults && !isCorrect && (
-                              <div className="text-[10px] text-emerald-400 font-bold mt-1">
-                                Ans: {String(targetVal)}
-                              </div>
-                            )}
-                          </div>
-                        ) : (
-                          <span className="text-slate-300">{String(rawVal ?? "-")}</span>
-                        )}
+                      <td key={col.key} className="p-2 border-r border-slate-800/60 last:border-r-0 min-w-[140px]">
+                        <div className="flex flex-col gap-1">
+                          {useTextInput ? (
+                            <input
+                              type="text"
+                              value={userVal}
+                              onChange={(e) => handleCellChange(cellKey, e.target.value)}
+                              disabled={showResults}
+                              placeholder="Type answer..."
+                              className={`w-full border p-1.5 text-xs rounded font-mono outline-none transition-colors ${stateClass}`}
+                            />
+                          ) : (
+                            <select
+                              value={userVal}
+                              onChange={(e) => handleCellChange(cellKey, e.target.value)}
+                              disabled={showResults}
+                              className={`w-full border p-1.5 text-xs rounded font-mono outline-none transition-colors ${stateClass}`}
+                            >
+                              <option value="">-- Select --</option>
+                              {options.map((opt) => (
+                                <option key={opt} value={opt}>
+                                  {opt}
+                                </option>
+                              ))}
+                            </select>
+                          )}
+                          {showResults && !isCorrect && (
+                            <span className="text-[10px] text-rose-400 font-mono leading-tight">
+                              Expected: {String(targetVal)}
+                            </span>
+                          )}
+                        </div>
                       </td>
                     );
                   })}
