@@ -11,19 +11,17 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 # Custom Project Instructions
 
 ## Quiz Page Styling
-
 When creating or modifying quiz pages, follow the same styling patterns as existing quiz pages for consistency.
 Reference the global styles in `app/globals.css` (especially `.quiz-action-card` and `.quiz-action-btn` classes) and
 review existing quiz page implementations to maintain visual and structural consistency across all quizzes.
 
 Quiz pages should not include any information that gives away any answers. Study info goes in the human-made study
-guide. Do not edit the study guide markdown file (public/STUDY_GUIDE.md) unless explicitly to.
+guide. Do not edit the study guide Markdown file (public/STUDY_GUIDE.md) unless explicitly to.
 
 ## Quiz Content Scope
-
 Quiz questions must ONLY cover material explicitly mentioned in the study guide. Do not include
 questions about topics, concepts, or details that are not present in the study guide content. Try not to make
-the correct answers exact quotes from the study guide unless nessesary, as exact quotes stand out and look more 
+the correct answers exact quotes from the study guide unless necessary, as exact quotes stand out and look more 
 obvious than they should. Try to word questions and answers in a way that they might be worded on the CCNA cert exam.
 Avoid verbose correct answers when the other options are not verbose.
 
@@ -34,5 +32,11 @@ but only if it's reasonably easy to validate the answer to those questions (i.e.
 happen" type questions should remain multiple choice but "what frequency does this describe" or "match this definition
 to the correct term" type questions should be type-the-answer.)
 
+## Post-Quiz Instructions
+After building or editing a study quiz, ensure you update the root page.tsx to link to it and edit lib/questions.ts and
+lib/registry.ts to include new questions and/or activities from the quiz and an alternatively worded version of each
+new question. 
+
 ## General Rules
-DO NOT use emojis or EM dashes unles explicitly asked to. Avoid the animate-pulse tailwind class.
+DO NOT use emojis or EM dashes unless explicitly asked to. Avoid the animate-pulse tailwind class. Ensure everything is
+mobile responsive.
