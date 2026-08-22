@@ -320,10 +320,10 @@ export default async function StudyGuidePage() {
   const processedContent = await unified()
     .use(remarkParse)
     .use(remarkGfm)
-    .use(remarkRehype)
+    .use(remarkRehype, { allowDangerousHtml: true })
     .use(rehypeSlug)
     .use(rehypeImageGrid)
-    .use(rehypeStringify)
+    .use(rehypeStringify, { allowDangerousHtml: true })
     .process(fileContents);
 
   const rawHtml = processedContent.toString();

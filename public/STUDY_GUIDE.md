@@ -628,4 +628,4 @@ Class E is for experimental.
 
 - 128-bit hexadecimal address (i.e. 2001:0db8:85a3:0020:0000:8a2e:0370:7334)
 - 2 parts: Prefixes & Host ID's
-- Over 340 ***Undecillion*** (or 2¹²⁸) unique possible IPv6 addresses 
+- Over 340 ***Undecillion*** (or 2<sup>128</sup>) unique possible IPv6 addresses 
