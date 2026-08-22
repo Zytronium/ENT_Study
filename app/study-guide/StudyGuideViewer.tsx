@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useRef, useTransition, useCallback, useMemo } from 'react';
 import Link from 'next/link';
+import { GlobalAnalyticsResponse } from '@/lib/practice-test/analytics-types';
 
 export interface TocItem {
   id: string;
@@ -25,6 +26,22 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [, startTransition] = useTransition();
+
+  const [examStats, setExamStats] = useState<GlobalAnalyticsResponse | null>(null);
+
+  useEffect(() => {
+    fetch('/api/practice-test/analytics')
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to load analytics');
+        return res.json();
+      })
+      .then((data: GlobalAnalyticsResponse) => {
+        setExamStats(data);
+      })
+      .catch((err) => {
+        console.warn('Could not load global practice test analytics:', err);
+      });
+  }, []);
 
   const desktopTocRef = useRef<HTMLElement>(null);
   const mobileTocNavRef = useRef<HTMLElement>(null);
@@ -618,6 +635,42 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
             className="prose prose-invert max-w-none font-mono [&_table]:w-full [&_table]:border-collapse [&_th]:border [&_th]:border-border [&_th]:p-2 [&_th]:bg-slate-900 [&_th]:text-accent [&_td]:border [&_td]:border-border/60 [&_td]:p-2 [&_pre]:bg-slate-950 [&_pre]:border [&_pre]:border-border [&_img]:rounded [&_img]:border [&_img]:border-border [&_img]:max-w-full [&_img]:h-auto [&_a:not(.quiz-action-btn)]:text-accent hover:[&_a:not(.quiz-action-btn)]:underline [&_h1]:text-accent [&_h2]:text-accent [&_h2]:border-b [&_h2]:border-border [&_h2]:pb-2 [&_h2]:mt-10 [&_h3]:text-slate-200 [&_h3]:mt-6"
             dangerouslySetInnerHTML={{ __html: initialHtml }}
           />
+
+          {/* Master Practice Test Widget */}
+          <section className="mt-12 not-prose p-5 sm:p-6 rounded-xl bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border border-cyan-500/40 shadow-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 quiz-action-card no-print">
+            <div className="space-y-2 max-w-2xl">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="px-2 py-0.5 rounded bg-cyan-950/60 text-cyan-400 text-[11px] font-bold tracking-wide border border-cyan-500/40 uppercase">
+                  [CUMULATIVE ASSESSMENT]
+                </span>
+                <span className="text-xs text-slate-500 font-mono">{"//"}</span>
+                <span className="text-xs text-slate-400 font-mono">60-POINT MASTER EXAM</span>
+                {examStats && examStats.totalAttempts > 0 && (
+                  <>
+                    <span className="text-xs text-slate-500 font-mono hidden sm:inline">{"//"}</span>
+                    <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded">
+                      {examStats.totalAttempts.toLocaleString()} ATTEMPTS RECORDED | {examStats.averagePercentage}% AVG ACCURACY
+                    </span>
+                  </>
+                )}
+              </div>
+              <h2 className="text-lg sm:text-xl font-bold text-white font-mono flex items-center gap-2 m-0">
+                <span className="text-cyan-400">Master Practice Exam</span>
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 font-mono leading-relaxed m-0">
+                Ready to test your knowledge so far? Take this randomized 60-point exam covering all units above,
+                featuring multiple question types, interactive wire pinouts, and table matrix challenges.
+              </p>
+            </div>
+            <Link
+              href="/practice-test"
+              className="quiz-action-btn inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded bg-cyan-400 hover:bg-cyan-300 !text-slate-950 hover:!text-slate-950 text-xs sm:text-sm font-bold font-mono transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-md shrink-0 !no-underline w-full md:w-auto text-center"
+              style={{ color: '#020617', textDecoration: 'none' }}
+            >
+              <span style={{ color: '#020617' }}>[START MASTER TEST]</span>
+              <span style={{ color: '#020617' }}>&rarr;</span>
+            </Link>
+          </section>
         </main>
       </div>
 
