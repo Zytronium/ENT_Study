@@ -26,7 +26,7 @@ obvious than they should. Try to word questions and answers in a way that they m
 Avoid verbose correct answers when the other options are not verbose.
 
 ## Quiz Hard Mode
-After the user has gotten all the correcet answers once, hard mode should activate, the same way it does on other 
+After the user has gotten all the correct answers once, hard mode should activate, the same way it does on other 
 quizzes. Hard mode scrambles question order, *sometimes* turns some or all questions into a type-the-answer type
 but only if it's reasonably easy to validate the answer to those questions (i.e. "how does this work" or "why does this
 happen" type questions should remain multiple choice but "what frequency does this describe" or "match this definition
