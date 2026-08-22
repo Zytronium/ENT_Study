@@ -233,23 +233,23 @@ export default function PracticeTestRunner() {
         <div className="mt-5 pt-3 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-slate-400">
           <div className="flex flex-wrap items-center gap-4">
             <span className="flex items-center gap-1.5">
-              <span className="text-slate-600">EXAM_ITEMS:</span>
-              <span className="text-cyan-400 font-bold">{items.length} Units ({totalPoints} Points Total)</span>
+              <span className="text-slate-400">EXAM_ITEMS:</span>
+              <span className="text-cyan-500 font-bold">{items.length} Units ({totalPoints} Points Total)</span>
             </span>
-            <span className="hidden sm:inline text-slate-700">|</span>
+            <span className="hidden sm:inline text-slate-500">|</span>
             <span className="flex items-center gap-1.5">
-              <span className="text-slate-600">ACTIVITIES:</span>
-              <span className="text-emerald-400 font-bold">
+              <span className="text-slate-400">ACTIVITIES:</span>
+              <span className="text-emerald-500 font-bold">
                 {items.filter((i) => i.type === "activity").length} (10 pts each)
               </span>
             </span>
             {globalStats && globalStats.totalAttempts > 0 && (
               <>
-                <span className="hidden sm:inline text-slate-700">|</span>
+                <span className="hidden sm:inline text-slate-500">|</span>
                 <span className="flex items-center gap-1.5">
-                  <span className="text-slate-600">COMMUNITY_TELEMETRY:</span>
-                  <span className="text-cyan-400 font-bold">{globalStats.totalAttempts.toLocaleString()} Attempts</span>
-                  <span className="text-slate-500">({globalStats.averagePercentage}% Avg)</span>
+                  <span className="text-slate-400">COMMUNITY_TELEMETRY:</span>
+                  <span className="text-cyan-500 font-bold">{globalStats.totalAttempts.toLocaleString()} Attempts</span>
+                  <span className="text-slate-300">({globalStats.averagePercentage}% Avg)</span>
                 </span>
               </>
             )}
