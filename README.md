@@ -1,36 +1,13 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ENT Study - TTC Enterprise Networking Technologies Aug-Dec 2026
 
-## Getting Started
+This is an interactive website designed to help my classmates and I study in our Enterprise Networking Technologies
+class at TTC. It contains a comprehensive study guide document, study quizzes, - some more interactive than others -
+and a master practice test that takes 60 points worth of questions and activities from the study quizzes and generates
+a random practice test with up to 26 questions. Each question in the practice test is worth 2 points, while activities
+like filling in tables or drag-and-drop 568B Standard wire order are worth 10 points total (with partial credit allowed).
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+A good portion of this website was AI-generated to save time, but was maticiouslously triple and quadruple checked
+for accuracy, according to the study guide in quiz questions and activities, and much of the UI has been tweaked to
+feel less AI-generated and be more consistent across the website. Any content starting from the 3rd week of development
+onward has less AI-generated content thanks to reusable quiz components and me running out of my free $40 worth of AI
+agent credits.
