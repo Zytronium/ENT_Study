@@ -308,7 +308,7 @@ export default function PracticeTestRunner() {
                       TOP {Math.max(1, Math.round(100 - submissionResult.percentile))}%
                     </span>
                     <span className="text-slate-400">
-                      Scored higher than {submissionResult.percentile}% of all {submissionResult.stats?.totalAttempts ? `${submissionResult.stats.totalAttempts.toLocaleString()} ` : ""}recorded attempts
+                      Scored higher than {submissionResult.percentile}% of all {typeof submissionResult.previousAttempts === "number" ? `${submissionResult.previousAttempts.toLocaleString()} ` : submissionResult.stats?.totalAttempts ? `${(submissionResult.stats.totalAttempts - 1).toLocaleString()} ` : ""}recorded attempts
                     </span>
                   </div>
                 ) : (

@@ -47,30 +47,47 @@ export async function POST(request: NextRequest) {
         WITH inserted AS (
           INSERT INTO practice_exam_attempts (score, total_points, percentage)
           VALUES (${score}, ${totalPoints}, ${percentage})
-          RETURNING id, percentage
+          RETURNING id, score, total_points, percentage
         ),
-        stats AS (
+        prior_stats AS (
           SELECT
-            COUNT(*) AS total_count,
-            COUNT(*) FILTER (WHERE percentage < (SELECT percentage FROM inserted)) AS lower_count,
-            ROUND(AVG(percentage), 1) AS avg_percentage,
-            ROUND(COUNT(*) FILTER (WHERE percentage >= 80.0) * 100.0 / NULLIF(COUNT(*), 0), 1) AS pass_rate
+            COUNT(*)::int AS prior_count,
+            COUNT(*) FILTER (WHERE percentage < ${percentage})::int AS lower_count
           FROM practice_exam_attempts
+          WHERE id NOT IN (SELECT id FROM inserted)
+        ),
+        all_attempts AS (
+          SELECT score, total_points, percentage FROM practice_exam_attempts
+          WHERE id NOT IN (SELECT id FROM inserted)
+          UNION ALL
+          SELECT score, total_points, percentage FROM inserted
+        ),
+        global_stats AS (
+          SELECT
+            COUNT(*)::int AS total_count,
+            ROUND(AVG(score), 1)::float AS avg_score,
+            ROUND(AVG(percentage), 1)::float AS avg_percentage,
+            ROUND(COUNT(*) FILTER (WHERE percentage >= 80.0) * 100.0 / NULLIF(COUNT(*), 0), 1)::float AS pass_rate
+          FROM all_attempts
         )
         SELECT
           (SELECT id FROM inserted) AS attempt_id,
-          stats.total_count,
-          stats.avg_percentage,
-          stats.pass_rate,
+          prior_stats.prior_count,
+          prior_stats.lower_count,
           CASE 
-            WHEN stats.total_count <= 1 THEN 100.0
-            ELSE ROUND((stats.lower_count::numeric / (stats.total_count - 1)::numeric) * 100.0, 1)
-          END AS percentile
-        FROM stats;
+            WHEN prior_stats.prior_count = 0 THEN 100.0
+            ELSE ROUND((prior_stats.lower_count::numeric / prior_stats.prior_count::numeric) * 100.0, 1)
+          END AS percentile,
+          global_stats.total_count,
+          global_stats.avg_score,
+          global_stats.avg_percentage,
+          global_stats.pass_rate
+        FROM prior_stats, global_stats;
       `;
 
       if (result && result.length > 0) {
         const row = result[0];
+        const priorCount = Number(row.prior_count ?? 0);
         return NextResponse.json(
           {
             success: true,
@@ -80,8 +97,10 @@ export async function POST(request: NextRequest) {
               percentage,
             },
             percentile: Number(row.percentile ?? 100),
+            previousAttempts: priorCount,
             stats: {
-              totalAttempts: Number(row.total_count ?? 1),
+              totalAttempts: Number(row.total_count ?? priorCount + 1),
+              averageScore: Number(row.avg_score ?? score),
               averagePercentage: Number(row.avg_percentage ?? percentage),
               passRate: Number(row.pass_rate ?? (percentage >= 80 ? 100 : 0)),
             },
@@ -95,6 +114,7 @@ export async function POST(request: NextRequest) {
           success: true,
           attempt: { score, totalPoints, percentage },
           percentile: 100,
+          previousAttempts: 0,
         },
         { status: 201 }
       );

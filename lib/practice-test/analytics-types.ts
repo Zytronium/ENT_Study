@@ -20,6 +20,7 @@ export interface ExamSubmissionResponse {
   success: boolean;
   attempt?: ExamAttemptRecord;
   percentile?: number;
+  previousAttempts?: number;
   stats?: PracticeExamStats;
   message?: string;
   offline?: boolean;
