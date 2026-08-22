@@ -1034,6 +1034,70 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       canTypeInHardMode: true,
     },
   },
+  {
+    id: "q-wan-pots-dialup",
+    moduleId: "wan-technologies",
+    moduleName: "WAN Technologies",
+    category: "Analog Modems & POTS",
+    primary: {
+      prompt: "What does the telecommunications acronym 'POTS' stand for, and what signal type did legacy POTS lines use?",
+      options: [
+        "Plain Old Telephone Service; Analog signals",
+        "Packet Optical Transmission System; Digital signals",
+        "Private Open Telephony Standard; Radio frequency signals",
+        "Point of Termination System; Binary pulses",
+      ],
+      answer: "Plain Old Telephone Service; Analog signals",
+      explanation: "POTS stands for Plain Old Telephone Service, transmitting analog voice signals over copper wire pairs.",
+      aliases: ["plain old telephone service and analog signals", "plain old telephone service; analog signals"],
+      canTypeInHardMode: false,
+    },
+    alternate: {
+      prompt: "What was the typical speed range of traditional dial-up modems operating over POTS lines?",
+      options: [
+        "Approximately 300 bps to 54 Kbps",
+        "Approximately 64 Kbps to 128 Kbps",
+        "Approximately 1.544 Mbps to 44.736 Mbps",
+        "Approximately 10 Mb/s to 100 Mb/s",
+      ],
+      answer: "Approximately 300 bps to 54 Kbps",
+      explanation: "Dial-up modem speeds ranged from early 300 bps modems up to 54 Kbps (or 56 Kbps standard).",
+      aliases: ["300 bps to 54 kbps", "300 bps - 54 kbps", "300bps to 54kbps"],
+      canTypeInHardMode: true,
+    },
+  },
+  {
+    id: "q-wan-bundling-t3-e3",
+    moduleId: "wan-technologies",
+    moduleName: "WAN Technologies",
+    category: "Carrier Bundling & Regions",
+    primary: {
+      prompt: "How many T1 circuits are bundled together to form a North American T3 line, and what is its maximum throughput?",
+      options: [
+        "28 T1 lines (672 channels); 44.736 Mbps",
+        "16 T1 lines (512 channels); 34.368 Mbps",
+        "24 T1 lines (576 channels); 37.056 Mbps",
+        "32 T1 lines (768 channels); 49.408 Mbps",
+      ],
+      answer: "28 T1 lines (672 channels); 44.736 Mbps",
+      explanation: "A T3 line multiplexes 28 T1 circuits (T1x28) to provide 672 channels and 44.736 Mbps throughput in North America.",
+      aliases: ["28 t1 lines; 44.736 mbps", "28 t1 lines (672 channels); 44.736 mbps"],
+      canTypeInHardMode: false,
+    },
+    alternate: {
+      prompt: "How many E1 circuits are multiplexed to form a European E3 line, and what is its maximum throughput?",
+      options: [
+        "16 E1 lines (512 channels); 34.368 Mbps",
+        "28 E1 lines (672 channels); 44.736 Mbps",
+        "24 E1 lines (768 channels); 49.152 Mbps",
+        "32 E1 lines (1024 channels); 65.536 Mbps",
+      ],
+      answer: "16 E1 lines (512 channels); 34.368 Mbps",
+      explanation: "An E3 line multiplexes 16 E1 circuits (E1x16) to provide 512 channels and 34.368 Mbps throughput in Europe.",
+      aliases: ["16 e1 lines; 34.368 mbps", "16 e1 lines (512 channels); 34.368 mbps"],
+      canTypeInHardMode: false,
+    },
+  },
 
   // ==========================================
   // MODULE 17: DATA-LINK LAYER

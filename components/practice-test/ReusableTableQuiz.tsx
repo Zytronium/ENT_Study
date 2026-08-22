@@ -9,6 +9,7 @@ interface ReusableTableQuizProps {
   description?: string;
   columns: TableColumnConfig[];
   rows: TableRowData[];
+  blankCellKeys?: string[];
   userAnswers?: Record<string, string>;
   onAnswersChange?: (answers: Record<string, string>) => void;
   showResults?: boolean;
@@ -61,7 +62,18 @@ function matchesSpeed(correct: string, input: string): boolean {
   const cKbps = parseSpeedToKbps(correct);
   const uKbps = parseSpeedToKbps(input);
   if (cKbps !== null && uKbps !== null && cKbps === uKbps) return true;
-  return false;
+
+  const rawNum = correct.split(" ")[0].toLowerCase();
+  const rawUnit = (correct.split(" ")[1] || "").toLowerCase();
+  const inputWithoutSpaces = u.replace(/\s+/g, "");
+
+  return (
+    inputWithoutSpaces === `${rawNum}${rawUnit}` ||
+    inputWithoutSpaces === `${rawNum}${rawUnit.replace("bps", "b/s")}` ||
+    inputWithoutSpaces === `${rawNum}${rawUnit.replace("bps", "b")}` ||
+    inputWithoutSpaces === `${rawNum}${rawUnit[0]}` ||
+    u === rawNum
+  );
 }
 
 function matchesCableType(correct: string, input: string): boolean {
@@ -200,9 +212,40 @@ function normalizeVersion(input: string, correct: string): boolean {
 }
 
 function matchesChannels(correct: string, input: string): boolean {
-  const v = input.trim().toLowerCase().replace(/channels?|chs?/g, "").trim();
-  const c = correct.trim().toLowerCase().replace(/channels?|chs?/g, "").trim();
-  return v === c;
+  if (!input.trim()) return false;
+  const cleanInput = input.trim().toLowerCase();
+  const cleanCorrect = correct.trim().toLowerCase();
+
+  if (cleanCorrect.startsWith("672")) {
+    return (
+      cleanInput === "672" ||
+      cleanInput === "672 channels" ||
+      cleanInput === "672(t1x28)" ||
+      cleanInput === "672 (t1x28)" ||
+      cleanInput === "t1x28" ||
+      cleanInput === "28 t1" ||
+      cleanInput === "28 t1s" ||
+      cleanInput === "28 t1 lines"
+    );
+  }
+  if (cleanCorrect.startsWith("512")) {
+    return (
+      cleanInput === "512" ||
+      cleanInput === "512 channels" ||
+      cleanInput === "512(e1x16)" ||
+      cleanInput === "512 (e1x16)" ||
+      cleanInput === "e1x16" ||
+      cleanInput === "16 e1" ||
+      cleanInput === "16 e1s" ||
+      cleanInput === "16 e1 lines"
+    );
+  }
+  return (
+    cleanInput === cleanCorrect ||
+    cleanInput === `${cleanCorrect} channels` ||
+    cleanInput === `${cleanCorrect} ch` ||
+    (cleanCorrect === "2" && cleanInput === "two")
+  );
 }
 
 export function checkCellCorrect(correctVal: string, userVal: string, colKey?: string): boolean {
@@ -303,6 +346,7 @@ export default function ReusableTableQuiz({
   description,
   columns,
   rows,
+  blankCellKeys: providedBlankKeys,
   userAnswers: externalAnswers,
   onAnswersChange,
   showResults = false,
@@ -325,10 +369,13 @@ export default function ReusableTableQuiz({
     return keys;
   }, [rows, columns]);
 
-  // Generate blank set: exactly 2/3rds of eligible cells
+  // Generate or use provided blank set
   const blankCells = useMemo(() => {
+    if (providedBlankKeys && providedBlankKeys.length > 0) {
+      return new Set(providedBlankKeys);
+    }
     return generateBlankCells(eligibleCellKeys);
-  }, [eligibleCellKeys]);
+  }, [providedBlankKeys, eligibleCellKeys]);
 
   const handleCellChange = useCallback(
     (cellKey: string, value: string) => {

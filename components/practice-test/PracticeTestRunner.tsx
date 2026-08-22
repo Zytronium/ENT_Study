@@ -73,31 +73,36 @@ export default function PracticeTestRunner() {
           const tAct = item.activity as MasterTableActivity;
           const userAns = tableAnswers[item.id] || {};
 
-          let eligibleCount = 0;
-
-          tAct.rows.forEach((row) => {
-            tAct.columns.forEach((col) => {
-              const cellVal = String(row[col.key] ?? "");
-              if (isCellEligible(cellVal)) {
-                eligibleCount++;
-              }
+          let blankKeys = item.blankCellKeys;
+          if (!blankKeys || blankKeys.length === 0) {
+            const eligibleKeys: string[] = [];
+            tAct.rows.forEach((row) => {
+              tAct.columns.forEach((col) => {
+                const cellVal = String(row[col.key] ?? "");
+                if (isCellEligible(cellVal)) {
+                  eligibleKeys.push(`${row.id}_${col.key}`);
+                }
+              });
             });
-          });
+            const targetCount = Math.max(1, Math.round(eligibleKeys.length * (2 / 3)));
+            blankKeys = eligibleKeys.slice(0, targetCount);
+          }
 
-          const totalBlanks = Math.max(1, Math.round(eligibleCount * (2 / 3)));
+          const totalBlanks = blankKeys.length;
           let blanksCorrect = 0;
-          Object.keys(userAns).forEach((key) => {
+          blankKeys.forEach((key) => {
             const parts = key.split("_");
             const rowId = parts[0];
             const colKey = parts.slice(1).join("_");
             const row = tAct.rows.find((r) => String(r.id) === String(rowId));
             const correctVal = row ? String(row[colKey] ?? "") : "";
-            if (checkCellCorrect(correctVal, userAns[key], colKey)) {
+            const userVal = userAns[key] || "";
+            if (checkCellCorrect(correctVal, userVal, colKey)) {
               blanksCorrect++;
             }
           });
 
-          const isPassed = blanksCorrect >= totalBlanks;
+          const isPassed = totalBlanks > 0 && blanksCorrect === totalBlanks;
           const pts = isPassed ? item.points : Math.floor((blanksCorrect / totalBlanks) * item.points);
           earned += pts;
           results[item.id] = { correct: isPassed, earnedPoints: pts, maxPoints: item.points };
@@ -512,6 +517,7 @@ export default function PracticeTestRunner() {
                     description={item.activity.description}
                     columns={item.activity.columns}
                     rows={item.activity.rows}
+                    blankCellKeys={item.blankCellKeys}
                     userAnswers={tableAnswers[item.id] || {}}
                     onAnswersChange={(ans) => handleTableAnswersChange(item.id, ans)}
                     showResults={showResults}

@@ -1,5 +1,34 @@
-import { ActivePracticeItem, ModuleId } from "./types";
+import { ActivePracticeItem, MasterActivity, MasterTableActivity, ModuleId } from "./types";
 import { MASTER_ACTIVITIES, MASTER_QUESTIONS } from "./registry";
+
+export function isCellEligible(val: unknown): boolean {
+  if (val === null || val === undefined) return false;
+  const str = String(val).trim();
+  return (
+    str !== "" &&
+    str !== "-" &&
+    str !== "—" &&
+    str !== "N/A" &&
+    str !== "n/a" &&
+    str !== "NA" &&
+    str !== "na"
+  );
+}
+
+export function generateBlankKeysForTable(act: MasterTableActivity): string[] {
+  const eligibleKeys: string[] = [];
+  act.rows.forEach((row) => {
+    act.columns.forEach((col) => {
+      const val = row[col.key];
+      if (isCellEligible(val)) {
+        eligibleKeys.push(`${row.id}_${col.key}`);
+      }
+    });
+  });
+  const targetCount = Math.max(1, Math.round(eligibleKeys.length * (2 / 3)));
+  const shuffled = shuffle(eligibleKeys);
+  return shuffled.slice(0, targetCount);
+}
 
 function shuffle<T>(array: T[]): T[] {
   const copy = [...array];
@@ -51,6 +80,7 @@ export function generatePracticeTest(options?: PracticeTestOptions): ActivePract
         moduleId: act.moduleId,
         moduleName: act.moduleName,
         activity: act,
+        blankCellKeys: act.type === "table" ? generateBlankKeysForTable(act as MasterTableActivity) : undefined,
         points: 10,
       });
     }
@@ -67,6 +97,7 @@ export function generatePracticeTest(options?: PracticeTestOptions): ActivePract
       moduleId: act.moduleId,
       moduleName: act.moduleName,
       activity: act,
+      blankCellKeys: act.type === "table" ? generateBlankKeysForTable(act as MasterTableActivity) : undefined,
       points: 10,
     });
   }

@@ -96,5 +96,6 @@ export type ActivePracticeItem =
       moduleId: ModuleId;
       moduleName: string;
       activity: MasterActivity;
+      blankCellKeys?: string[];
       points: 10;
     };
