@@ -629,3 +629,47 @@ Class E is for experimental.
 - 128-bit hexadecimal address (i.e. 2001:0db8:85a3:0020:0000:8a2e:0370:7334)
 - 2 parts: Prefixes & Host ID's
 - Over 340 ***Undecillion*** (or 2<sup>128</sup>) unique possible IPv6 addresses 
+
+## Layer 4: Transport & Ports
+
+### Port types 
+
+Ports 0-1023: System / Well-known ports  
+Ports 1024-49151: User / Registered ports  
+Ports 49512-65535: Dynamic / Private ports
+
+### Transport Layer
+
+The Transport layer handles end to end flow control and error correction. It has two protocols: TCP and UDP.
+
+#### TCP
+TCP stands for Transmission Control Protocol. It is direction-oriented and reliable. It checks to make sure the data 
+is delivered.
+
+#### UDP
+UDP stands for User Datagram Protocol. It is connectionless, which is **not reliable**. While faster than TCP, it does
+not care whether the data was delivered intact or at all. Checking if it was delivered properly is up to each 
+application. 
+
+### Port Chart
+
+| Protocols/Application                            | TCP/UDP | Port Number |
+|--------------------------------------------------|---------|-------------|
+| **FTP** (File Transfer Protocol) **Data**        | TCP     | 20          |
+| **FTP** (File Transfer Protocol) **Control**     | TCP     | 21          |
+| **SSH** (Secure Shell Protocol)                  | TCP     | 22          |
+| **Telnet** (Teletype Network)                    | TCP     | 23          |
+| **SMTP** (Simple Mail Transfer Protocol)         | TCP     | 25          |
+| **DNS** (Domain Name System)                     | TCP/UDP | 53          |
+| **DHCP** (Dynamic Host Configuration Protocol)   | UDP     | 67, 68      |
+| **TFTP** (Trivial File Transfer Protocol)        | UDP     | 69          |
+| **HTTP** (Hypertext Transfer Protocol)           | TCP     | 80          |
+| **HTTPS** (Hypertext Transfer Protocol Secure)   | TCP     | 443         |
+| **POP3** (Post Office Protocol)                  | TCP     | 110         |
+| **SNMP** (Simple Network Management Protocol)    | UDP     | 161         |
+| **RDP** (Remote Desktop Protocol)                | TCP     | 3389        |
+| **IMAP** (Internet Message Access Protocol)      | TCP     | 143         |
+| **SMB** (Server Message Block)                   | TCP     | 139 or 445  |
+| **L2TP** (Layer 2 Tunneling Protocol)            | UDP     | 1701        |
+| **LDAP** (Lightweight Directory Access Protocol) | TCP     | 389         |
+****
