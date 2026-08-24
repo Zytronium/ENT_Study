@@ -82,6 +82,19 @@ export function validateFlashcardAnswer(card: FlashcardItem, userAns: string): b
     }
   }
 
+  // If user selected or entered an explicit distractor from options, reject it immediately
+  if (card.options && card.options.length > 0) {
+    const isExplicitDistractor = card.options.some(
+      (opt) =>
+        (opt.toLowerCase().trim() === u || normalize(opt) === normalize(u)) &&
+        opt.toLowerCase().trim() !== a &&
+        normalize(opt) !== normalize(a)
+    );
+    if (isExplicitDistractor) {
+      return false;
+    }
+  }
+
   if (card.aliases && card.aliases.length > 0) {
     const uNorm = normalize(u);
     if (
@@ -96,16 +109,9 @@ export function validateFlashcardAnswer(card: FlashcardItem, userAns: string): b
   if (card.keywords && card.keywords.length > 0) {
     const uTokens = cleanTokens(u);
     const allKeywordsPresent = card.keywords.every((kw) => {
-      const kwClean = kw.trim().toLowerCase();
-      const kwNorm = normalize(kwClean);
-      if (kwClean.includes(" ")) {
-        return u.includes(kwClean) || normalize(u).includes(kwNorm);
-      }
-      return (
-        uTokens.includes(kwClean) ||
-        u.includes(kwClean) ||
-        normalize(u).includes(kwNorm)
-      );
+      const kwTokens = cleanTokens(kw);
+      if (kwTokens.length === 0) return false;
+      return kwTokens.every((kt) => uTokens.includes(kt));
     });
     if (allKeywordsPresent) return true;
   }

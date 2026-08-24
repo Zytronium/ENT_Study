@@ -3867,8 +3867,9 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "explanation": "TCP is a reliable, connection-oriented protocol that ensures data is delivered, while UDP is connectionless and unreliable.",
       "aliases": [
         "tcp is connection-oriented and reliable",
-        "reliable",
-        "connection-oriented"
+        "connection-oriented and reliable",
+        "connection-oriented",
+        "reliable and connection-oriented"
       ],
       "canTypeInHardMode": false
     },

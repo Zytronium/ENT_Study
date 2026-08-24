@@ -91,6 +91,21 @@ describe("MultiSectionQuiz Validation Logic", () => {
     assert.strictEqual(validateQuestionAnswer(busCablesQ, "thicknet & thinnet coaxial"), true);
     assert.strictEqual(validateQuestionAnswer(busCablesQ, "coaxial"), true);
     assert.strictEqual(validateQuestionAnswer(busCablesQ, "fiber optic"), false);
+
+    const httpsQ = {
+      id: "spec-https-port",
+      prompt: "What is the standard port number for HTTPS?",
+      answer: "443",
+      aliases: ["443", "tcp 443", "port 443"],
+      keywords: ["443"],
+      canTypeInHardMode: true,
+    };
+
+    assert.strictEqual(validateQuestionAnswer(httpsQ, "443"), true);
+    assert.strictEqual(validateQuestionAnswer(httpsQ, "tcp 443"), true);
+    assert.strictEqual(validateQuestionAnswer(httpsQ, "port 443"), true);
+    assert.strictEqual(validateQuestionAnswer(httpsQ, "8443"), false);
+    assert.strictEqual(validateQuestionAnswer(httpsQ, "4430"), false);
   });
 
   test("should clear answers and reset validation status on section retry", () => {

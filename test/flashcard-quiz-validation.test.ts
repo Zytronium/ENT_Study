@@ -105,4 +105,96 @@ describe("FlashcardQuiz Validation Logic", () => {
     assert.strictEqual(validateFlashcardAnswer(snmpCard, "TCP 389"), false);
     assert.strictEqual(validateFlashcardAnswer(snmpCard, "UDP 1701"), false);
   });
+
+  test("rejects substring number collisions (e.g. 8443 for 443, 8080 for 80, 3389 for 389)", () => {
+    const httpsCard: FlashcardItem = {
+      id: "fc-https-port",
+      category: "Web Protocols",
+      prompt: "What is the standard port number for encrypted HTTPS web traffic?",
+      answer: "443",
+      aliases: ["443", "tcp 443", "port 443", "tcp port 443"],
+      keywords: ["443"],
+      options: ["443", "80", "8443", "22"],
+    };
+
+    assert.strictEqual(validateFlashcardAnswer(httpsCard, "443"), true);
+    assert.strictEqual(validateFlashcardAnswer(httpsCard, "tcp 443"), true);
+    assert.strictEqual(validateFlashcardAnswer(httpsCard, "port 443"), true);
+    assert.strictEqual(validateFlashcardAnswer(httpsCard, "tcp port 443"), true);
+    assert.strictEqual(validateFlashcardAnswer(httpsCard, "443/tcp"), true);
+    assert.strictEqual(validateFlashcardAnswer(httpsCard, "it uses port 443"), true);
+
+    // Rejects distractor 8443 and other numbers containing 443
+    assert.strictEqual(validateFlashcardAnswer(httpsCard, "8443"), false);
+    assert.strictEqual(validateFlashcardAnswer(httpsCard, "4430"), false);
+    assert.strictEqual(validateFlashcardAnswer(httpsCard, "1443"), false);
+    assert.strictEqual(validateFlashcardAnswer(httpsCard, "80"), false);
+
+    const httpCard: FlashcardItem = {
+      id: "fc-http-port",
+      category: "Web Protocols",
+      prompt: "What is the standard port number for unencrypted HTTP web traffic?",
+      answer: "80",
+      aliases: ["80", "tcp 80", "port 80", "tcp port 80"],
+      keywords: ["80"],
+      options: ["80", "443", "8080", "53"],
+    };
+
+    assert.strictEqual(validateFlashcardAnswer(httpCard, "80"), true);
+    assert.strictEqual(validateFlashcardAnswer(httpCard, "tcp 80"), true);
+    assert.strictEqual(validateFlashcardAnswer(httpCard, "8080"), false);
+    assert.strictEqual(validateFlashcardAnswer(httpCard, "180"), false);
+    assert.strictEqual(validateFlashcardAnswer(httpCard, "800"), false);
+
+    const ldapCard: FlashcardItem = {
+      id: "fc-ldap-port",
+      category: "Directory Services",
+      prompt: "What is the standard port number for LDAP (Lightweight Directory Access Protocol)?",
+      answer: "389",
+      aliases: ["389", "tcp 389", "port 389", "tcp port 389"],
+      keywords: ["389"],
+      options: ["389", "1701", "3389", "143"],
+    };
+
+    assert.strictEqual(validateFlashcardAnswer(ldapCard, "389"), true);
+    assert.strictEqual(validateFlashcardAnswer(ldapCard, "tcp 389"), true);
+    assert.strictEqual(validateFlashcardAnswer(ldapCard, "3389"), false);
+    assert.strictEqual(validateFlashcardAnswer(ldapCard, "1701"), false);
+  });
+
+  test("validates TCP reliability and rejects 'Connectionless and not reliable' distractor", () => {
+    const tcpCard: FlashcardItem = {
+      id: "fc-tcp-reliability",
+      category: "Transport Protocols",
+      prompt: "What are the primary operational characteristics of TCP (Transmission Control Protocol)?",
+      answer: "Connection-oriented and reliable",
+      aliases: [
+        "connection-oriented and reliable",
+        "reliable and connection-oriented",
+        "connection-oriented",
+        "connection oriented",
+        "connection oriented and reliable",
+        "reliable and connection oriented",
+      ],
+      keywords: ["connection", "reliable"],
+      options: [
+        "Connection-oriented and reliable",
+        "Connectionless and not reliable",
+        "Broadcast-only and best-effort",
+        "Hardware-based with no flow control",
+      ],
+    };
+
+    assert.strictEqual(validateFlashcardAnswer(tcpCard, "Connection-oriented and reliable"), true);
+    assert.strictEqual(validateFlashcardAnswer(tcpCard, "connection-oriented and reliable"), true);
+    assert.strictEqual(validateFlashcardAnswer(tcpCard, "connection-oriented"), true);
+    assert.strictEqual(validateFlashcardAnswer(tcpCard, "connection oriented"), true);
+    assert.strictEqual(validateFlashcardAnswer(tcpCard, "reliable and connection-oriented"), true);
+
+    // Reject wrong distractors
+    assert.strictEqual(validateFlashcardAnswer(tcpCard, "Connectionless and not reliable"), false);
+    assert.strictEqual(validateFlashcardAnswer(tcpCard, "connectionless and not reliable"), false);
+    assert.strictEqual(validateFlashcardAnswer(tcpCard, "Broadcast-only and best-effort"), false);
+    assert.strictEqual(validateFlashcardAnswer(tcpCard, "Hardware-based with no flow control"), false);
+  });
 });

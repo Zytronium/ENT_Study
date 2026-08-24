@@ -81,12 +81,9 @@ export function validateDefinitionMatch(item: DefinitionItem, userAns: string): 
   if (item.keywords && item.keywords.length > 0) {
     const uTokens = cleanTokens(u);
     const allKeywordsPresent = item.keywords.every((kw) => {
-      const kwClean = kw.trim().toLowerCase();
-      const kwNorm = normalize(kwClean);
-      if (kwClean.includes(" ")) {
-        return u.includes(kwClean) || normalize(u).includes(kwNorm);
-      }
-      return uTokens.includes(kwClean) || u.includes(kwClean) || normalize(u).includes(kwNorm);
+      const kwTokens = cleanTokens(kw);
+      if (kwTokens.length === 0) return false;
+      return kwTokens.every((kt) => uTokens.includes(kt));
     });
     if (allKeywordsPresent) return true;
   }

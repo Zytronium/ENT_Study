@@ -61,23 +61,31 @@ export default function PracticeTestRunner() {
           }
         }
 
-        if (!isCorrect && item.aliases && item.aliases.length > 0) {
+        const isExplicitDistractor =
+          !isCorrect &&
+          item.options &&
+          item.options.length > 0 &&
+          item.options.some(
+            (opt) =>
+              (opt.toLowerCase().trim() === userVal ||
+                opt.toLowerCase().replace(/[\s-]+/g, "") === userVal.replace(/[\s-]+/g, "")) &&
+              opt.toLowerCase().trim() !== correctVal &&
+              opt.toLowerCase().replace(/[\s-]+/g, "") !== correctVal.replace(/[\s-]+/g, "")
+          );
+
+        if (!isCorrect && !isExplicitDistractor && item.aliases && item.aliases.length > 0) {
           const norm = userVal.replace(/[\s-]+/g, "");
           isCorrect = item.aliases.some(
             (alias) => alias.toLowerCase().replace(/[\s-]+/g, "") === norm || alias.toLowerCase().trim() === userVal
           );
         }
 
-        if (!isCorrect && item.keywords && item.keywords.length > 0) {
+        if (!isCorrect && !isExplicitDistractor && item.keywords && item.keywords.length > 0) {
           const userTokens = userVal.replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter(Boolean);
-          const norm = userVal.replace(/[\s-]+/g, "");
           isCorrect = item.keywords.every((kw) => {
-            const kwClean = kw.trim().toLowerCase();
-            const kwNorm = kwClean.replace(/[\s-]+/g, "");
-            if (kwClean.includes(" ")) {
-              return userVal.includes(kwClean) || norm.includes(kwNorm);
-            }
-            return userTokens.includes(kwClean) || userVal.includes(kwClean) || norm.includes(kwNorm);
+            const kwTokens = kw.toLowerCase().replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter(Boolean);
+            if (kwTokens.length === 0) return false;
+            return kwTokens.every((kt) => userTokens.includes(kt));
           });
         }
 

@@ -64,6 +64,34 @@ export function validateQuestionAnswer(q: QuestionQuizItem, userAns: string): bo
   if (u === a) return true;
   if (normalize(u) === normalize(a)) return true;
 
+  // Handle acronym in parentheses like "SSH (Secure Shell)"
+  if (q.answer.includes(" (")) {
+    const parts = q.answer.split(" (");
+    const acronym = parts[0].toLowerCase().trim();
+    const fullName = parts[1].replace(")", "").toLowerCase().trim();
+    if (
+      u === acronym ||
+      u === fullName ||
+      normalize(u) === normalize(acronym) ||
+      normalize(u) === normalize(fullName)
+    ) {
+      return true;
+    }
+  }
+
+  // If user selected or entered an explicit distractor from options, reject it immediately
+  if (q.options && q.options.length > 0) {
+    const isExplicitDistractor = q.options.some(
+      (opt) =>
+        (opt.toLowerCase().trim() === u || normalize(opt) === normalize(u)) &&
+        opt.toLowerCase().trim() !== a &&
+        normalize(opt) !== normalize(a)
+    );
+    if (isExplicitDistractor) {
+      return false;
+    }
+  }
+
   if (q.aliases && q.aliases.length > 0) {
     const uNorm = normalize(u);
     if (q.aliases.some((alias) => normalize(alias) === uNorm || alias.toLowerCase().trim() === u)) {
@@ -74,12 +102,9 @@ export function validateQuestionAnswer(q: QuestionQuizItem, userAns: string): bo
   if (q.keywords && q.keywords.length > 0) {
     const uTokens = cleanTokens(u);
     const allKeywordsPresent = q.keywords.every((kw) => {
-      const kwClean = kw.trim().toLowerCase();
-      const kwNorm = normalize(kwClean);
-      if (kwClean.includes(" ")) {
-        return u.includes(kwClean) || normalize(u).includes(kwNorm);
-      }
-      return uTokens.includes(kwClean) || u.includes(kwClean) || normalize(u).includes(kwNorm);
+      const kwTokens = cleanTokens(kw);
+      if (kwTokens.length === 0) return false;
+      return kwTokens.every((kt) => uTokens.includes(kt));
     });
     if (allKeywordsPresent) return true;
   }
