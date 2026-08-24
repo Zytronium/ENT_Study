@@ -3864,7 +3864,7 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
         "TCP is faster than UDP because it eliminates delivery acknowledgments"
       ],
       "answer": "TCP is connection-oriented and provides reliable delivery with flow control and error checking",
-      "explanation": "TCP is a reliable, direction-oriented protocol that ensures data is delivered, while UDP is connectionless and unreliable.",
+      "explanation": "TCP is a reliable, connection-oriented protocol that ensures data is delivered, while UDP is connectionless and unreliable.",
       "aliases": [
         "tcp is connection-oriented and reliable",
         "reliable",
@@ -4005,9 +4005,10 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "explanation": "SMTP relies on TCP port 25 for sending and relaying email.",
       "aliases": [
         "tcp 25",
-        "25",
         "tcp port 25",
-        "port 25"
+        "port 25 tcp",
+        "25 tcp",
+        "25/tcp"
       ],
       "canTypeInHardMode": true
     }
@@ -4129,6 +4130,89 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
         "udp 1701",
         "port 1701",
         "udp port 1701"
+      ],
+      "canTypeInHardMode": true
+    }
+  },
+  {
+    "id": "q-ports-registered-dynamic-ranges",
+    "moduleId": "ports",
+    "moduleName": "Transport Layer Ports",
+    "category": "Port Number Ranges",
+    "primary": {
+      "prompt": "Which port number range is designated as User / Registered ports?",
+      "options": [
+        "1024 to 49151",
+        "0 to 1023",
+        "49152 to 65535",
+        "1024 to 65535"
+      ],
+      "answer": "1024 to 49151",
+      "explanation": "Ports 1024 through 49151 are designated as User / Registered ports.",
+      "aliases": [
+        "1024-49151",
+        "1024 to 49151",
+        "1024 - 49151"
+      ],
+      "canTypeInHardMode": true
+    },
+    "alternate": {
+      "prompt": "Which port number range is designated as Dynamic / Private ports?",
+      "options": [
+        "49152 to 65535",
+        "0 to 1023",
+        "1024 to 49151",
+        "32768 to 65535"
+      ],
+      "answer": "49152 to 65535",
+      "explanation": "Ports 49152 through 65535 are designated as Dynamic / Private ports.",
+      "aliases": [
+        "49152-65535",
+        "49152 to 65535",
+        "49512-65535"
+      ],
+      "canTypeInHardMode": true
+    }
+  },
+  {
+    "id": "q-ports-rdp-and-snmp",
+    "moduleId": "ports",
+    "moduleName": "Transport Layer Ports",
+    "category": "Remote & Management Protocols",
+    "primary": {
+      "prompt": "Which port number is utilized by Microsoft Remote Desktop Protocol (RDP) for administrative graphical sessions?",
+      "options": [
+        "TCP port 3389",
+        "UDP port 1701",
+        "TCP port 22",
+        "TCP port 389"
+      ],
+      "answer": "TCP port 3389",
+      "explanation": "RDP operates over TCP port 3389.",
+      "aliases": [
+        "3389",
+        "tcp 3389",
+        "port 3389",
+        "tcp port 3389"
+      ],
+      "canTypeInHardMode": true
+    },
+    "alternate": {
+      "prompt": "Which transport protocol and port number are standardly utilized by SNMP for device monitoring queries?",
+      "options": [
+        "UDP port 161",
+        "TCP port 161",
+        "UDP port 69",
+        "TCP port 143"
+      ],
+      "answer": "UDP port 161",
+      "explanation": "SNMP utilizes UDP port 161 for querying device state and status metrics.",
+      "aliases": [
+        "udp 161",
+        "udp port 161",
+        "port 161 udp",
+        "161 udp",
+        "161/udp"
       ],
       "canTypeInHardMode": true
     }

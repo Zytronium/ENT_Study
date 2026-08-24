@@ -13,8 +13,9 @@ This document explains the reusable study quiz components located in `components
    - [MatchToLayerAndNumberQuiz](#4-matchtolayerandnumberquiz)
    - [CalculationQuiz](#5-calculationquiz)
    - [TableWithBlanksQuiz](#6-tablewithblanksquiz)
-   - [MultiSectionQuiz](#7-multisectionquiz)
-   - [TabbedQuiz](#8-tabbedquiz)
+   - [FlashcardQuiz](#7-flashcardquiz)
+   - [MultiSectionQuiz](#8-multisectionquiz)
+   - [TabbedQuiz](#9-tabbedquiz)
 3. [Mastery / Hard Mode System](#mastery--hard-mode-system)
 4. [Flexible Keyword & Alias Validation](#flexible-keyword--alias-validation)
 5. [Step-by-Step: Creating a New Quiz Page](#step-by-step-creating-a-new-quiz-page)
@@ -36,6 +37,7 @@ components/study-quiz/
 ├── MatchToLayerAndNumberQuiz.tsx  # OSI Layer 1-7 matching & numbering
 ├── CalculationQuiz.tsx            # Numeric conversion & sizing inputs
 ├── TableWithBlanksQuiz.tsx        # Multi-stage matrix tables with blanks
+├── FlashcardQuiz.tsx              # Interactive hybrid/type/MC flashcards
 ├── MultiSectionQuiz.tsx           # Step-by-step sequential multi-part runner
 └── TabbedQuiz.tsx                 # Tab navigation wrapper for multi-view quizzes
 ```
@@ -275,7 +277,60 @@ export default function Page() {
 
 ---
 
-### 7. `MultiSectionQuiz`
+### 7. `FlashcardQuiz`
+
+Interactive active-recall study flashcard deck supporting multiple operating modes:
+- **Hybrid / Both Mode (`mode="both"`)**: Starts in Multiple Choice for the first N cards (default: 3), then automatically transitions into Type-the-Answer for the remaining deck cards.
+- **Multiple Choice Mode (`mode="multiple-choice"`)**: All cards display shuffled multiple-choice buttons.
+- **Type-In Mode (`mode="type"`)**: All cards require typing the answer.
+- **Mastery / Hard Mode**: Scrambles the deck and enforces Type-the-Answer mode for all cards.
+
+```tsx
+import FlashcardQuiz, { FlashcardItem } from "@/components/study-quiz/FlashcardQuiz";
+
+const CARDS: FlashcardItem[] = [
+  {
+    id: "fc-ssh",
+    category: "Remote Access",
+    prompt: "What is the standard port number for SSH (Secure Shell)?",
+    answer: "22",
+    aliases: ["22", "tcp 22", "port 22"],
+    keywords: ["22"],
+    options: ["22", "23", "3389", "80"],
+    explanation: "SSH operates over TCP port 22 to provide encrypted remote management.",
+    hint: "Replaces unencrypted Telnet (port 23).",
+    meta: "TCP",
+  },
+];
+
+export default function Page() {
+  return (
+    <FlashcardQuiz
+      title="Transport Layer Ports"
+      moduleCode="PORT_DRILL"
+      cards={CARDS}
+      defaultMode="both"
+      hybridChoiceCount={3}
+    />
+  );
+}
+```
+
+#### `FlashcardItem` Interface
+- `id`: `string | number` - Unique card identifier.
+- `prompt`: `string` - Front side prompt/question.
+- `answer`: `string` - Back side canonical correct answer.
+- `category` *(optional)*: `string` - Category badge (e.g., `"Port Ranges"`).
+- `options` *(optional)*: `string[]` - Explicit distractor options (auto-generated from deck if omitted).
+- `aliases` *(optional)*: `string[]` - Alternative acceptable spellings/formats.
+- `keywords` *(optional)*: `string[]` - Tokenized keyword list for flexible evaluation.
+- `explanation` *(optional)*: `string` - Context explanation revealed after answering.
+- `hint` *(optional)*: `string` - Optional hint toggle.
+- `meta` *(optional)*: `string` - Extra metadata tag (e.g., `"TCP 22"`).
+
+---
+
+### 8. `MultiSectionQuiz`
 
 Orchestrates sequential multi-part study quizzes. Displays progressive stage dots, validates one section at a time, locks future stages until prior stages are passed, and resets answers cleanly upon retry.
 
@@ -333,7 +388,7 @@ export default function Page() {
 
 ---
 
-### 8. `TabbedQuiz`
+### 9. `TabbedQuiz`
 
 Provides a top-level tab switcher to combine multiple sub-quizzes (such as a matrix reference table and a follow-up diagnostic question set) into a single route while preserving progress across tabs.
 

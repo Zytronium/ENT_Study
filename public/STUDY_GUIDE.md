@@ -640,10 +640,10 @@ Ports 49512-65535: Dynamic / Private ports
 
 ### Transport Layer
 
-The Transport layer handles end to end flow control and error correction. It has two protocols: TCP and UDP.
+The Transport layer handles end-to-end flow control and error correction. It has two protocols: TCP and UDP.
 
 #### TCP
-TCP stands for Transmission Control Protocol. It is direction-oriented and reliable. It checks to make sure the data 
+TCP stands for Transmission Control Protocol. It is connection-oriented and reliable. It checks to make sure the data 
 is delivered.
 
 #### UDP
