@@ -44,6 +44,133 @@ export interface TableWithBlanksQuizProps {
   onValidateSection?: (allCorrect: boolean, score: number, total: number) => void;
 }
 
+// -------- cost computation --------
+// Same scoring logic as before, just computed for a single (physicalRow, targetRow)
+// pair instead of for a full permutation. Higher score = better match.
+function scorePair(
+  physicalRow: TableRow,
+  targetRow: TableRow,
+  columns: TableColumn[],
+  blankKeys: Set<string>,
+  answers: Record<string, string>,
+  useTextInput: boolean
+): number {
+  let score = 0;
+
+  for (const col of columns) {
+    const segs = physicalRow.cellSegments?.[col.key];
+    const targetSegs = targetRow.cellSegments?.[col.key];
+
+    if (segs && segs.length > 0 && targetSegs && targetSegs.length > 0) {
+      segs.forEach((seg, sIdx) => {
+        const cellKey = `${physicalRow.id}_${col.key}__${seg.key}`;
+        const targetSegVal = targetSegs[sIdx]?.value || "";
+        if (blankKeys.has(cellKey)) {
+          const userVal = answers[cellKey] || "";
+          if (userVal) {
+            const isRight = useTextInput
+              ? checkCellCorrect(targetSegVal, userVal, col.key)
+              : userVal === targetSegVal;
+            if (isRight) score += 1;
+          }
+        } else {
+          if (seg.value === targetSegVal) {
+            score += 10;
+          } else {
+            score -= 1000;
+          }
+        }
+      });
+    } else {
+      const cellKey = `${physicalRow.id}_${col.key}`;
+      const targetVal = String(targetRow[col.key] ?? "");
+      if (blankKeys.has(cellKey)) {
+        const userVal = answers[cellKey] || "";
+        if (userVal) {
+          const isRight = useTextInput
+            ? checkCellCorrect(targetVal, userVal, col.key)
+            : userVal === targetVal;
+          if (isRight) score += 1;
+        }
+      } else {
+        const fixedVal = String(physicalRow[col.key] ?? "");
+        if (fixedVal === targetVal) {
+          score += 10;
+        } else {
+          score -= 1000;
+        }
+      }
+    }
+  }
+
+  return score;
+}
+
+// -------- Hungarian algorithm (Jonker-Volgenant style, O(n^3)) --------
+// Solves min-cost bipartite assignment. We negate scores to turn our
+// max-score problem into a min-cost problem.
+function hungarian(costMatrix: number[][]): number[] {
+  const n = costMatrix.length;
+  const INF = Infinity;
+  const u = new Array(n + 1).fill(0);
+  const v = new Array(n + 1).fill(0);
+  const p = new Array(n + 1).fill(0);
+  const way = new Array(n + 1).fill(0);
+
+  for (let i = 1; i <= n; i++) {
+    p[0] = i;
+    let j0 = 0;
+    const minv = new Array(n + 1).fill(INF);
+    const used = new Array(n + 1).fill(false);
+
+    do {
+      used[j0] = true;
+      const i0 = p[j0];
+      let delta = INF;
+      let j1 = -1;
+
+      for (let j = 1; j <= n; j++) {
+        if (!used[j]) {
+          const cur = costMatrix[i0 - 1][j - 1] - u[i0] - v[j];
+          if (cur < minv[j]) {
+            minv[j] = cur;
+            way[j] = j0;
+          }
+          if (minv[j] < delta) {
+            delta = minv[j];
+            j1 = j;
+          }
+        }
+      }
+
+      for (let j = 0; j <= n; j++) {
+        if (used[j]) {
+          u[p[j]] += delta;
+          v[j] -= delta;
+        } else {
+          minv[j] -= delta;
+        }
+      }
+
+      j0 = j1;
+    } while (p[j0] !== 0);
+
+    do {
+      const j1 = way[j0];
+      p[j0] = p[j1];
+      j0 = j1;
+    } while (j0 !== 0);
+  }
+
+  // p[j] = row assigned to column j (1-indexed). Convert to result[row] = col.
+  const result = new Array(n).fill(0);
+  for (let j = 1; j <= n; j++) {
+    result[p[j] - 1] = j - 1;
+  }
+  return result;
+}
+
+// -------- public API (same signature as before) --------
 export function getBestRowMapping(
   rows: TableRow[],
   columns: TableColumn[],
@@ -54,101 +181,22 @@ export function getBestRowMapping(
   const n = rows.length;
   if (n <= 1) return rows.map((_, i) => i);
 
-  const perms: number[][] = [];
-  const current: number[] = [];
-  const used: boolean[] = new Array(n).fill(false);
-
-  function generatePerms() {
-    if (current.length === n) {
-      perms.push([...current]);
-      return;
+  // Build an n x n score matrix: scoreMatrix[physicalIdx][targetIdx]
+  const scoreMatrix: number[][] = [];
+  for (let r = 0; r < n; r++) {
+    const row: number[] = [];
+    for (let t = 0; t < n; t++) {
+      row.push(scorePair(rows[r], rows[t], columns, blankKeys, answers, useTextInput));
     }
-    for (let i = 0; i < n; i++) {
-      if (!used[i]) {
-        used[i] = true;
-        current.push(i);
-        generatePerms();
-        current.pop();
-        used[i] = false;
-      }
-    }
-  }
-  generatePerms();
-
-  let bestScore = -Infinity;
-  let bestPerm = rows.map((_, i) => i);
-  let bestIdentityMatches = -1;
-
-  for (const perm of perms) {
-    let score = 0;
-    let identityMatches = 0;
-
-    for (let r = 0; r < n; r++) {
-      const targetIdx = perm[r];
-      const targetRow = rows[targetIdx];
-      const physicalRow = rows[r];
-      if (targetIdx === r) identityMatches++;
-
-      for (const col of columns) {
-        const segs = physicalRow.cellSegments?.[col.key];
-        const targetSegs = targetRow.cellSegments?.[col.key];
-
-        if (segs && segs.length > 0 && targetSegs && targetSegs.length > 0) {
-          segs.forEach((seg, sIdx) => {
-            const cellKey = `${physicalRow.id}_${col.key}__${seg.key}`;
-            const targetSegVal = targetSegs[sIdx]?.value || "";
-            if (blankKeys.has(cellKey)) {
-              const userVal = answers[cellKey] || "";
-              if (userVal) {
-                const isRight = useTextInput
-                  ? checkCellCorrect(targetSegVal, userVal, col.key)
-                  : userVal === targetSegVal;
-                if (isRight) score += 1;
-              }
-            } else {
-              // Fixed cell
-              if (seg.value === targetSegVal) {
-                score += 10;
-              } else {
-                score -= 1000;
-              }
-            }
-          });
-        } else {
-          const cellKey = `${physicalRow.id}_${col.key}`;
-          const targetVal = String(targetRow[col.key] ?? "");
-          if (blankKeys.has(cellKey)) {
-            const userVal = answers[cellKey] || "";
-            if (userVal) {
-              const isRight = useTextInput
-                ? checkCellCorrect(targetVal, userVal, col.key)
-                : userVal === targetVal;
-              if (isRight) score += 1;
-            }
-          } else {
-            // Fixed cell
-            const fixedVal = String(physicalRow[col.key] ?? "");
-            if (fixedVal === targetVal) {
-              score += 10;
-            } else {
-              score -= 1000;
-            }
-          }
-        }
-      }
-    }
-
-    if (
-      score > bestScore ||
-      (score === bestScore && identityMatches > bestIdentityMatches)
-    ) {
-      bestScore = score;
-      bestPerm = perm;
-      bestIdentityMatches = identityMatches;
-    }
+    scoreMatrix.push(row);
   }
 
-  return bestPerm;
+  // Hungarian algorithm solves minimum cost, so negate to maximize score.
+  // Shift to keep all costs non-negative/finite-friendly (not strictly required
+  // for this implementation, but keeps magnitudes sane).
+  const costMatrix = scoreMatrix.map((row) => row.map((s) => -s));
+
+  return hungarian(costMatrix);
 }
 
 export default function TableWithBlanksQuiz({

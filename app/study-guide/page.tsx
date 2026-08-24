@@ -149,6 +149,12 @@ const TOPIC_QUIZ_MAP: Record<string, { title: string; quizUrl: string; quizName:
     quizName: 'General IP Address Classes Matrix Quiz',
     description: 'Complete the full IPv4 classes matrix across Classes A through E, network numbers, Net/Host layouts, and subnet masks.',
   },
+  'layer-4-transport--ports': {
+    title: 'Layer 4 Transport & Ports',
+    quizUrl: '/ports',
+    quizName: 'Layer 4 Ports Matrix Quiz',
+    description: 'Complete the port chart for protocols/applcations, TCP/UDP, and port numbers.',
+  },
 };
 
 type Token =

@@ -191,6 +191,12 @@ const studyTopics: Array<{
     date: "8/20/26",
     description: "Class A through E IPv4 classifications, network numbers, Net/Host layouts, subnet masks, and capacities.",
   },
+  {
+    href: "/ports",
+    title: "Transport Layer Ports",
+    date: "8/24/26",
+    description: "Transport layer protocols/Application ports and TCP/UDP.",
+  },
 ];
 
 function formatUptime(totalSeconds: number): string {

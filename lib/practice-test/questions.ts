@@ -3808,5 +3808,329 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       ],
       "canTypeInHardMode": true
     }
+  },
+  {
+    "id": "q-ports-port-ranges",
+    "moduleId": "ports",
+    "moduleName": "Transport Layer Ports",
+    "category": "Port Number Ranges",
+    "primary": {
+      "prompt": "According to standard transport layer port allocations, which port range is designated as System or Well-Known ports?",
+      "options": [
+        "0 to 1023",
+        "1024 to 49151",
+        "49152 to 65535",
+        "1 to 255"
+      ],
+      "answer": "0 to 1023",
+      "explanation": "Ports 0 through 1023 are classified as System / Well-known ports.",
+      "aliases": [
+        "0-1023",
+        "0 to 1023",
+        "0 - 1023"
+      ],
+      "canTypeInHardMode": true
+    },
+    "alternate": {
+      "prompt": "What classification is given to port numbers in the range 1024 to 49151?",
+      "options": [
+        "User / Registered ports",
+        "System / Well-known ports",
+        "Dynamic / Private ports",
+        "Ephemeral ports"
+      ],
+      "answer": "User / Registered ports",
+      "explanation": "The port range 1024 to 49151 is assigned for User / Registered ports.",
+      "aliases": [
+        "user / registered ports",
+        "registered ports",
+        "user ports",
+        "user/registered"
+      ],
+      "canTypeInHardMode": true
+    }
+  },
+  {
+    "id": "q-ports-tcp-vs-udp",
+    "moduleId": "ports",
+    "moduleName": "Transport Layer Ports",
+    "category": "Transport Protocols",
+    "primary": {
+      "prompt": "What is a primary operational characteristic of the Transmission Control Protocol (TCP) compared to User Datagram Protocol (UDP)?",
+      "options": [
+        "TCP is connection-oriented and provides reliable delivery with flow control and error checking",
+        "TCP is connectionless and does not verify whether packets arrive intact",
+        "TCP operates exclusively at Layer 3 to route packets across networks",
+        "TCP is faster than UDP because it eliminates delivery acknowledgments"
+      ],
+      "answer": "TCP is connection-oriented and provides reliable delivery with flow control and error checking",
+      "explanation": "TCP is a reliable, direction-oriented protocol that ensures data is delivered, while UDP is connectionless and unreliable.",
+      "aliases": [
+        "tcp is connection-oriented and reliable",
+        "reliable",
+        "connection-oriented"
+      ],
+      "canTypeInHardMode": false
+    },
+    "alternate": {
+      "prompt": "Which statement accurately describes the User Datagram Protocol (UDP) at Layer 4?",
+      "options": [
+        "It is a connectionless and unreliable protocol that prioritizes speed without verifying packet delivery",
+        "It is a connection-oriented protocol that guarantees delivery through error correction",
+        "It requires three-way handshakes to establish reliable sessions between hosts",
+        "It manages physical MAC address mappings across local switch ports"
+      ],
+      "answer": "It is a connectionless and unreliable protocol that prioritizes speed without verifying packet delivery",
+      "explanation": "UDP is connectionless and not reliable; it is faster than TCP and leaves delivery verification up to the application.",
+      "aliases": [
+        "connectionless and unreliable",
+        "unreliable and connectionless"
+      ],
+      "canTypeInHardMode": false
+    }
+  },
+  {
+    "id": "q-ports-web-secure",
+    "moduleId": "ports",
+    "moduleName": "Transport Layer Ports",
+    "category": "Standard Protocols",
+    "primary": {
+      "prompt": "Which standard TCP port numbers are utilized by unencrypted HTTP and encrypted HTTPS web traffic respectively?",
+      "options": [
+        "Port 80 for HTTP and Port 443 for HTTPS",
+        "Port 20 for HTTP and Port 21 for HTTPS",
+        "Port 25 for HTTP and Port 110 for HTTPS",
+        "Port 53 for HTTP and Port 69 for HTTPS"
+      ],
+      "answer": "Port 80 for HTTP and Port 443 for HTTPS",
+      "explanation": "HTTP operates over TCP port 80, whereas HTTPS uses TCP port 443.",
+      "aliases": [
+        "80 and 443",
+        "80, 443",
+        "port 80 and port 443",
+        "80/443"
+      ],
+      "canTypeInHardMode": true
+    },
+    "alternate": {
+      "prompt": "An administrator is configuring firewall rules to allow encrypted Hypertext Transfer Protocol Secure (HTTPS) sessions. Which transport protocol and port must be permitted?",
+      "options": [
+        "TCP port 443",
+        "UDP port 443",
+        "TCP port 80",
+        "UDP port 80"
+      ],
+      "answer": "TCP port 443",
+      "explanation": "HTTPS communicates using TCP over port 443.",
+      "aliases": [
+        "tcp 443",
+        "443",
+        "tcp port 443",
+        "port 443"
+      ],
+      "canTypeInHardMode": true
+    }
+  },
+  {
+    "id": "q-ports-remote-management",
+    "moduleId": "ports",
+    "moduleName": "Transport Layer Ports",
+    "category": "Remote Access Protocols",
+    "primary": {
+      "prompt": "Which secure CLI remote access protocol operates on TCP port 22, replacing the unencrypted Telnet protocol on TCP port 23?",
+      "options": [
+        "SSH (Secure Shell)",
+        "RDP (Remote Desktop Protocol)",
+        "LDAP (Lightweight Directory Access Protocol)",
+        "SMTP (Simple Mail Transfer Protocol)"
+      ],
+      "answer": "SSH (Secure Shell)",
+      "explanation": "SSH provides encrypted remote management over TCP port 22, whereas Telnet operates over TCP port 23 unencrypted.",
+      "aliases": [
+        "ssh",
+        "secure shell",
+        "ssh (secure shell)"
+      ],
+      "canTypeInHardMode": true
+    },
+    "alternate": {
+      "prompt": "What port number and transport protocol are utilized by Microsoft Remote Desktop Protocol (RDP) for graphical remote management sessions?",
+      "options": [
+        "TCP port 3389",
+        "UDP port 1701",
+        "TCP port 389",
+        "TCP port 22"
+      ],
+      "answer": "TCP port 3389",
+      "explanation": "RDP uses TCP port 3389 for remote desktop connections.",
+      "aliases": [
+        "3389",
+        "tcp 3389",
+        "port 3389",
+        "tcp port 3389"
+      ],
+      "canTypeInHardMode": true
+    }
+  },
+  {
+    "id": "q-ports-email-protocols",
+    "moduleId": "ports",
+    "moduleName": "Transport Layer Ports",
+    "category": "Email Protocols",
+    "primary": {
+      "prompt": "Which email protocols use TCP ports 25, 110, and 143 respectively?",
+      "options": [
+        "SMTP (Port 25), POP3 (Port 110), and IMAP (Port 143)",
+        "POP3 (Port 25), SMTP (Port 110), and IMAP (Port 143)",
+        "IMAP (Port 25), POP3 (Port 110), and SMTP (Port 143)",
+        "SMTP (Port 25), IMAP (Port 110), and POP3 (Port 143)"
+      ],
+      "answer": "SMTP (Port 25), POP3 (Port 110), and IMAP (Port 143)",
+      "explanation": "Simple Mail Transfer Protocol uses port 25, Post Office Protocol 3 uses port 110, and Internet Message Access Protocol uses port 143, all over TCP.",
+      "aliases": [
+        "smtp, pop3, imap",
+        "smtp, pop3, and imap"
+      ],
+      "canTypeInHardMode": false
+    },
+    "alternate": {
+      "prompt": "Which transport protocol and port number are used by SMTP to transmit mail between email servers?",
+      "options": [
+        "TCP port 25",
+        "UDP port 25",
+        "TCP port 110",
+        "TCP port 143"
+      ],
+      "answer": "TCP port 25",
+      "explanation": "SMTP relies on TCP port 25 for sending and relaying email.",
+      "aliases": [
+        "tcp 25",
+        "25",
+        "tcp port 25",
+        "port 25"
+      ],
+      "canTypeInHardMode": true
+    }
+  },
+  {
+    "id": "q-ports-udp-services",
+    "moduleId": "ports",
+    "moduleName": "Transport Layer Ports",
+    "category": "UDP Services",
+    "primary": {
+      "prompt": "Which of the following network services use UDP rather than TCP for their primary transport operations?",
+      "options": [
+        "DHCP (Ports 67, 68), TFTP (Port 69), and SNMP (Port 161)",
+        "HTTP (Port 80), HTTPS (Port 443), and SSH (Port 22)",
+        "SMTP (Port 25), POP3 (Port 110), and IMAP (Port 143)",
+        "FTP Data (Port 20), FTP Control (Port 21), and Telnet (Port 23)"
+      ],
+      "answer": "DHCP (Ports 67, 68), TFTP (Port 69), and SNMP (Port 161)",
+      "explanation": "DHCP (UDP 67/68), TFTP (UDP 69), SNMP (UDP 161), and L2TP (UDP 1701) all use UDP as their transport protocol.",
+      "aliases": [
+        "dhcp, tftp, snmp",
+        "dhcp, tftp, and snmp"
+      ],
+      "canTypeInHardMode": false
+    },
+    "alternate": {
+      "prompt": "Which application protocol can operate using both TCP and UDP on port 53?",
+      "options": [
+        "DNS (Domain Name System)",
+        "DHCP (Dynamic Host Configuration Protocol)",
+        "TFTP (Trivial File Transfer Protocol)",
+        "SNMP (Simple Network Management Protocol)"
+      ],
+      "answer": "DNS (Domain Name System)",
+      "explanation": "DNS utilizes port 53 and can operate over both TCP and UDP.",
+      "aliases": [
+        "dns",
+        "domain name system",
+        "dns (domain name system)"
+      ],
+      "canTypeInHardMode": true
+    }
+  },
+  {
+    "id": "q-ports-ftp-operation",
+    "moduleId": "ports",
+    "moduleName": "Transport Layer Ports",
+    "category": "File Transfer Protocols",
+    "primary": {
+      "prompt": "How are TCP port numbers 20 and 21 allocated during standard File Transfer Protocol (FTP) operations?",
+      "options": [
+        "Port 20 is used for FTP Data transfer and Port 21 is used for FTP Control commands",
+        "Port 20 is used for FTP Control commands and Port 21 is used for FTP Data transfer",
+        "Port 20 is used for encrypted SFTP and Port 21 is used for unencrypted FTP",
+        "Port 20 is used for TFTP UDP transfer and Port 21 is used for FTP TCP transfer"
+      ],
+      "answer": "Port 20 is used for FTP Data transfer and Port 21 is used for FTP Control commands",
+      "explanation": "FTP uses two separate TCP connections: port 20 for data transmission and port 21 for command/control.",
+      "aliases": [
+        "20 for data and 21 for control",
+        "20 is data and 21 is control",
+        "20 data, 21 control",
+        "port 20 data and port 21 control"
+      ],
+      "canTypeInHardMode": false
+    },
+    "alternate": {
+      "prompt": "Which port number does an FTP client connect to when establishing the command/control connection with an FTP server?",
+      "options": [
+        "TCP port 21",
+        "TCP port 20",
+        "UDP port 69",
+        "TCP port 22"
+      ],
+      "answer": "TCP port 21",
+      "explanation": "FTP Control commands are sent over TCP port 21, while data transfer uses TCP port 20.",
+      "aliases": [
+        "21",
+        "tcp 21",
+        "port 21",
+        "tcp port 21"
+      ],
+      "canTypeInHardMode": true
+    }
+  },
+  {
+    "id": "q-ports-directory-vpn-shares",
+    "moduleId": "ports",
+    "moduleName": "Transport Layer Ports",
+    "category": "Directory & Sharing Protocols",
+    "primary": {
+      "prompt": "Which standard ports are used by LDAP (Lightweight Directory Access Protocol) and SMB (Server Message Block)?",
+      "options": [
+        "LDAP uses TCP port 389; SMB uses TCP port 139 or 445",
+        "LDAP uses UDP port 1701; SMB uses TCP port 3389",
+        "LDAP uses TCP port 22; SMB uses UDP port 161",
+        "LDAP uses TCP port 110; SMB uses TCP port 143"
+      ],
+      "answer": "LDAP uses TCP port 389; SMB uses TCP port 139 or 445",
+      "explanation": "LDAP uses TCP port 389, and SMB uses TCP ports 139 or 445 for file and printer sharing.",
+      "aliases": [
+        "ldap 389, smb 139 or 445",
+        "389 and 139 or 445"
+      ],
+      "canTypeInHardMode": false
+    },
+    "alternate": {
+      "prompt": "Which Layer 2 Tunneling Protocol (L2TP) port uses UDP for establishing VPN tunnels?",
+      "options": [
+        "UDP port 1701",
+        "UDP port 161",
+        "TCP port 389",
+        "TCP port 443"
+      ],
+      "answer": "UDP port 1701",
+      "explanation": "L2TP uses UDP port 1701.",
+      "aliases": [
+        "1701",
+        "udp 1701",
+        "port 1701",
+        "udp port 1701"
+      ],
+      "canTypeInHardMode": true
+    }
   }
 ];

@@ -29,6 +29,7 @@ describe("Master Questions Coverage & Quality", () => {
     "network-layer-ip-addresses",
     "private-ip-classes",
     "ip-address-classes",
+    "ports",
   ];
 
   it("should verify master questions and activities are defined and populated", () => {

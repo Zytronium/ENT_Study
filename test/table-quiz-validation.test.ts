@@ -45,6 +45,26 @@ describe("Reusable Table Quiz Validation & Consistency", () => {
     assert.strictEqual(checkCellCorrect("16,777,214", "16777214", "possibleHosts"), true);
   });
 
+  it("should validate Protocol Port Chart table cells accurately", () => {
+    assert.strictEqual(checkCellCorrect("FTP Data", "ftp data", "protocol"), true);
+    assert.strictEqual(checkCellCorrect("SSH", "ssh", "protocol"), true);
+    assert.strictEqual(checkCellCorrect("TCP", "tcp", "tcpUdp"), true);
+    assert.strictEqual(checkCellCorrect("UDP", "udp", "tcpUdp"), true);
+    assert.strictEqual(checkCellCorrect("TCP/UDP", "tcp/udp", "tcpUdp"), true);
+    assert.strictEqual(checkCellCorrect("TCP/UDP", "tcp, udp", "tcpUdp"), true);
+    assert.strictEqual(checkCellCorrect("TCP/UDP", "tcp and udp", "tcpUdp"), true);
+    assert.strictEqual(checkCellCorrect("TCP/UDP", "udp/tcp", "tcpUdp"), true);
+    assert.strictEqual(checkCellCorrect("20", "20", "port"), true);
+    assert.strictEqual(checkCellCorrect("67, 68", "67, 68", "port"), true);
+    assert.strictEqual(checkCellCorrect("67, 68", "67,68", "port"), true);
+    assert.strictEqual(checkCellCorrect("67, 68", "67/68", "port"), true);
+    assert.strictEqual(checkCellCorrect("67, 68", "67 and 68", "port"), true);
+    assert.strictEqual(checkCellCorrect("139 or 445", "139 or 445", "port"), true);
+    assert.strictEqual(checkCellCorrect("139 or 445", "139/445", "port"), true);
+    assert.strictEqual(checkCellCorrect("139 or 445", "139, 445", "port"), true);
+    assert.strictEqual(checkCellCorrect("3389", "3389", "port"), true);
+  });
+
   it("should correctly identify non-blankable / non-eligible cells", () => {
     assert.strictEqual(isCellEligible("-"), false);
     assert.strictEqual(isCellEligible("—"), false);

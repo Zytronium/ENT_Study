@@ -20,7 +20,8 @@ export type ModuleId =
   | "layer-2-switches"
   | "network-layer-ip-addresses"
   | "private-ip-classes"
-  | "ip-address-classes";
+  | "ip-address-classes"
+  | "ports";
 
 export interface QuestionWording {
   prompt: string;

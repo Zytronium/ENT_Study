@@ -317,6 +317,54 @@ export function checkCellCorrect(correctVal: string, userVal: string, colKey?: s
   if (colKey === "channels") {
     return matchesChannels(c, u);
   }
+  if (colKey === "protocol") {
+    return normalizeCode(u) === normalizeCode(c);
+  }
+  if (colKey === "tcpUdp") {
+    const cleanU = normalizeCode(u);
+    const cleanC = normalizeCode(c);
+    if (cleanC === "tcp/udp") {
+      return (
+        cleanU === "tcp/udp" ||
+        cleanU === "tcp,udp" ||
+        cleanU === "tcpandudp" ||
+        cleanU === "udp/tcp" ||
+        cleanU === "tcpudp" ||
+        cleanU === "udptcp"
+      );
+    }
+    return cleanU === cleanC;
+  }
+  if (colKey === "port") {
+    const cleanU = normalizeCode(u);
+    const cleanC = normalizeCode(c);
+    if (c === "67, 68") {
+      return (
+        cleanU === "67,68" ||
+        cleanU === "6768" ||
+        cleanU === "67/68" ||
+        cleanU === "67and68" ||
+        cleanU === "68,67" ||
+        cleanU === "6867" ||
+        cleanU === "67-68" ||
+        cleanU === "67" ||
+        cleanU === "68"
+      );
+    }
+    if (c === "139 or 445") {
+      return (
+        cleanU === "139or445" ||
+        cleanU === "139/445" ||
+        cleanU === "139,445" ||
+        cleanU === "139445" ||
+        cleanU === "445or139" ||
+        cleanU === "445/139" ||
+        cleanU === "139" ||
+        cleanU === "445"
+      );
+    }
+    return cleanU === cleanC;
+  }
 
   // Universal fallback checks across all patterns
   if (normalizeCode(c) === normalizeCode(u)) return true;
