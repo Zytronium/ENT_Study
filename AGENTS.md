@@ -39,7 +39,7 @@ After building or editing a study quiz, ensure you:
 - link the new practice quiz to the study guide viewer if you created a new quiz
 - edit lib/questions.ts and lib/registry.ts to include new questions and/or activities from the quiz and an alternatively worded version of each new question
 
-Note: Flashcards count as questions, not activities.
+Note: Flashcards count as questions, not activities. Bonus questions should not go into the practice test questions pool.
 
 ## General Rules
 DO NOT use emojis or EM dashes unless explicitly asked to. Avoid the animate-pulse tailwind class. Ensure everything is
