@@ -1,34 +1,71 @@
-import Link from "next/link";
-import type { Metadata } from "next";
+"use client";
 
-/* Robots: no index | TODO: REMOVE THIS WHEN PAGE IS IMPLEMENTED; Replace with proper metadata for title and description */
-export const metadata: Metadata = {
-  robots: {
-    index: false,
-    follow: false,
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import QuestionQuiz, { QuestionQuizItem } from "@/components/study-quiz/QuestionQuiz";
+
+const questions: QuestionQuizItem[] = [
+  {
+    id: "ftp-security",
+    category: "FTP Characteristics",
+    prompt: "Which statement accurately describes standard FTP?",
+    options: [
+      "It is unsecured, uses usernames and passwords, and operates over TCP",
+      "It is secured, uses anonymous access, and operates over UDP",
+      "It is secured, uses usernames and passwords, and shares TCP port 22 with SSH",
+      "It is unsecured, uses anonymous access, and operates over UDP port 69",
+    ],
+    answer: "It is unsecured, uses usernames and passwords, and operates over TCP",
+    explanation: "The study guide identifies FTP as unsecured, credential-based, and TCP-based.",
   },
-};
+  {
+    id: "tftp-characteristics",
+    category: "TFTP Characteristics",
+    prompt: "Which combination describes TFTP?",
+    options: [
+      "TCP, usernames and passwords, ports 20 and 21",
+      "TCP, usernames and passwords, port 22",
+      "UDP, anonymous access, port 69",
+      "UDP, usernames and passwords, port 21",
+    ],
+    answer: "UDP, anonymous access, port 69",
+    explanation: "TFTP uses UDP, is anonymous, and operates on port 69.",
+  },
+  {
+    id: "protocol-transport",
+    category: "Protocol Comparison",
+    prompt: "Which protocol is secured, uses TCP, and uses usernames and passwords?",
+    options: ["FTP", "SFTP", "TFTP"],
+    answer: "SFTP",
+    explanation: "SFTP is the secured username & password file-transfer protocol that uses TCP.",
+    canTypeInHardMode: true,
+    aliases: ["secure ftp", "secure file transfer protocol", "sftp", "secure file transfer"],
+    keywords: ["sftp"],
+  },
+];
 
-export default function Ftp() {
+function FtpQuizContent() {
+  const searchParams = useSearchParams();
+  const isMastery = searchParams.get("mastery") === "true";
+
   return (
-    <div className="min-h-screen flex flex-col items-center p-8">
-      <header className="w-full max-w-4xl mb-8 border-b border-border pb-4">
-        <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-accent">ENT_ROUTER_V1 | FTP</h1>
-          <Link href="/" className="text-sm text-accent hover:underline">{"<"} BACK TO HUB</Link>
-        </div>
-      </header>
+    <QuestionQuiz
+      moduleTag="DIAGNOSTIC_MODULE"
+      moduleCode="FILE_TRANSFER_PROTOCOLS"
+      title="FTP, SFTP, & TFTP"
+      heading="[FILE_TRANSFER_PROTOCOLS_CHALLENGE]"
+      description="Identify the transport, security, authentication, and port characteristics of each protocol."
+      studyGuideHref="/study-guide#ftp-sftp--tftp"
+      questions={questions}
+      initialHardMode={isMastery}
+    />
+  );
+}
 
-      <main className="w-full max-w-4xl terminal-box min-h-100 flex flex-col items-center justify-center text-slate-500">
-        <div className="text-4xl mb-4">🛠️</div>
-        <h2 className="text-xl font-bold mb-2 text-slate-400">[PAGE_UNDER_CONSTRUCTION]</h2>
-        <p className="max-w-md text-center">
-          This module is currently being provisioned. Please check back later.
-        </p>
-        <div className="mt-8 font-mono text-xs opacity-50 animate-pulse">
-          $ pending_update --module tools --status placeholder
-        </div>
-      </main>
-    </div>
+export default function FtpQuiz() {
+  return (
+    <Suspense fallback={null}>
+      <FtpQuizContent />
+    </Suspense>
   );
 }

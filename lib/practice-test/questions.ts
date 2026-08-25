@@ -2880,5 +2880,117 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "answer": "Router",
       "explanation": "The router connects internal hosts to the ISP and performs NAT translation."
     }
+  },
+  {
+    "id": "q-ftp-security",
+    "moduleId": "ftp",
+    "moduleName": "FTP, SFTP, & TFTP",
+    "category": "FTP Characteristics",
+    "primary": {
+      "prompt": "Which statement accurately describes standard FTP?",
+      "options": [
+        "It is unsecured, uses usernames and passwords, and operates over TCP",
+        "It is secured, uses anonymous access, and operates over UDP",
+        "It is secured, uses usernames and passwords, and shares TCP port 22 with SSH",
+        "It is unsecured, uses anonymous access, and operates over UDP port 69"
+      ],
+      "answer": "It is unsecured, uses usernames and passwords, and operates over TCP",
+      "explanation": "FTP is unsecured, uses usernames and passwords, and operates over TCP."
+    },
+    "alternate": {
+      "prompt": "Which file-transfer protocol uses TCP and credentials but is not secured?",
+      "options": [
+        "FTP",
+        "SFTP",
+        "TFTP",
+        "SSH"
+      ],
+      "answer": "FTP",
+      "explanation": "Standard FTP uses usernames and passwords over TCP but is unsecured."
+    }
+  },
+  {
+    "id": "q-ftp-sftp-port",
+    "moduleId": "ftp",
+    "moduleName": "FTP, SFTP, & TFTP",
+    "category": "SFTP Characteristics",
+    "primary": {
+      "prompt": "SFTP shares which TCP port with SSH?",
+      "options": [
+        "TCP port 20",
+        "TCP port 21",
+        "TCP port 22",
+        "UDP port 69"
+      ],
+      "answer": "TCP port 22",
+      "explanation": "SFTP uses TCP and shares port 22 with SSH."
+    },
+    "alternate": {
+      "prompt": "Which port number is associated with both SFTP and SSH?",
+      "options": [
+        "20",
+        "21",
+        "22",
+        "69"
+      ],
+      "answer": "22",
+      "explanation": "Both SFTP and SSH use TCP port 22."
+    }
+  },
+  {
+    "id": "q-tftp-characteristics",
+    "moduleId": "ftp",
+    "moduleName": "FTP, SFTP, & TFTP",
+    "category": "TFTP Characteristics",
+    "primary": {
+      "prompt": "Which combination describes TFTP?",
+      "options": [
+        "TCP, usernames and passwords, ports 20 and 21",
+        "TCP, usernames and passwords, port 22",
+        "UDP, anonymous access, port 69",
+        "UDP, usernames and passwords, port 21"
+      ],
+      "answer": "UDP, anonymous access, port 69",
+      "explanation": "TFTP uses UDP, is anonymous, and operates on port 69."
+    },
+    "alternate": {
+      "prompt": "Which file-transfer protocol operates on UDP port 69 and does not require user credentials?",
+      "options": [
+        "FTP",
+        "SFTP",
+        "TFTP",
+        "SSH"
+      ],
+      "answer": "TFTP",
+      "explanation": "TFTP is anonymous and uses UDP port 69."
+    }
+  },
+  {
+    "id": "q-ftp-protocol-comparison",
+    "moduleId": "ftp",
+    "moduleName": "FTP, SFTP, & TFTP",
+    "category": "Protocol Comparison",
+    "primary": {
+      "prompt": "Which protocol is anonymous and uses UDP for file transfer?",
+      "options": [
+        "FTP",
+        "SFTP",
+        "TFTP",
+        "SSH"
+      ],
+      "answer": "TFTP",
+      "explanation": "TFTP is the anonymous file-transfer protocol in this set and uses UDP."
+    },
+    "alternate": {
+      "prompt": "A file transfer requires UDP and anonymous access. Which protocol matches these requirements?",
+      "options": [
+        "FTP",
+        "SFTP",
+        "TFTP",
+        "SSH"
+      ],
+      "answer": "TFTP",
+      "explanation": "TFTP uses UDP and anonymous access."
+    }
   }
 ];

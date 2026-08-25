@@ -161,6 +161,12 @@ const TOPIC_QUIZ_MAP: Record<string, { title: string; quizUrl: string; quizName:
     quizName: 'Network Address Translation (NAT) Quiz',
     description: 'Test your understanding of Static NAT, Dynamic NAT, PAT (Overload), and public vs private IPv4 address translation.',
   },
+  'ftp-sftp--tftp': {
+    title: 'FTP, SFTP, & TFTP',
+    quizUrl: '/ftp',
+    quizName: 'FTP, SFTP, & TFTP Quiz',
+    description: 'Practice the transport, security, authentication, and port differences among the file-transfer protocols.',
+  },
 };
 
 type Token =

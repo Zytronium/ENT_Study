@@ -22,7 +22,8 @@ export type ModuleId =
   | "private-ip-classes"
   | "ip-address-classes"
   | "ports"
-  | "nat";
+  | "nat"
+  | "ftp";
 
 export interface QuestionWording {
   prompt: string;
@@ -76,24 +77,24 @@ export type MasterActivity = MasterTableActivity | MasterWireActivity;
 
 export type ActivePracticeItem =
   | {
-      type: "question";
-      id: string;
-      moduleId: ModuleId;
-      moduleName: string;
-      category: string;
-      wordingType: "primary" | "alternate";
-      prompt: string;
-      options: string[];
-      answer: string;
-      explanation: string;
-      points: 2;
-    }
+  type: "question";
+  id: string;
+  moduleId: ModuleId;
+  moduleName: string;
+  category: string;
+  wordingType: "primary" | "alternate";
+  prompt: string;
+  options: string[];
+  answer: string;
+  explanation: string;
+  points: 2;
+}
   | {
-      type: "activity";
-      id: string;
-      moduleId: ModuleId;
-      moduleName: string;
-      activity: MasterActivity;
-      blankCellKeys?: string[];
-      points: 10;
-    };
+  type: "activity";
+  id: string;
+  moduleId: ModuleId;
+  moduleName: string;
+  activity: MasterActivity;
+  blankCellKeys?: string[];
+  points: 10;
+};

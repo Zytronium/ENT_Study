@@ -208,7 +208,6 @@ const studyTopics: Array<{
     title: "File Transfer Protocol (FTP): FTP, SFTP, & TFTP",
     date: "8/25/26",
     description: "Difference between FTP, SFTP, and TFTP protocols.",
-    offline: true,
   },
   {
     href: "/ip-address-assignment",
