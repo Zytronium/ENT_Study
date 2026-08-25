@@ -673,4 +673,16 @@ application.
 | **L2TP** (Layer 2 Tunneling Protocol)            | UDP     | 1701        |
 | **LDAP** (Lightweight Directory Access Protocol) | TCP     | 389         |
 
+## NAT
+
+NAT stands for Network Address Translation. It's primary purpose is to preserve public IP addresses.
+
+Private IPs inside a network - translates to one public IP on the internet. Private IPv4 addresses are only used 
+internally - not routable to the internet.
+
+There are 3 types of NAT:
+- **Static** - 1 to 1 translation: assigns one public IP to one private IP. Most common on servers.
+- **Dynamic** - Many to many translation: assigns many public IPs to many private IPs, but not nessesarily the same number. (i.e. 10 clients + 5 IPs = first come first serve)
+- **PAT** - Port Address Translation - many to 1: many clients on one public IP. If you hear the term "overload," it means it's PAT.
+
 ---
