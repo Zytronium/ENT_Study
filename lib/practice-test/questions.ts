@@ -3047,22 +3047,4 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "explanation": "TFTP is anonymous and uses UDP port 69."
     }
   },
-  {
-    "id": "q-scp-flashcard-definition",
-    "moduleId": "ftp",
-    "moduleName": "FTP, SFTP, & TFTP",
-    "category": "Bonus Protocol",
-    "primary": {
-      "prompt": "Which protocol is represented by the security mnemonic Secure, Contain, Protect?",
-      "options": ["FTP", "SFTP", "TFTP", "SCP"],
-      "answer": "SCP",
-      "explanation": "SCP is the bonus association for Secure, Contain, Protect."
-    },
-    "alternate": {
-      "prompt": "The mnemonic Secure, Contain, Protect points to which protocol?",
-      "options": ["FTP", "SFTP", "TFTP", "SCP"],
-      "answer": "SCP",
-      "explanation": "The requested bonus card uses SCP for Secure, Contain, Protect."
-    }
-  }
 ];
