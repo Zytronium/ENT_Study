@@ -636,7 +636,7 @@ Class E is for experimental.
 
 Ports 0-1023: System / Well-known ports  
 Ports 1024-49151: User / Registered ports  
-Ports 49512-65535: Dynamic / Private ports
+Ports 49152-65535: Dynamic / Private ports
 
 ### Transport Layer
 
@@ -672,4 +672,5 @@ application.
 | **SMB** (Server Message Block)                   | TCP     | 139 or 445  |
 | **L2TP** (Layer 2 Tunneling Protocol)            | UDP     | 1701        |
 | **LDAP** (Lightweight Directory Access Protocol) | TCP     | 389         |
-****
+
+---
