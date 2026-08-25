@@ -744,4 +744,39 @@ as it displays *all* the ipconfig information.
 
 The acronym DORA can be remembered by associating it with the child's cartoon, Dora the Explorer.
 
+## DNS
+DNS stands for Domain Name System (or its software, Domain Name Server). DNS is made of DNS records. Here are a few main 
+DNS record types:
+- **A** - Resolves DNS names to IPv4 addresses (name to number)
+- **AAAA** - Resolves DNS names to **IPv6** addresses. 
+- **CNAME** - Resolves canonical (common) name to domain name (nickname)
+- **PTR** - Pointer - reverse (resolves IP to DNS name rather than DNS name to IP)
+- **MX** - Mail server IP address
+- **SOA** - Start of authority - contains authoritative information about a DNS zone.
+
+> Fun fact: One of the reasons AAAA records have 4 A's instead of 2 or 3 is because IPv6 addresses have 4 times number 
+of bits compared to IPv4 addresses.
+
+As an example, here are some (but not all) of the DNS records in use that let you view this very website:
+
+| Type | Name      | Value              | TTL   |
+|------|-----------|--------------------|-------|
+| A    | ent-study | 216.150.1.129      | 1800  |
+| A    | ent-study | 216.150.16.193     | 1800  |
+| NS   | @         | ns1.vercel-dns.com | 21600 |
+| NS   | @         | ns2.vercel-dns.com | 21600 |
+
+This setup used by Vercel is actually less common, so here's another example of a more common setup, plus mail server 
+records:
+
+| Type  | Name | Value                                             | Priority | TTL  |
+|-------|------|---------------------------------------------------|----------|------|
+| A     | @    | 104.20.23.154                                     |          | 3600 |
+| CNAME | www  | example.com                                       |          | 3600 |
+| CNAME | mail | mail.protonmail.ch                                |          | 3600 |
+| MX    | @    | mail.protonmail.ch                                | 10       | 3600 |
+| MX    | @    | mailsec.protonmail.ch                             | 20       | 3600 |
+| TXT   | imap | "SRV target: mail.protonmail.ch, port 993 (IMAP)" |          | 3600 |
+| TXT   | smtp | "SRV target: mail.protonmail.ch, port 587 (SMTP)" |          | 3600 |
+
 ---
