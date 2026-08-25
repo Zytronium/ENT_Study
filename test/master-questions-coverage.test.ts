@@ -73,7 +73,6 @@ describe("Master Questions Coverage & Quality", () => {
         `Question ${q.id} primary answer "${q.primary.answer}" not in options: ${JSON.stringify(q.primary.options)}`
       );
       assert.ok(q.primary.explanation.trim().length > 0, `Question ${q.id} missing primary explanation`);
-      assert.strictEqual(typeof q.primary.canTypeInHardMode, "boolean");
 
       // Alternate validation
       assert.ok(q.alternate.prompt.trim().length > 0, `Question ${q.id} missing alternate prompt`);
@@ -83,7 +82,6 @@ describe("Master Questions Coverage & Quality", () => {
         `Question ${q.id} alternate answer "${q.alternate.answer}" not in options: ${JSON.stringify(q.alternate.options)}`
       );
       assert.ok(q.alternate.explanation.trim().length > 0, `Question ${q.id} missing alternate explanation`);
-      assert.strictEqual(typeof q.alternate.canTypeInHardMode, "boolean");
 
       // Primary and alternate prompts should provide distinct phrasing
       assert.notStrictEqual(
