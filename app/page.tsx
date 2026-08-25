@@ -201,8 +201,7 @@ const studyTopics: Array<{
     href: "/nat",
     title: "Network Address Translation (NAT)",
     date: "8/25/26",
-    description: "Static, Dunamic, and PAT (Port Address Translation) NAT configurations.",
-    offline: true,
+    description: "Static, Dynamic, and PAT (Port Address Translation) NAT configurations.",
   },
   {
     href: "/ftp",

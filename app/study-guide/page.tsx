@@ -155,6 +155,12 @@ const TOPIC_QUIZ_MAP: Record<string, { title: string; quizUrl: string; quizName:
     quizName: 'Layer 4 Ports Matrix Quiz',
     description: 'Complete the port chart, complete the quiz, or do flashcards to test your knowledge of TCP/UDP and port numbers.',
   },
+  'nat': {
+    title: 'Network Address Translation (NAT)',
+    quizUrl: '/nat',
+    quizName: 'Network Address Translation (NAT) Quiz',
+    description: 'Test your understanding of Static NAT, Dynamic NAT, PAT (Overload), and public vs private IPv4 address translation.',
+  },
 };
 
 type Token =

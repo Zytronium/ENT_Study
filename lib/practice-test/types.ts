@@ -21,7 +21,8 @@ export type ModuleId =
   | "network-layer-ip-addresses"
   | "private-ip-classes"
   | "ip-address-classes"
-  | "ports";
+  | "ports"
+  | "nat";
 
 export interface QuestionWording {
   prompt: string;

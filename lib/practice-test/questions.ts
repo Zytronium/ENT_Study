@@ -3642,7 +3642,7 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
         "255.255.0.0",
         "255.0.0.0",
         "255.255.255.0",
-        "255.255.240.0"
+        "255.255.245.0"
       ],
       "answer": "255.255.0.0",
       "explanation": "Class B default subnet mask is 255.255.0.0.",
@@ -3827,6 +3827,7 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "aliases": [
         "0-1023",
         "0 to 1023",
+        "0 through 1023",
         "0 - 1023"
       ],
       "canTypeInHardMode": true
@@ -3837,7 +3838,7 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
         "User / Registered ports",
         "System / Well-known ports",
         "Dynamic / Private ports",
-        "Ephemeral ports"
+        "Unregistered / Unknown ports"
       ],
       "answer": "User / Registered ports",
       "explanation": "The port range 1024 to 49151 is assigned for User / Registered ports.",
@@ -4048,7 +4049,9 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "aliases": [
         "dns",
         "domain name system",
-        "dns (domain name system)"
+        "domain name service",
+        "dns (domain name system)",
+        "dns (domain name service)"
       ],
       "canTypeInHardMode": true
     }
@@ -4214,6 +4217,253 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
         "port 161 udp",
         "161 udp",
         "161/udp"
+      ],
+      "canTypeInHardMode": true
+    }
+  },
+  {
+    "id": "q-nat-purpose",
+    "moduleId": "nat",
+    "moduleName": "Network Address Translation (NAT)",
+    "category": "Core NAT Objectives",
+    "primary": {
+      "prompt": "What is the primary purpose of Network Address Translation (NAT)?",
+      "options": [
+        "Preserve public IP addresses",
+        "Encrypt payload data during routing",
+        "Assign Layer 2 MAC addresses",
+        "Eliminate physical cabling requirements"
+      ],
+      "answer": "Preserve public IP addresses",
+      "explanation": "The primary purpose of NAT is to preserve public IP addresses by allowing private networks to reuse private address space internally.",
+      "aliases": [
+        "preserve public ip addresses",
+        "preserve public ips",
+        "preserve public ip",
+        "save public ip addresses",
+        "preserve ip addresses"
+      ],
+      "canTypeInHardMode": true
+    },
+    "alternate": {
+      "prompt": "Why was Network Address Translation (NAT) primarily developed and deployed in IPv4 networks?",
+      "options": [
+        "To conserve and preserve public IPv4 addresses",
+        "To establish full-duplex CSMA/CD collision domains",
+        "To modulate analog phone signals into digital data",
+        "To replace dynamic routing protocols on the internet"
+      ],
+      "answer": "To conserve and preserve public IPv4 addresses",
+      "explanation": "NAT was developed primarily to conserve and preserve limited public IPv4 addresses.",
+      "aliases": [
+        "to conserve and preserve public ipv4 addresses",
+        "preserve public ip addresses",
+        "preserve public ips",
+        "preserve public ip",
+        "conserve public ip addresses"
+      ],
+      "canTypeInHardMode": true
+    }
+  },
+  {
+    "id": "q-nat-static",
+    "moduleId": "nat",
+    "moduleName": "Network Address Translation (NAT)",
+    "category": "Static NAT",
+    "primary": {
+      "prompt": "Which type of NAT performs a 1-to-1 translation assigning one dedicated public IP address to one private IP address, most commonly used for servers?",
+      "options": [
+        "Static NAT",
+        "Dynamic NAT",
+        "PAT (Port Address Translation)",
+        "Carrier Grade DNS"
+      ],
+      "answer": "Static NAT",
+      "explanation": "Static NAT is a 1-to-1 translation that binds a single public IP to a single private IP, standard for web/mail servers.",
+      "aliases": [
+        "static nat",
+        "static",
+        "1:1 nat",
+        "1 to 1 nat",
+        "1:1"
+      ],
+      "canTypeInHardMode": true
+    },
+    "alternate": {
+      "prompt": "When an administrator assigns a permanent, dedicated public IP address to an internal web server's private IP, which NAT type is configured?",
+      "options": [
+        "Static NAT",
+        "Dynamic NAT",
+        "PAT (Port Address Translation)",
+        "Anycast NAT"
+      ],
+      "answer": "Static NAT",
+      "explanation": "Static NAT creates a fixed 1:1 mapping between one public IP and one private IP for dedicated host access.",
+      "aliases": [
+        "static nat",
+        "static",
+        "1:1 nat",
+        "1 to 1 nat",
+        "1:1"
+      ],
+      "canTypeInHardMode": true
+    }
+  },
+  {
+    "id": "q-nat-dynamic",
+    "moduleId": "nat",
+    "moduleName": "Network Address Translation (NAT)",
+    "category": "Dynamic NAT",
+    "primary": {
+      "prompt": "Which NAT mode provides a many-to-many translation by allocating public IP addresses from a shared pool to private hosts on a first-come, first-served basis?",
+      "options": [
+        "Dynamic NAT",
+        "Static NAT",
+        "PAT (Port Address Translation)",
+        "Loopback NAT"
+      ],
+      "answer": "Dynamic NAT",
+      "explanation": "Dynamic NAT translates many private IPs to many public IPs dynamically from an address pool on a first-come, first-served basis.",
+      "aliases": [
+        "dynamic nat",
+        "dynamic",
+        "dynamic pool"
+      ],
+      "canTypeInHardMode": true
+    },
+    "alternate": {
+      "prompt": "If 10 internal computers share a pool of 5 public IP addresses on a first-come, first-served basis, which translation method is being utilized?",
+      "options": [
+        "Dynamic NAT",
+        "Static NAT",
+        "PAT (Port Address Translation)",
+        "Unicast Bridging"
+      ],
+      "answer": "Dynamic NAT",
+      "explanation": "Leasing addresses dynamically from an IP pool on a first-come, first-served basis is Dynamic NAT.",
+      "aliases": [
+        "dynamic nat",
+        "dynamic",
+        "dynamic pool"
+      ],
+      "canTypeInHardMode": true
+    }
+  },
+  {
+    "id": "q-nat-pat-overload",
+    "moduleId": "nat",
+    "moduleName": "Network Address Translation (NAT)",
+    "category": "Port Address Translation",
+    "primary": {
+      "prompt": "Which NAT type allows many internal private client devices to share a single public IP address, and is also known as 'overload'?",
+      "options": [
+        "PAT (Port Address Translation)",
+        "Static NAT",
+        "Dynamic NAT",
+        "Direct Routing"
+      ],
+      "answer": "PAT (Port Address Translation)",
+      "explanation": "PAT (Port Address Translation) maps many private IPs to a single public IP, and is commonly called NAT Overload.",
+      "aliases": [
+        "pat",
+        "port address translation",
+        "overload",
+        "nat overload",
+        "pat (port address translation)"
+      ],
+      "canTypeInHardMode": true
+    },
+    "alternate": {
+      "prompt": "In networking terminology, the term 'overload' refers specifically to which implementation of NAT?",
+      "options": [
+        "PAT (Port Address Translation)",
+        "Static NAT",
+        "Dynamic NAT",
+        "Classful Subnetting"
+      ],
+      "answer": "PAT (Port Address Translation)",
+      "explanation": "The term 'overload' in router NAT configurations refers directly to Port Address Translation (PAT).",
+      "aliases": [
+        "pat",
+        "port address translation",
+        "pat (port address translation)"
+      ],
+      "canTypeInHardMode": true
+    }
+  },
+  {
+    "id": "q-nat-private-routable",
+    "moduleId": "nat",
+    "moduleName": "Network Address Translation (NAT)",
+    "category": "Address Routability",
+    "primary": {
+      "prompt": "How do private IPv4 addresses behave regarding routing across the public internet?",
+      "options": [
+        "They are only used internally and are not routable to the internet",
+        "They are globally unique and routable across internet backbones",
+        "They can only route over satellite and microwave links",
+        "They are automatically advertised via BGP to public DNS root servers"
+      ],
+      "answer": "They are only used internally and are not routable to the internet",
+      "explanation": "Private IPv4 addresses are reserved strictly for internal private networks and cannot be routed across the public internet.",
+      "aliases": [
+        "not routable"
+      ],
+      "canTypeInHardMode": false
+    },
+    "alternate": {
+      "prompt": "Why must internal network devices have their private IPv4 addresses translated before accessing internet resources?",
+      "options": [
+        "Private IPv4 addresses are not routable on the public internet",
+        "Private IPv4 addresses lack Layer 3 IP headers",
+        "Private IPv4 addresses only operate at 10 Mbps speed",
+        "Private IPv4 addresses conflict with 802.11 Wi-Fi frames"
+      ],
+      "answer": "Private IPv4 addresses are not routable on the public internet",
+      "explanation": "Private addresses cannot travel or be routed over the public internet, necessitating translation to a valid public IP.",
+      "aliases": [
+        "not routable"
+      ],
+      "canTypeInHardMode": false
+    }
+  },
+  {
+    "id": "q-nat-router-role",
+    "moduleId": "nat",
+    "moduleName": "Network Address Translation (NAT)",
+    "category": "Network Translation Architecture",
+    "primary": {
+      "prompt": "When a PC with private IP 192.168.1.23 accesses the internet through a router with public IP 203.0.113.45, what address does the router's NAT place in the source IP field of the outbound packet?",
+      "options": [
+        "203.0.113.45",
+        "192.168.1.23",
+        "127.0.0.1",
+        "255.255.255.255"
+      ],
+      "answer": "203.0.113.45",
+      "explanation": "The router's NAT translates the private source IP (192.168.1.23) into the router's public IP (203.0.113.45).",
+      "aliases": [
+        "203.0.113.45",
+        "the public ip",
+        "public ip"
+      ],
+      "canTypeInHardMode": true
+    },
+    "alternate": {
+      "prompt": "Which device on a home or enterprise edge network typically performs Network Address Translation between internal hosts and the ISP?",
+      "options": [
+        "Router",
+        "TDR",
+        "Passive Hub",
+        "Switch"
+      ],
+      "answer": "Router",
+      "explanation": "The router connects internal hosts to the ISP and performs NAT translation.",
+      "aliases": [
+        "router",
+        "the router",
+        "routers",
+        "default gateway"
       ],
       "canTypeInHardMode": true
     }
