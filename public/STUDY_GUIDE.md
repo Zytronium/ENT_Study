@@ -699,4 +699,49 @@ SFTP (Secure FTP) is secured, uses TCP, and has usernames and passwords. SFTP sh
 ### TFTP
 TFTP (Trivial FTP) uses UDP and is anonymous. TFTP operates on port 69.
 
+## IP Address Assignment
+
+### Static IP Address Assignment
+
+A static IP address is manually assigned to a device and does not normally change. Some examples of common devices that
+should have a static IP address are:
+- Servers
+- Printers
+- Routers
+
+But **not PCs**.
+
+### Automatic IP Address Assignment
+
+Devices can automatically receive an IP address using:
+
+- **APIPA** - Automatically assigns an address when a DHCP server cannot be reached. (no router/internet)
+- **DHCP** - Automatically hands out an IP address with a subnet mask along with other network settings
+
+### DHCP
+
+DHCP (Dynamic Host Configuration Protocol) automatically provides clients with an IP address and other network configuration settings.
+
+A couple common settings provided by DHCP are:
+- Default gateway (router)
+- DNS server IPs
+
+### Viewing IP Configuration
+On Windows, you can view your device's IP configuration with `ipconfig /all`. This displays information such as the 
+device's IPv4 address, subnet mask, default gateway, DNS servers, and DHCP information. The `/all` part is important,
+as it displays *all* the ipconfig information.
+
+### How a Client Gets an IP Address: DORA
+
+1. **Discover** - The client broadcasts a message asking if a DHCP server is available.
+> **Client ⟩** "Hey! I need a DCHP server!"
+2. **Offer** - A DHCP server responds by offering the client an IP address and configuration.
+> **Server ⟩** "I'm a server. Would you like this address?"
+3. **Request** - The client requests the offered IP address from the DHCP server.
+> **Client ⟩** "Yes! Give it to me!"
+4. **Acknowledge** - The server acknowledges the request and leases the IP address to the client. By default, it lasts for 8 days.
+> **Server ⟩** "Okay, thanks. BTW it disappears in 8 days by default."
+
+The acronym DORA can be remembered by associating it with the child's cartoon, Dora the Explorer.
+
 ---

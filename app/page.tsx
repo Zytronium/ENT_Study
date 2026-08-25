@@ -212,10 +212,10 @@ const studyTopics: Array<{
     offline: true,
   },
   {
-    href: "/ipv4",
-    title: "IPs (IPv4)",
+    href: "/ip-address-assignment",
+    title: "IP Address Assignment (IPv4)",
     date: "8/25/26",
-    description: "Static vs automatic IP address assignment, DHCP, D.O.R.A., etc.",
+    description: "Static vs automatic IP address assignment, DHCP, & DORA.",
     offline: true,
   },
   {
