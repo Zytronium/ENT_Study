@@ -685,4 +685,18 @@ There are 3 types of NAT:
 - **Dynamic** - Many to many translation: assigns many public IPs to many private IPs, but not nessesarily the same number. (i.e. 10 clients + 5 IPs = first come first serve)
 - **PAT** - Port Address Translation - many to 1: many clients on one public IP. If you hear the term "overload," it means it's PAT.
 
+## FTP, SFTP, & TFTP
+FTP, SFTP, and TFTP are all types of file transfer protocols that allow computers to transfer files across networks. 
+However, in today's age, FTP is not commonly used, as there are better ways to transfer and download files, such as
+over HTTPS in a web browser using tools/websites like Dropbox.
+
+### FTP
+FTP (File Transfer Protocol) is unsecured but uses usernames and passwords. FTP uses TCP and operates on ports 20 and 21.
+
+### SFTP
+SFTP (Secure FTP) is secured, uses TCP, and has usernames and passwords. SFTP shares port 22 with SSH.
+
+### TFTP
+TFTP (Trivial FTP) uses UDP and is anonymous. TFTP operates on port 69.
+
 ---

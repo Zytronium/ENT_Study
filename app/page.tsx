@@ -197,6 +197,34 @@ const studyTopics: Array<{
     date: "8/24/26",
     description: "Transport layer protocols/Application ports and TCP/UDP.",
   },
+  {
+    href: "/nat",
+    title: "Network Address Translation (NAT)",
+    date: "8/25/26",
+    description: "Static, Dunamic, and PAT (Port Address Translation) NAT configurations.",
+    offline: true,
+  },
+  {
+    href: "/ftp",
+    title: "File Transfer Protocol (FTP): FTP, SFTP, & TFTP",
+    date: "8/25/26",
+    description: "Difference between FTP, SFTP, and TFTP protocols.",
+    offline: true,
+  },
+  {
+    href: "/ipv4",
+    title: "IPs (IPv4)",
+    date: "8/25/26",
+    description: "Static vs automatic IP address assignment, DHCP, D.O.R.A., etc.",
+    offline: true,
+  },
+  {
+    href: "/dns",
+    title: "Domain Name Service (DNS)",
+    date: "8/25/26",
+    description: "DNS records and DNS servers",
+    offline: true,
+  },
 ];
 
 function formatUptime(totalSeconds: number): string {

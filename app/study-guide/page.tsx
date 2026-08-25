@@ -153,7 +153,7 @@ const TOPIC_QUIZ_MAP: Record<string, { title: string; quizUrl: string; quizName:
     title: 'Layer 4 Transport & Ports',
     quizUrl: '/ports',
     quizName: 'Layer 4 Ports Matrix Quiz',
-    description: 'Complete the port chart for protocols/applcations, TCP/UDP, and port numbers.',
+    description: 'Complete the port chart, complete the quiz, or do flashcards to test your knowledge of TCP/UDP and port numbers.',
   },
 };
 
