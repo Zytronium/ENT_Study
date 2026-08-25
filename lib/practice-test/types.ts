@@ -23,7 +23,8 @@ export type ModuleId =
   | "ip-address-classes"
   | "ports"
   | "nat"
-  | "ftp";
+  | "ftp"
+  | "ip-address-assignment";
 
 export interface QuestionWording {
   prompt: string;

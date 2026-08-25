@@ -167,6 +167,12 @@ const TOPIC_QUIZ_MAP: Record<string, { title: string; quizUrl: string; quizName:
     quizName: 'FTP, SFTP, & TFTP Quiz',
     description: 'Practice the transport, security, authentication, and port differences among the file-transfer protocols.',
   },
+  'ip-address-assignment': {
+    title: 'IP Address Assignment',
+    quizUrl: '/ip-address-assignment',
+    quizName: 'IP Address Assignment Quiz',
+    description: 'Practice static and automatic assignment, DHCP settings, Windows IP configuration, and the DORA process.',
+  },
 };
 
 type Token =

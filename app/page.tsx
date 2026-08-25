@@ -214,7 +214,6 @@ const studyTopics: Array<{
     title: "IP Address Assignment (IPv4)",
     date: "8/25/26",
     description: "Static vs automatic IP address assignment, DHCP, & DORA.",
-    offline: true,
   },
   {
     href: "/dns",

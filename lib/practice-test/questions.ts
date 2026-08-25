@@ -3047,4 +3047,170 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "explanation": "TFTP is anonymous and uses UDP port 69."
     }
   },
+  {
+    "id": "q-ip-assignment-static-definition",
+    "moduleId": "ip-address-assignment",
+    "moduleName": "IP Address Assignment",
+    "category": "Static Assignment",
+    "primary": {
+      "prompt": "Which statement best describes a static IP address assignment?",
+      "options": [
+        "It is manually assigned and normally does not change",
+        "It is automatically assigned when a DHCP server cannot be reached",
+        "It is leased by DHCP for a default period of 8 days",
+        "It is assigned only to ordinary PCs"
+      ],
+      "answer": "It is manually assigned and normally does not change",
+      "explanation": "A static IP address is manually assigned to a device and does not normally change."
+    },
+    "alternate": {
+      "prompt": "How is a static IP address normally assigned?",
+      "options": [
+        "Manually, so the address normally remains unchanged",
+        "Automatically by APIPA when DHCP is unavailable",
+        "By a DHCP lease that always lasts 8 days",
+        "Automatically to every PC on the network"
+      ],
+      "answer": "Manually, so the address normally remains unchanged",
+      "explanation": "Static addresses are manually assigned and do not normally change."
+    }
+  },
+  {
+    "id": "q-ip-assignment-static-devices",
+    "moduleId": "ip-address-assignment",
+    "moduleName": "IP Address Assignment",
+    "category": "Static Assignment",
+    "primary": {
+      "prompt": "Which group contains devices that are common candidates for static IP addresses?",
+      "options": [
+        "Servers, printers, and routers",
+        "PCs, servers, and printers",
+        "PCs, routers, and DHCP clients",
+        "DNS servers, PCs, and printers"
+      ],
+      "answer": "Servers, printers, and routers",
+      "explanation": "Servers, printers, and routers are common candidates for static IP addresses, but PCs are not."
+    },
+    "alternate": {
+      "prompt": "Which device is specifically excluded from the examples of devices that should have static IP addresses?",
+      "options": ["PCs", "Servers", "Printers", "Routers"],
+      "answer": "PCs",
+      "explanation": "Servers, printers, and routers are examples of devices that should have static IP addresses, but PCs are not."
+    }
+  },
+  {
+    "id": "q-ip-assignment-apipa",
+    "moduleId": "ip-address-assignment",
+    "moduleName": "IP Address Assignment",
+    "category": "Automatic Assignment",
+    "primary": {
+      "prompt": "When is APIPA used?",
+      "options": [
+        "When a DHCP server cannot be reached",
+        "When a router manually assigns a permanent address",
+        "When a DNS server provides the client's address",
+        "When a client requests a second DHCP lease"
+      ],
+      "answer": "When a DHCP server cannot be reached",
+      "explanation": "APIPA automatically assigns an address when a DHCP server cannot be reached, with no router or internet access."
+    },
+    "alternate": {
+      "prompt": "Which automatic addressing method applies when the DHCP server is unavailable?",
+      "options": ["APIPA", "Static assignment", "DORA", "DNS"],
+      "answer": "APIPA",
+      "explanation": "APIPA assigns an address when a DHCP server cannot be reached."
+    }
+  },
+  {
+    "id": "q-ip-assignment-dhcp-settings",
+    "moduleId": "ip-address-assignment",
+    "moduleName": "IP Address Assignment",
+    "category": "DHCP",
+    "primary": {
+      "prompt": "Which pair is identified as common network settings provided by DHCP?",
+      "options": [
+        "Default gateway and DNS server IPs",
+        "MAC address and printer name",
+        "FTP port and SSH port",
+        "Subnet name and browser version"
+      ],
+      "answer": "Default gateway and DNS server IPs",
+      "explanation": "The default gateway and DNS server IPs are common settings provided by DHCP."
+    },
+    "alternate": {
+      "prompt": "Besides an IP address and subnet mask, which settings can DHCP provide?",
+      "options": [
+        "A default gateway and DNS server IPs",
+        "A MAC address and printer name",
+        "FTP and SSH port numbers",
+        "A browser version and subnet name"
+      ],
+      "answer": "A default gateway and DNS server IPs",
+      "explanation": "DHCP provides other network settings such as the default gateway and DNS server IPs."
+    }
+  },
+  {
+    "id": "q-ip-assignment-ipconfig",
+    "moduleId": "ip-address-assignment",
+    "moduleName": "IP Address Assignment",
+    "category": "Viewing Configuration",
+    "primary": {
+      "prompt": "Which Windows command displays all IP configuration information, including DHCP details?",
+      "options": ["ipconfig /all", "ipconfig", "netconfig", "netconfig /all"],
+      "answer": "ipconfig /all",
+      "explanation": "On Windows, `ipconfig /all` displays the device's IPv4 address, subnet mask, gateway, DNS servers, and DHCP information."
+    },
+    "alternate": {
+      "prompt": "What is the important Windows command option for displaying all available ipconfig information?",
+      "options": ["/all", "/full", "/dhcp", "/details"],
+      "answer": "/all",
+      "explanation": "The `/all` option is important because it displays all the ipconfig information."
+    }
+  },
+  {
+    "id": "q-ip-assignment-dora-sequence",
+    "moduleId": "ip-address-assignment",
+    "moduleName": "IP Address Assignment",
+    "category": "DORA",
+    "primary": {
+      "prompt": "What is the correct order of the four DHCP address-assignment steps?",
+      "options": [
+        "Discover, Offer, Request, Acknowledge",
+        "Discover, Request, Offer, Acknowledge",
+        "Offer, Discover, Acknowledge, Request",
+        "Request, Offer, Discover, Acknowledge"
+      ],
+      "answer": "Discover, Offer, Request, Acknowledge",
+      "explanation": "DORA stands for Discover, Offer, Request, and Acknowledge."
+    },
+    "alternate": {
+      "prompt": "In DORA, which step comes immediately after the DHCP server offers an address?",
+      "options": ["Request", "Discover", "Acknowledge", "Offer"],
+      "answer": "Request",
+      "explanation": "After Offer, the client sends a Request for the offered IP address."
+    }
+  },
+  {
+    "id": "q-ip-assignment-dora-lease",
+    "moduleId": "ip-address-assignment",
+    "moduleName": "IP Address Assignment",
+    "category": "DORA",
+    "primary": {
+      "prompt": "During DORA, what happens in the Acknowledge step?",
+      "options": [
+        "The server acknowledges the request and leases the IP address; by default, it lasts 8 days",
+        "The client broadcasts to ask whether a DHCP server is available",
+        "The server offers an IP address before the client requests it",
+        "The client requests an address from the DHCP server"
+      ],
+      "answer": "The server acknowledges the request and leases the IP address; by default, it lasts 8 days",
+      "explanation": "In the Acknowledge step, the server confirms the request and leases the address for a default period of 8 days."
+    },
+    "alternate": {
+      "prompt": "What is the default duration stated for a DHCP IP address lease?",
+      "options": ["8 days", "8 hours", "24 days", "30 days"],
+      "answer": "8 days",
+      "explanation": "A DHCP lease lasts 8 days by default."
+    }
+  },
 ];
