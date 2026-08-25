@@ -2992,5 +2992,77 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "answer": "TFTP",
       "explanation": "TFTP uses UDP and anonymous access."
     }
+  },
+  {
+    "id": "q-ftp-flashcard-definition",
+    "moduleId": "ftp",
+    "moduleName": "FTP, SFTP, & TFTP",
+    "category": "FTP Characteristics",
+    "primary": {
+      "prompt": "Which protocol is an unsecured, credential-based file-transfer protocol that uses TCP?",
+      "options": ["FTP", "SFTP", "TFTP", "SCP"],
+      "answer": "FTP",
+      "explanation": "FTP uses usernames and passwords over TCP but is unsecured."
+    },
+    "alternate": {
+      "prompt": "A file-transfer service uses TCP and usernames and passwords without security. Which protocol is it?",
+      "options": ["FTP", "SFTP", "TFTP", "SCP"],
+      "answer": "FTP",
+      "explanation": "Standard FTP is unsecured, credential-based, and uses TCP."
+    }
+  },
+  {
+    "id": "q-sftp-flashcard-definition",
+    "moduleId": "ftp",
+    "moduleName": "FTP, SFTP, & TFTP",
+    "category": "SFTP Characteristics",
+    "primary": {
+      "prompt": "Which secured file-transfer protocol uses TCP, usernames and passwords, and shares port 22 with SSH?",
+      "options": ["FTP", "SFTP", "TFTP", "SCP"],
+      "answer": "SFTP",
+      "explanation": "SFTP is secured, uses TCP and credentials, and shares TCP port 22 with SSH."
+    },
+    "alternate": {
+      "prompt": "Which protocol matches secured TCP file transfer with credentials and SSH's port?",
+      "options": ["FTP", "SFTP", "TFTP", "SCP"],
+      "answer": "SFTP",
+      "explanation": "SFTP uses TCP, usernames and passwords, and TCP port 22."
+    }
+  },
+  {
+    "id": "q-tftp-flashcard-definition",
+    "moduleId": "ftp",
+    "moduleName": "FTP, SFTP, & TFTP",
+    "category": "TFTP Characteristics",
+    "primary": {
+      "prompt": "Which anonymous file-transfer protocol uses UDP and operates on port 69?",
+      "options": ["FTP", "SFTP", "TFTP", "SCP"],
+      "answer": "TFTP",
+      "explanation": "TFTP uses UDP, is anonymous, and operates on UDP port 69."
+    },
+    "alternate": {
+      "prompt": "Which protocol provides anonymous file transfer over UDP port 69?",
+      "options": ["FTP", "SFTP", "TFTP", "SCP"],
+      "answer": "TFTP",
+      "explanation": "TFTP is anonymous and uses UDP port 69."
+    }
+  },
+  {
+    "id": "q-scp-flashcard-definition",
+    "moduleId": "ftp",
+    "moduleName": "FTP, SFTP, & TFTP",
+    "category": "Bonus Protocol",
+    "primary": {
+      "prompt": "Which protocol is represented by the security mnemonic Secure, Contain, Protect?",
+      "options": ["FTP", "SFTP", "TFTP", "SCP"],
+      "answer": "SCP",
+      "explanation": "SCP is the bonus association for Secure, Contain, Protect."
+    },
+    "alternate": {
+      "prompt": "The mnemonic Secure, Contain, Protect points to which protocol?",
+      "options": ["FTP", "SFTP", "TFTP", "SCP"],
+      "answer": "SCP",
+      "explanation": "The requested bonus card uses SCP for Secure, Contain, Protect."
+    }
   }
 ];

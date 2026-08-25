@@ -7,6 +7,7 @@ export interface FlashcardItem {
   id: string | number;
   prompt: string;
   answer: string;
+  bonus?: boolean;
   category?: string;
   options?: string[];
   aliases?: string[];
@@ -286,12 +287,12 @@ export default function FlashcardQuiz({
     } else {
       // Completed the deck
       setIsCompleted(true);
-      const total = deck.length;
-      let correctCount = 0;
-      Object.values(cardResults).forEach((r) => {
-        if (r.isCorrect) correctCount++;
-      });
-      const allCorrect = correctCount === total;
+      const requiredCards = deck.filter((card) => !card.bonus);
+      const total = requiredCards.length;
+      const correctCount = requiredCards.filter(
+        (card) => cardResults[String(card.id)]?.isCorrect
+      ).length;
+      const allCorrect = requiredCards.every((card) => cardResults[String(card.id)]?.isCorrect);
       if (allCorrect) {
         setHasEverCompletedOnce(true);
       }
@@ -324,7 +325,7 @@ export default function FlashcardQuiz({
   const handleRetryMissed = () => {
     const missedCards = initialCards.filter((c) => {
       const res = cardResults[String(c.id)];
-      return !res || !res.isCorrect;
+      return !c.bonus && (!res || !res.isCorrect);
     });
     if (missedCards.length > 0) {
       handleRestartDeck(missedCards);
@@ -344,18 +345,30 @@ export default function FlashcardQuiz({
   };
 
   const stats = useMemo(() => {
-    let correct = 0;
     let answered = 0;
     let missed = 0;
     Object.values(cardResults).forEach((r) => {
       answered++;
-      if (r.isCorrect) correct++;
-      else missed++;
     });
-    return { correct, answered, missed, total: deck.length };
-  }, [cardResults, deck.length]);
+    const requiredCards = deck.filter((card) => !card.bonus);
+    const correct = requiredCards.filter(
+      (card) => cardResults[String(card.id)]?.isCorrect
+    ).length;
+    deck.forEach((card) => {
+      const result = cardResults[String(card.id)];
+      if (result && !result.isCorrect && !card.bonus) {
+        missed++;
+      }
+    });
+    return {
+      correct,
+      answered,
+      missed,
+      total: deck.filter((card) => !card.bonus).length,
+    };
+  }, [cardResults, deck]);
 
-  const allCompletedCorrectly = stats.correct === deck.length && isCompleted;
+  const allCompletedCorrectly = stats.missed === 0 && isCompleted;
 
   const content = (
     <div className="space-y-6 font-mono">
@@ -493,7 +506,7 @@ export default function FlashcardQuiz({
                 {deck
                   .filter((c) => {
                     const res = cardResults[String(c.id)];
-                    return !res || !res.isCorrect;
+                    return !c.bonus && (!res || !res.isCorrect);
                   })
                   .map((c) => (
                     <div
@@ -571,6 +584,11 @@ export default function FlashcardQuiz({
                 {currentCard.category && (
                   <span className="text-[11px] font-bold text-cyan-400 bg-cyan-950/40 border border-cyan-900/50 px-2 py-0.5 rounded">
                     {currentCard.category}
+                  </span>
+                )}
+                {currentCard.bonus && (
+                  <span className="text-[11px] font-bold text-amber-400 bg-amber-950/40 border border-amber-900/50 px-2 py-0.5 rounded">
+                    BONUS
                   </span>
                 )}
                 {currentCard.meta && (
