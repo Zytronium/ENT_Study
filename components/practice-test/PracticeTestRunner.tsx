@@ -61,34 +61,6 @@ export default function PracticeTestRunner() {
           }
         }
 
-        const isExplicitDistractor =
-          !isCorrect &&
-          item.options &&
-          item.options.length > 0 &&
-          item.options.some(
-            (opt) =>
-              (opt.toLowerCase().trim() === userVal ||
-                opt.toLowerCase().replace(/[\s-]+/g, "") === userVal.replace(/[\s-]+/g, "")) &&
-              opt.toLowerCase().trim() !== correctVal &&
-              opt.toLowerCase().replace(/[\s-]+/g, "") !== correctVal.replace(/[\s-]+/g, "")
-          );
-
-        if (!isCorrect && !isExplicitDistractor && item.aliases && item.aliases.length > 0) {
-          const norm = userVal.replace(/[\s-]+/g, "");
-          isCorrect = item.aliases.some(
-            (alias) => alias.toLowerCase().replace(/[\s-]+/g, "") === norm || alias.toLowerCase().trim() === userVal
-          );
-        }
-
-        if (!isCorrect && !isExplicitDistractor && item.keywords && item.keywords.length > 0) {
-          const userTokens = userVal.replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter(Boolean);
-          isCorrect = item.keywords.every((kw) => {
-            const kwTokens = kw.toLowerCase().replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter(Boolean);
-            if (kwTokens.length === 0) return false;
-            return kwTokens.every((kt) => userTokens.includes(kt));
-          });
-        }
-
         const pts = isCorrect ? item.points : 0;
         earned += pts;
         results[item.id] = { correct: isCorrect, earnedPoints: pts, maxPoints: item.points };
@@ -461,8 +433,8 @@ export default function PracticeTestRunner() {
                           isFullScore
                             ? "bg-emerald-950/40 border-emerald-900 text-emerald-400"
                             : hasPartial
-                            ? "bg-amber-950/40 border-amber-900 text-amber-400"
-                            : "bg-rose-950/40 border-rose-900 text-rose-400"
+                              ? "bg-amber-950/40 border-amber-900 text-amber-400"
+                              : "bg-rose-950/40 border-rose-900 text-rose-400"
                         }`}
                       >
                         {itemResult?.earnedPoints > 0 ? `+${itemResult.earnedPoints}/${item.points} PTS` : `0/${item.points} PTS`}
