@@ -133,9 +133,6 @@ export function generatePracticeTest(options?: PracticeTestOptions): ActivePract
         options: shuffle(wording.options),
         answer: wording.answer,
         explanation: wording.explanation,
-        aliases: wording.aliases,
-        keywords: wording.keywords,
-        canTypeInHardMode: wording.canTypeInHardMode,
         points: 2,
       });
     }
@@ -166,9 +163,6 @@ export function generatePracticeTest(options?: PracticeTestOptions): ActivePract
         options: shuffle(wording.options),
         answer: wording.answer,
         explanation: wording.explanation,
-        aliases: wording.aliases,
-        keywords: wording.keywords,
-        canTypeInHardMode: wording.canTypeInHardMode,
         points: 2,
       });
     }

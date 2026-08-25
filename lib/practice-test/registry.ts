@@ -89,7 +89,7 @@ export const MASTER_ACTIVITIES: MasterActivity[] = [
     moduleId: "private-ip-classes",
     moduleName: "Private IP Address Classes",
     type: "table",
-    title: "RFC 1918 Private IPv4 Address Space Matrix",
+    title: "Private IPv4 Address Space Matrix",
     description: "Fill in the blank cells for the private Class A, B, and C IPv4 address spaces and their default subnet masks.",
     columns: [
       { key: "ipClass", label: "Class", options: ["A", "B", "C"] },
