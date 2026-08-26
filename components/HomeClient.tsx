@@ -16,7 +16,7 @@ interface StudyTopicLinkProps {
 
 function StudyTopicLink({ href, title, date, description, offline, mastery, index }: StudyTopicLinkProps & { index: number }) {
   let targetHref = href;
-  if (mastery) {
+  if (mastery && !/^https?:\/\//i.test(href)) {
     targetHref += "?mastery=true";
   }
   return (

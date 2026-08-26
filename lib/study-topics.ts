@@ -1,5 +1,25 @@
 import type { StudyTopicEntry } from "@/lib/json-quizzes";
 
+function topicDateValue(date: string): number {
+  const firstDate = date.match(/^(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?/);
+  if (!firstDate) return Number.POSITIVE_INFINITY;
+
+  const [, month, day, explicitYear] = firstDate;
+  const year = explicitYear ?? date.match(/\/(\d{2,4})$/)?.[1];
+  if (!year) return Number.POSITIVE_INFINITY;
+
+  const normalizedYear = year.length === 2 ? 2000 + Number(year) : Number(year);
+  const value = new Date(normalizedYear, Number(month) - 1, Number(day)).getTime();
+  return Number.isNaN(value) ? Number.POSITIVE_INFINITY : value;
+}
+
+export function sortStudyTopicsByDate(topics: StudyTopicEntry[]): StudyTopicEntry[] {
+  return topics
+    .map((topic, index) => ({ topic, index }))
+    .sort((a, b) => topicDateValue(a.topic.date) - topicDateValue(b.topic.date) || a.index - b.index)
+    .map(({ topic }) => topic);
+}
+
 // -------- static, hand-authored topics --------
 export const STATIC_STUDY_TOPICS: StudyTopicEntry[] = [
   {
@@ -163,5 +183,11 @@ export const STATIC_STUDY_TOPICS: StudyTopicEntry[] = [
     title: "Domain Name Service (DNS)",
     date: "8/25/26",
     description: "DNS servers, record types, and name resolution.",
+  },
+  {
+    href: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    title: "ᚳᛚᛁᚳᚴ  ᛏᛟ  ᛒᛖ  ᚱᛁᚳᚴᚱᛟᛚᛚᛖᛞ",
+    date: "1/2/34",
+    description: "An important supplemental study resource.",
   },
 ];
