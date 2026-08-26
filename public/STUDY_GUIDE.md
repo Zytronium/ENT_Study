@@ -811,7 +811,7 @@ If those steps succeed but step 3 fails, it means there's a DNS error.
 
 ## TCP/IP Model
 
-We all know the OSI model by now:
+We all know the OSI model by now:  
 ​7. Application  
 ​6. Presentation  
 ​5. Session  
