@@ -3213,4 +3213,220 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "explanation": "A DHCP lease lasts 8 days by default."
     }
   },
+  {
+    "id": "q-dns-name",
+    "moduleId": "dns",
+    "moduleName": "DNS",
+    "category": "DNS Fundamentals",
+    "primary": {
+      "prompt": "What does DNS stand for?",
+      "options": ["Domain Name System", "Dynamic Network Service", "Domain Number Standard", "Digital Name Server"],
+      "answer": "Domain Name System",
+      "explanation": "DNS stands for Domain Name System."
+    },
+    "alternate": {
+      "prompt": "Which expansion is correct for the DNS acronym?",
+      "options": ["Domain Name System", "Dynamic Network Service", "Domain Number Standard", "Digital Name Server"],
+      "answer": "Domain Name System",
+      "explanation": "DNS means Domain Name System."
+    }
+  },
+  {
+    "id": "q-dns-port",
+    "moduleId": "dns",
+    "moduleName": "DNS",
+    "category": "DNS Fundamentals",
+    "primary": {
+      "prompt": "Which port is associated with DNS?",
+      "options": ["53", "22", "69", "443"],
+      "answer": "53",
+      "explanation": "DNS uses TCP and UDP port 53."
+    },
+    "alternate": {
+      "prompt": "A service uses TCP and UDP port 53. Which service is it?",
+      "options": ["DNS", "SSH", "TFTP", "HTTPS"],
+      "answer": "DNS",
+      "explanation": "DNS is associated with TCP and UDP port 53."
+    }
+  },
+  {
+    "id": "q-dns-a-record",
+    "moduleId": "dns",
+    "moduleName": "DNS",
+    "category": "DNS Records",
+    "primary": {
+      "prompt": "Which DNS record resolves a name to an IPv4 address?",
+      "options": ["A", "AAAA", "PTR", "MX"],
+      "answer": "A",
+      "explanation": "An A record resolves a DNS name to an IPv4 address."
+    },
+    "alternate": {
+      "prompt": "Which record maps a DNS name to an IPv4 address?",
+      "options": ["A", "AAAA", "PTR", "MX"],
+      "answer": "A",
+      "explanation": "A records resolve DNS names to IPv4 addresses."
+    }
+  },
+  {
+    "id": "q-dns-aaaa-record",
+    "moduleId": "dns",
+    "moduleName": "DNS",
+    "category": "DNS Records",
+    "primary": {
+      "prompt": "Which record maps a DNS name to an IPv6 address?",
+      "options": ["AAAA", "A", "CNAME", "SOA"],
+      "answer": "AAAA",
+      "explanation": "An AAAA record resolves a DNS name to an IPv6 address."
+    },
+    "alternate": {
+      "prompt": "A DNS name must resolve to IPv6. Which record type should be used?",
+      "options": ["AAAA", "A", "CNAME", "SOA"],
+      "answer": "AAAA",
+      "explanation": "AAAA records resolve DNS names to IPv6 addresses."
+    }
+  },
+  {
+    "id": "q-dns-reverse-record",
+    "moduleId": "dns",
+    "moduleName": "DNS",
+    "category": "DNS Records",
+    "primary": {
+      "prompt": "Which DNS record performs reverse resolution from an IP address to a DNS name?",
+      "options": ["PTR", "CNAME", "MX", "A"],
+      "answer": "PTR",
+      "explanation": "PTR means Pointer and resolves an IP address to a DNS name."
+    },
+    "alternate": {
+      "prompt": "Which record resolves an IP address to a DNS name rather than the other way around?",
+      "options": ["PTR", "CNAME", "MX", "A"],
+      "answer": "PTR",
+      "explanation": "PTR is the reverse DNS record."
+    }
+  },
+  {
+    "id": "q-dns-record-roles",
+    "moduleId": "dns",
+    "moduleName": "DNS",
+    "category": "DNS Records",
+    "primary": {
+      "prompt": "Which record contains authoritative information about a DNS zone?",
+      "options": ["SOA", "MX", "CNAME", "AAAA"],
+      "answer": "SOA",
+      "explanation": "SOA means Start of Authority and contains authoritative information about a DNS zone."
+    },
+    "alternate": {
+      "prompt": "What does an SOA record provide for a DNS zone?",
+      "options": ["Authoritative information", "A mail server IP address", "A reverse name lookup", "An IPv6 address for a name"],
+      "answer": "Authoritative information",
+      "explanation": "SOA means Start of Authority and contains authoritative zone information."
+    }
+  },
+  {
+    "id": "q-dns-flashcard-a",
+    "moduleId": "dns",
+    "moduleName": "DNS",
+    "category": "DNS Record",
+    "primary": {
+      "prompt": "Which DNS record resolves a name to an IPv4 address?",
+      "options": ["A", "AAAA", "CNAME", "PTR", "MX", "SOA"],
+      "answer": "A",
+      "explanation": "A records resolve DNS names to IPv4 addresses."
+    },
+    "alternate": {
+      "prompt": "Which record type is used for name-to-IPv4 resolution?",
+      "options": ["A", "AAAA", "CNAME", "PTR", "MX", "SOA"],
+      "answer": "A",
+      "explanation": "An A record maps a DNS name to an IPv4 address."
+    }
+  },
+  {
+    "id": "q-dns-flashcard-aaaa",
+    "moduleId": "dns",
+    "moduleName": "DNS",
+    "category": "DNS Record",
+    "primary": {
+      "prompt": "Which DNS record resolves a name to an IPv6 address?",
+      "options": ["A", "AAAA", "CNAME", "PTR", "MX", "SOA"],
+      "answer": "AAAA",
+      "explanation": "AAAA records resolve DNS names to IPv6 addresses."
+    },
+    "alternate": {
+      "prompt": "Which record type is used for name-to-IPv6 resolution?",
+      "options": ["A", "AAAA", "CNAME", "PTR", "MX", "SOA"],
+      "answer": "AAAA",
+      "explanation": "An AAAA record maps a DNS name to an IPv6 address."
+    }
+  },
+  {
+    "id": "q-dns-flashcard-cname",
+    "moduleId": "dns",
+    "moduleName": "DNS",
+    "category": "DNS Record",
+    "primary": {
+      "prompt": "Which record resolves a canonical or common name to a domain name?",
+      "options": ["A", "AAAA", "CNAME", "PTR", "MX", "SOA"],
+      "answer": "CNAME",
+      "explanation": "CNAME records resolve a canonical name to a domain name."
+    },
+    "alternate": {
+      "prompt": "Which DNS record represents a nickname pointing to a domain name?",
+      "options": ["A", "AAAA", "CNAME", "PTR", "MX", "SOA"],
+      "answer": "CNAME",
+      "explanation": "CNAME is used for a canonical or common name."
+    }
+  },
+  {
+    "id": "q-dns-flashcard-ptr",
+    "moduleId": "dns",
+    "moduleName": "DNS",
+    "category": "DNS Record",
+    "primary": {
+      "prompt": "Which DNS record reverses the usual direction by resolving an IP address to a DNS name?",
+      "options": ["A", "AAAA", "CNAME", "PTR", "MX", "SOA"],
+      "answer": "PTR",
+      "explanation": "PTR is a pointer record used for reverse resolution."
+    },
+    "alternate": {
+      "prompt": "Which record type performs IP-to-name resolution?",
+      "options": ["A", "AAAA", "CNAME", "PTR", "MX", "SOA"],
+      "answer": "PTR",
+      "explanation": "PTR records resolve an IP address to a DNS name."
+    }
+  },
+  {
+    "id": "q-dns-flashcard-mx",
+    "moduleId": "dns",
+    "moduleName": "DNS",
+    "category": "DNS Record",
+    "primary": {
+      "prompt": "Which DNS record provides a mail server IP address?",
+      "options": ["A", "AAAA", "CNAME", "PTR", "MX", "SOA"],
+      "answer": "MX",
+      "explanation": "MX records provide a mail server IP address."
+    },
+    "alternate": {
+      "prompt": "Which record identifies the IP address of a mail server?",
+      "options": ["A", "AAAA", "CNAME", "PTR", "MX", "SOA"],
+      "answer": "MX",
+      "explanation": "An MX record provides a mail server IP address."
+    }
+  },
+  {
+    "id": "q-dns-flashcard-soa",
+    "moduleId": "dns",
+    "moduleName": "DNS",
+    "category": "DNS Record",
+    "primary": {
+      "prompt": "Which DNS record contains authoritative information about a zone?",
+      "options": ["A", "AAAA", "CNAME", "PTR", "MX", "SOA"],
+      "answer": "SOA",
+      "explanation": "SOA means Start of Authority and contains authoritative zone information."
+    },
+    "alternate": {
+      "prompt": "Which record type means Start of Authority?",
+      "options": ["A", "AAAA", "CNAME", "PTR", "MX", "SOA"],
+      "answer": "SOA",
+      "explanation": "SOA records contain authoritative information about a DNS zone."
+    }
+  },
 ];

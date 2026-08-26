@@ -173,6 +173,12 @@ const TOPIC_QUIZ_MAP: Record<string, { title: string; quizUrl: string; quizName:
     quizName: 'IP Address Assignment Quiz',
     description: 'Practice static and automatic assignment, DHCP settings, Windows IP configuration, and the DORA process.',
   },
+  'dns': {
+    title: 'DNS',
+    quizUrl: '/dns',
+    quizName: 'DNS Quiz',
+    description: 'Practice DNS terminology, port usage, and the purposes of common DNS record types.',
+  },
 };
 
 type Token =

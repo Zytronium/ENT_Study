@@ -219,8 +219,7 @@ const studyTopics: Array<{
     href: "/dns",
     title: "Domain Name Service (DNS)",
     date: "8/25/26",
-    description: "DNS records and DNS servers",
-    offline: true,
+    description: "DNS servers, record types, and name resolution.",
   },
 ];
 
