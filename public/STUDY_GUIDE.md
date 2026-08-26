@@ -808,3 +808,22 @@ you can start entering commands. Below is a list of relevant commands you may be
 If step 1 fails, you probably forgot to check if anyone else on the network can even connect to the internet/router.  
 If step 1 succeeds but 2 fails, it means you can't get past the default gateway to the internet.
 If those steps succeed but step 3 fails, it means there's a DNS error.
+## TCP/IP Model
+
+We all know the OSI model by now:
+​7. Application  
+​6. Presentation  
+​5. Session  
+​4. Transport  
+​3. Network  
+​2. Data-Link  
+​1. Physical
+
+The TCP/IP Model just compresses it into 4 layers:
+
+​4. **Application** - consists of OSI's Application, Presentation, and Session layers
+​3. **Transport** - consists of just the Transport layer of the OSI model
+​2. **Internet** - consists of just the Network layer of OSI
+​1. **Network Access** - consists of the bottom 2 OSI layers, Data-Link and Physical
+
+Don't get the Netwrok Access layer confused with the OSI's Network layer. Remember that the Inter***net*** layer is the ***Net***work layer.
