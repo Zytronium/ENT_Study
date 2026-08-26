@@ -10,13 +10,16 @@ import { visit } from 'unist-util-visit';
 import type { Element, ElementContent, Root } from 'hast';
 import type { Metadata } from 'next';
 import StudyGuideViewer, { TocItem } from './StudyGuideViewer';
+import { getAllJsonQuizzes } from '@/lib/json-quizzes';
 
 export const metadata: Metadata = {
   title: "Study Guide | ENT Study",
   description: "Daniel's Interactive Study Guide for the Enterprise Networking Technologies (ENT) course at TTC.",
 };
 
-const TOPIC_QUIZ_MAP: Record<string, { title: string; quizUrl: string; quizName: string; description: string }> = {
+type TopicQuizEntry = { title: string; quizUrl: string; quizName: string; description: string };
+
+const STATIC_TOPIC_QUIZ_MAP: Record<string, TopicQuizEntry> = {
   'osi-model': {
     title: 'OSI Model',
     quizUrl: '/osi-model',
@@ -181,6 +184,27 @@ const TOPIC_QUIZ_MAP: Record<string, { title: string; quizUrl: string; quizName:
   },
 };
 
+// -------- merge in JSON-driven quizzes --------
+
+// Combines the hand-authored map above with any JSON quiz that declares a
+// `studyGuideAnchor` matching a heading id in STUDY_GUIDE.md. JSON quizzes
+// take precedence on a collision, since they're the more recently authored source.
+function buildTopicQuizMap(): Record<string, TopicQuizEntry> {
+  const map: Record<string, TopicQuizEntry> = { ...STATIC_TOPIC_QUIZ_MAP };
+
+  for (const quiz of getAllJsonQuizzes()) {
+    if (!quiz.studyGuideAnchor) continue;
+    map[quiz.studyGuideAnchor] = {
+      title: quiz.title,
+      quizUrl: `/${quiz.slug}`,
+      quizName: quiz.title,
+      description: quiz.studyGuideDescription ?? quiz.homeDescription,
+    };
+  }
+
+  return map;
+}
+
 type Token =
   | { kind: 'img'; node: Element }
   | { kind: 'connector'; node: Element | { type: 'text'; value: string } }
@@ -296,9 +320,9 @@ function rehypeImageGrid() {
   };
 }
 
-function injectQuizCards(html: string): string {
+function injectQuizCards(html: string, topicQuizMap: Record<string, TopicQuizEntry>): string {
   return html.replace(/<h([1-6])\s+id="([^"]+)"[^>]*>(.*?)<\/h\1>/g, (fullMatch, level, id) => {
-    const topic = TOPIC_QUIZ_MAP[id];
+    const topic = topicQuizMap[id];
     if (!topic) return fullMatch;
 
     const cardHtml = `
@@ -358,7 +382,7 @@ export default async function StudyGuidePage() {
 
   const rawHtml = processedContent.toString();
   const tocItems = extractToc(rawHtml);
-  const contentHtml = injectQuizCards(rawHtml);
+  const contentHtml = injectQuizCards(rawHtml, buildTopicQuizMap());
 
   return <StudyGuideViewer initialHtml={contentHtml} tocItems={tocItems} />;
 }

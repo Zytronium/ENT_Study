@@ -808,6 +808,7 @@ you can start entering commands. Below is a list of relevant commands you may be
 If step 1 fails, you probably forgot to check if anyone else on the network can even connect to the internet/router.  
 If step 1 succeeds but 2 fails, it means you can't get past the default gateway to the internet.
 If those steps succeed but step 3 fails, it means there's a DNS error.
+
 ## TCP/IP Model
 
 We all know the OSI model by now:
