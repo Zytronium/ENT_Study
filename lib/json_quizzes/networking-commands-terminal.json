@@ -1,0 +1,190 @@
+{
+  "slug": "networking-commands",
+  "title": "Networking Commands",
+  "date": "8/26/26",
+  "homeDescription": "Use simulated Windows and Linux terminals to identify networking commands and interpret their purpose.",
+  "studyGuideAnchor": "networking-commands",
+  "moduleTag": "DIAGNOSTIC_MODULE",
+  "moduleCode": "NETWORKING_COMMANDS",
+  "type": "tabbed",
+  "tabs": [
+    {
+      "id": "windows",
+      "label": "[WINDOWS]",
+      "type": "terminal",
+      "heading": "[WINDOWS_NETWORKING_COMMANDS]",
+      "description": "Enter the command that satisfies each objective. The prompt is simulated and never executes commands on your device.",
+      "terminal": {
+        "platform": "windows",
+        "tasks": [
+      {
+        "id": "ipconfig-summary",
+        "prompt": "Display the device's IP address, subnet mask, and default gateway.",
+        "steps": [
+          {
+            "commands": ["ipconfig"],
+            "output": "Windows IP Configuration\n\nEthernet adapter Ethernet:\n\n   Connection-specific DNS Suffix  . : lan\n   IPv4 Address. . . . . . . . . . . : 192.168.1.24\n   Subnet Mask . . . . . . . . . . . : 255.255.255.0\n   Default Gateway . . . . . . . . . : 192.168.1.1"
+          }
+        ]
+      },
+      {
+        "id": "ipconfig-all",
+        "prompt": "Display all available IP configuration information, including the MAC address, DNS number, and DHCP details.",
+        "steps": [
+          {
+            "commands": ["ipconfig /all"],
+            "output": "Windows IP Configuration\n\n   Host Name . . . . . . . . . . . . : ENT-STUDY-PC\n   Primary Dns Suffix  . . . . . . . :\n   Node Type . . . . . . . . . . . . : Hybrid\n   IP Routing Enabled. . . . . . . . : No\n   WINS Proxy Enabled. . . . . . . . : No\n\nEthernet adapter Ethernet:\n\n   Connection-specific DNS Suffix  . : lan\n   Description . . . . . . . . . . . : Intel(R) Ethernet Connection\n   Physical Address. . . . . . . . . : 3C-52-82-1A-7F-09\n   DHCP Enabled. . . . . . . . . . . : Yes\n   Autoconfiguration Enabled . . . . : Yes\n   IPv4 Address. . . . . . . . . . . : 192.168.1.24(Preferred)\n   Subnet Mask . . . . . . . . . . . : 255.255.255.0\n   Lease Obtained. . . . . . . . . . : Wednesday, August 26, 2026 4:32:08 PM\n   Lease Expires . . . . . . . . . . : Thursday, August 27, 2026 4:32:08 PM\n   Default Gateway . . . . . . . . . : 192.168.1.1\n   DHCP Server . . . . . . . . . . . : 192.168.1.1\n   DNS Servers . . . . . . . . . . . : 192.168.1.1\n   NetBIOS over Tcpip. . . . . . . . : Enabled"
+          }
+        ],
+        "question": {
+          "prompt": "What kind of command is ipconfig /all?",
+          "options": ["Information gathering", "Troubleshooting", "Name resolution only", "Route tracing only"],
+          "answer": "Information gathering",
+          "explanation": "ipconfig and ipconfig /all are information gathering commands."
+        }
+      },
+      {
+        "id": "ping-gateway",
+        "prompt": "Test the connection to the default gateway (the router).",
+        "steps": [
+          {
+            "commands": ["ping 192.168.1.1", "ping <default gateway>"],
+            "output": "\nPinging 192.168.1.1 with 32 bytes of data:\nReply from 192.168.1.1: bytes=32 time<1ms TTL=64\nReply from 192.168.1.1: bytes=32 time<1ms TTL=64\nReply from 192.168.1.1: bytes=32 time<1ms TTL=64\nReply from 192.168.1.1: bytes=32 time<1ms TTL=64\n\nPing statistics for 192.168.1.1:\n    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),\nApproximate round trip times in milli-seconds:\n    Minimum = 0ms, Maximum = 0ms, Average = 0ms"
+          }
+        ]
+      },
+      {
+        "id": "nslookup-domain",
+        "prompt": "Look up the nameservers for example.com.",
+        "steps": [
+          {
+            "commands": ["nslookup example.com", "nslookup <domain name>"],
+            "output": "Server:  router.local\nAddress:  192.168.1.1\n\nNon-authoritative answer:\nName:    example.com\nAddresses:  93.184.216.34"
+          }
+        ],
+        "question": {
+          "prompt": "What is the primary purpose of nslookup <domain name>?",
+          "options": ["Look up nameservers of the domain", "Show all IP configuration", "Combine ping and tracert", "Test the default gateway"],
+          "answer": "Look up nameservers of the domain",
+          "aliases": ["looks up nameservers of the domain"],
+          "explanation": "nslookup <domain name> performs a nameserver lookup."
+        }
+      },
+      {
+        "id": "trace-route",
+        "prompt": "Trace the route to 8.8.8.8.",
+        "steps": [
+          {
+            "commands": ["tracert 8.8.8.8", "tracert <ip>"],
+            "output": "\nTracing route to dns.google [8.8.8.8]\nover a maximum of 30 hops:\n\n  1    <1 ms    <1 ms    <1 ms  192.168.1.1\n  2     7 ms     8 ms     7 ms  10.20.0.1\n  3    12 ms    11 ms    12 ms  203.0.113.9\n  4    18 ms    17 ms    18 ms  dns.google [8.8.8.8]\n\nTrace complete."
+          }
+        ]
+      },
+      {
+        "id": "pathping-host",
+        "prompt": "Run the Windows command that combines ping and tracert for 8.8.8.8.",
+        "steps": [
+          {
+            "commands": ["pathping 8.8.8.8", "pathping <ip>"],
+            "output": "\nTracing route to dns.google [8.8.8.8]\nover a maximum of 30 hops:\n\n  1    <1 ms    <1 ms    <1 ms  192.168.1.1\n  2     7 ms     8 ms     7 ms  10.20.0.1\n  3    12 ms    11 ms    12 ms  203.0.113.9\n  4    18 ms    17 ms    18 ms  dns.google [8.8.8.8]\n\nComputing statistics for 25 seconds...\n            Source to Here   This Node/Link\nHop  RTT    Lost/Sent = Pct  Lost/Sent = Pct  Address\n  0                                           ENT-STUDY-PC\n  1    1ms     0/100 = 0%     0/100 = 0%     192.168.1.1\n  2    8ms     0/100 = 0%     0/100 = 0%     10.20.0.1\n  3   12ms     0/100 = 0%     0/100 = 0%     203.0.113.9\n  4   18ms     0/100 = 0%     0/100 = 0%     dns.google [8.8.8.8]\n\nTrace complete."
+          }
+        ]
+      }
+        ]
+      }
+    },
+    {
+      "id": "linux",
+      "label": "[LINUX]",
+      "type": "terminal",
+      "heading": "[LINUX_NETWORKING_COMMANDS]",
+      "description": "Use a simulated Linux shell to identify networking commands. Nothing is executed on your device.",
+      "terminal": {
+        "platform": "linux",
+        "tasks": [
+          {
+            "id": "linux-interface-config",
+            "prompt": "Display the system's network interfaces and IP addresses.",
+            "steps": [
+              {
+                "commands": ["ifconfig"],
+                "output": "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 state UNKNOWN group default\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00\n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 state UP group default qlen 1000\n    link/ether 52:54:00:7b:2c:19 brd ff:ff:ff:ff:ff:ff\n    inet 192.168.1.24/24 brd 192.168.1.255 scope global dynamic eth0\n       valid_lft 86342sec preferred_lft 86342sec\n    inet6 fe80::5054:ff:fe7b:2c19/64 scope link\n       valid_lft forever preferred_lft forever"
+              }
+            ],
+            "question": {
+              "prompt": "Which command is the more common modern Linux equivalent of ipconfig?",
+              "options": ["ip addr show", "ping", "traceroute", "dig"],
+              "answer": "ip addr show",
+              "aliases": ["ip addr", "ip address show"],
+              "explanation": "ip addr show displays Linux network interfaces and their IP addresses."
+            }
+          },
+          {
+            "id": "linux-ping-gateway",
+            "prompt": "Test the connection to the default gateway.",
+            "steps": [
+              {
+                "commands": ["ping 192.168.1.1", "ping <default gateway>"],
+                "output": "PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.\n64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=0.412 ms\n64 bytes from 192.168.1.1: icmp_seq=2 ttl=64 time=0.366 ms\n64 bytes from 192.168.1.1: icmp_seq=3 ttl=64 time=0.391 ms\n\n--- 192.168.1.1 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2041ms\nrtt min/avg/max/mdev = 0.366/0.389/0.412/0.019 ms"
+              }
+            ]
+          },
+          {
+            "id": "linux-ping-internet",
+            "prompt": "Use ping to test the connection to Google's DNS server at 8.8.8.8.",
+            "steps": [
+              {
+                "commands": ["ping 8.8.8.8", "ping <google's dns server>"],
+                "output": "PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.\n64 bytes from 8.8.8.8: icmp_seq=1 ttl=117 time=18.7 ms\n64 bytes from 8.8.8.8: icmp_seq=2 ttl=117 time=18.1 ms\n64 bytes from 8.8.8.8: icmp_seq=3 ttl=117 time=18.4 ms\n\n--- 8.8.8.8 ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss, time 2003ms\nrtt min/avg/max/mdev = 18.102/18.401/18.706/0.248 ms"
+              }
+            ]
+          },
+          {
+            "id": "linux-ping-dns",
+            "prompt": "Use ping to test name resolution by contacting google.com by name.",
+            "steps": [
+              {
+                "commands": ["ping google.com", "ping <domain name>"],
+                "output": "PING google.com (142.250.191.14) 56(84) bytes of data.\n64 bytes from 142.250.191.14: icmp_seq=1 ttl=117 time=19.2 ms\n64 bytes from 142.250.191.14: icmp_seq=2 ttl=117 time=18.9 ms\n\n--- google.com ping statistics ---\n2 packets transmitted, 2 received, 0% packet loss, time 1001ms\nrtt min/avg/max/mdev = 18.904/19.052/19.201/0.149 ms"
+              }
+            ],
+            "question": {
+              "prompt": "What does pinging a domain name test in addition to connectivity?",
+              "options": ["DNS name resolution", "The local MAC table", "The route table only", "The subnet mask format"],
+              "answer": "DNS name resolution",
+              "aliases": ["dns resolution", "name resolution"],
+              "explanation": "Pinging a domain name tests whether DNS can resolve the name as well as whether the destination responds."
+            }
+          },
+          {
+            "id": "linux-traceroute",
+            "prompt": "Trace the route to 8.8.8.8.",
+            "steps": [
+              {
+                "commands": ["traceroute 8.8.8.8", "traceroute <ip>"],
+                "output": "traceroute to 8.8.8.8 (8.8.8.8), 30 hops max, 60 byte packets\n 1  192.168.1.1 (192.168.1.1)  0.821 ms  0.764 ms  0.735 ms\n 2  10.20.0.1 (10.20.0.1)  7.481 ms  7.392 ms  7.426 ms\n 3  203.0.113.9 (203.0.113.9)  12.108 ms  12.044 ms  12.016 ms\n 4  dns.google (8.8.8.8)  18.331 ms  18.287 ms  18.301 ms"
+              }
+            ]
+          },
+          {
+            "id": "linux-dig",
+            "prompt": "Use the Linux DNS command that shows root name servers.",
+            "steps": [
+              {
+                "commands": ["dig", "dig . NS"],
+                "output": "; <<>> DiG 9.18.24-Ubuntu <<>> . NS\n;; global options: +cmd\n.\t\t\t518400\tIN\tNS\ta.root-servers.net.\n.\t\t\t518400\tIN\tNS\tb.root-servers.net.\n.\t\t\t518400\tIN\tNS\tc.root-servers.net.\n\n;; Query time: 21 msec\n;; SERVER: 192.168.1.1#53(192.168.1.1) (UDP)\n;; WHEN: Wed Aug 26 17:15:00 UTC 2026\n;; MSG SIZE  rcvd: 811"
+              }
+            ],
+            "question": {
+              "prompt": "What does dig show in the networking command set?",
+              "options": ["Root name servers", "The local IP address only", "The route hop count only", "The default gateway's MAC address"],
+              "answer": "Root name servers",
+              "aliases": ["root nameservers", "root name server"],
+              "explanation": "dig is used to show root name servers and query DNS information."
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -41,7 +41,7 @@ body, button, input, select, textarea {
 }
 
 body {
-  background-image: 
+  background-image:
     radial-gradient(circle at 50% 0%, rgba(34, 197, 94, 0.04) 0%, transparent 75%),
     linear-gradient(to bottom, rgba(15, 23, 42, 0.6) 0%, rgba(9, 13, 22, 1) 100%);
   background-attachment: fixed;
@@ -191,6 +191,172 @@ body {
 .quiz-action-card a:hover,
 .quiz-action-btn:hover {
   color: #020617 !important;
+}
+
+.terminal-quiz {
+  --tq-scanline-opacity: 0.05;
+}
+
+.terminal-quiz .quiz-action-btn {
+  color: #f1f5f9 !important;
+  letter-spacing: 0.04em;
+  transition: transform 100ms ease, box-shadow 150ms ease, background 150ms ease;
+}
+
+.terminal-quiz .quiz-action-btn:hover {
+  color: #f1f5f9 !important;
+  transform: translateY(-1px);
+}
+
+.terminal-quiz .quiz-action-btn:active {
+  transform: translateY(0px);
+}
+
+.terminal-quiz .quiz-action-btn.bg-emerald-400,
+.terminal-quiz .quiz-action-btn.bg-cyan-500 {
+  color: #020617 !important;
+}
+
+/* -------- terminal window chrome -------- */
+.terminal-quiz .terminal-box-glow {
+  position: relative;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  box-shadow:
+          0 0 0 1px rgba(15, 23, 42, 0.6),
+          0 20px 45px -20px rgba(2, 6, 23, 0.9),
+          0 0 30px -8px rgba(52, 211, 153, 0.15);
+  background: linear-gradient(180deg, rgba(2, 6, 23, 0.9), rgba(2, 6, 23, 0.75));
+}
+
+.terminal-quiz .terminal-box-glow::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(52, 211, 153, 0.35), rgba(34, 211, 238, 0.15) 40%, rgba(52, 211, 153, 0) 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* -------- crt scanline overlay on the output area -------- */
+.terminal-quiz .terminal-crt {
+  position: relative;
+}
+
+.terminal-quiz .terminal-crt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, var(--tq-scanline-opacity)) 0px,
+          rgba(255, 255, 255, var(--tq-scanline-opacity)) 1px,
+          transparent 1px,
+          transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+.terminal-quiz .terminal-command-prompt {
+  background: #020617;
+  border-radius: 0 0 0.7rem 0.7rem;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.terminal-quiz .terminal-command-input {
+  background: #020617 !important;
+  color: #f1f5f9 !important;
+  caret-color: #34d399;
+}
+
+/* -------- blinking terminal caret block (not a pulse fade, a hard blink) -------- */
+@keyframes terminal-caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.terminal-quiz .terminal-caret {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.1em;
+  background: #34d399;
+  margin-left: 2px;
+  animation: terminal-caret-blink 1s steps(1) infinite;
+  vertical-align: text-bottom;
+}
+
+.terminal-quiz .quiz-action-btn.bg-emerald-400 {
+  background: #34d399 !important;
+  color: #020617 !important;
+  box-shadow: 0 0 18px -4px rgba(52, 211, 153, 0.6);
+}
+
+.terminal-quiz .quiz-action-btn.bg-emerald-400:hover {
+  background: #6ee7b7 !important;
+  box-shadow: 0 0 24px -2px rgba(52, 211, 153, 0.8);
+}
+
+.terminal-quiz .quiz-action-btn.bg-cyan-500 {
+  box-shadow: 0 0 18px -4px rgba(34, 211, 238, 0.55);
+}
+
+/* -------- status chip glow -------- */
+.terminal-quiz .terminal-chip {
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+/* -------- objective card top accent bar -------- */
+.terminal-quiz .terminal-objective {
+  position: relative;
+  overflow: hidden;
+}
+
+.terminal-quiz .terminal-objective::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #22d3ee, #34d399, transparent);
+}
+
+@keyframes terminal-wrong-command {
+  0%, 100% {
+    border-color: #1e293b;
+    box-shadow: inset 0 0 0 rgba(244, 63, 94, 0), 0 0 0 rgba(244, 63, 94, 0);
+  }
+  25%, 75% {
+    border-color: #fb7185;
+    box-shadow: inset 0 0 12px rgba(244, 63, 94, 0.2), 0 0 18px rgba(244, 63, 94, 0.75);
+  }
+  50% {
+    border-color: #f43f5e;
+    box-shadow: inset 0 0 18px rgba(244, 63, 94, 0.3), 0 0 28px rgba(244, 63, 94, 0.95);
+  }
+}
+
+.terminal-quiz .terminal-command-prompt-wrong {
+  animation: terminal-wrong-command 750ms ease-out;
+}
+
+/* -------- success task complete banner -------- */
+@keyframes terminal-success-sweep {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+
+.terminal-quiz .terminal-success-banner {
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.12), rgba(52, 211, 153, 0.25), rgba(16, 185, 129, 0.12));
+  background-size: 200% 100%;
+  animation: terminal-success-sweep 3s linear infinite;
 }
 
 /* Custom scrollbar styles */

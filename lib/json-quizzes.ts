@@ -63,6 +63,29 @@ export type TableConfigJson = {
   allowAnyRowOrder?: boolean;
 };
 
+export type TerminalCommandStepJson = {
+  commands: string[];
+  output: string;
+};
+
+export type TerminalTaskJson = {
+  id: string | number;
+  prompt: string;
+  steps: TerminalCommandStepJson[];
+  question?: {
+    prompt: string;
+    options: string[];
+    answer: string;
+    aliases?: string[];
+    explanation?: string;
+  };
+};
+
+export type TerminalConfigJson = {
+  platform: "windows" | "linux";
+  tasks: TerminalTaskJson[];
+};
+
 // -------- section types (used standalone or as tabs inside a tabbed quiz) --------
 
 type SectionBase = {
@@ -82,7 +105,8 @@ export type QuizSectionJson =
   defaultMode?: "multiple-choice" | "type" | "both";
   hybridChoiceCount?: number;
 })
-  | (SectionBase & { type: "table"; table: TableConfigJson });
+  | (SectionBase & { type: "table"; table: TableConfigJson })
+  | (SectionBase & { type: "terminal"; terminal: TerminalConfigJson });
 
 // -------- top-level quiz definition --------
 
@@ -118,6 +142,7 @@ export type JsonQuizDefinition = QuizMeta &
     hybridChoiceCount?: number;
   }
     | { type: "table"; heading?: string; description?: string; table: TableConfigJson }
+    | { type: "terminal"; heading?: string; description?: string; terminal: TerminalConfigJson }
     | { type: "tabbed"; tabs: QuizSectionJson[] }
     );
 

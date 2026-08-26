@@ -14,8 +14,9 @@ This document explains the reusable study quiz components located in `components
    - [CalculationQuiz](#5-calculationquiz)
    - [TableWithBlanksQuiz](#6-tablewithblanksquiz)
    - [FlashcardQuiz](#7-flashcardquiz)
-   - [MultiSectionQuiz](#8-multisectionquiz)
-   - [TabbedQuiz](#9-tabbedquiz)
+   - [TerminalQuiz](#8-terminalquiz)
+   - [MultiSectionQuiz](#9-multisectionquiz)
+   - [TabbedQuiz](#10-tabbedquiz)
 3. [Mastery / Hard Mode System](#mastery--hard-mode-system)
 4. [Flexible Keyword & Alias Validation](#flexible-keyword--alias-validation)
 5. [Step-by-Step: Creating a New Quiz Page](#step-by-step-creating-a-new-quiz-page)
@@ -38,6 +39,7 @@ components/study-quiz/
 ├── CalculationQuiz.tsx            # Numeric conversion & sizing inputs
 ├── TableWithBlanksQuiz.tsx        # Multi-stage matrix tables with blanks
 ├── FlashcardQuiz.tsx              # Interactive hybrid/type/MC flashcards
+├── TerminalQuiz.tsx               # Simulated Windows/Linux command terminal
 ├── MultiSectionQuiz.tsx           # Step-by-step sequential multi-part runner
 └── TabbedQuiz.tsx                 # Tab navigation wrapper for multi-view quizzes
 ```
@@ -330,7 +332,35 @@ export default function Page() {
 
 ---
 
-### 8. `MultiSectionQuiz`
+### 8. `TerminalQuiz`
+
+Runs a simulated Windows or Linux terminal challenge from JSON. Each task defines one or more accepted command steps
+and simulated output; tasks can either complete immediately after the command or reveal a multiple-choice question that
+must be answered from the output. The terminal never executes commands on the user's device.
+
+```json
+{
+  "type": "terminal",
+  "terminal": {
+    "platform": "linux",
+    "tasks": [
+      {
+        "id": "trace",
+        "prompt": "Trace the route to the host.",
+        "steps": [{ "commands": ["traceroute 8.8.8.8"], "output": "Route trace complete." }]
+      }
+    ]
+  }
+}
+```
+
+`platform` changes the prompt character and command-not-found response. Each step's `commands` array can contain
+equivalent accepted forms, while `question` optionally provides `prompt`, `options`, `answer`, `aliases`, and
+`explanation`. When the quiz is reset after a perfect completion, task order is scrambled for the next cycle.
+
+---
+
+### 9. `MultiSectionQuiz`
 
 Orchestrates sequential multi-part study quizzes. Displays progressive stage dots, validates one section at a time, locks future stages until prior stages are passed, and resets answers cleanly upon retry.
 
@@ -388,7 +418,7 @@ export default function Page() {
 
 ---
 
-### 9. `TabbedQuiz`
+### 10. `TabbedQuiz`
 
 Provides a top-level tab switcher to combine multiple sub-quizzes (such as a matrix reference table and a follow-up diagnostic question set) into a single route while preserving progress across tabs.
 

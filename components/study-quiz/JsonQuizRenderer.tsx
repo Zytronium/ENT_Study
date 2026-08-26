@@ -8,6 +8,7 @@ import CalculationQuiz from "@/components/study-quiz/CalculationQuiz";
 import FlashcardQuiz from "@/components/study-quiz/FlashcardQuiz";
 import TableWithBlanksQuiz from "@/components/study-quiz/TableWithBlanksQuiz";
 import TabbedQuiz, { QuizTab } from "@/components/study-quiz/TabbedQuiz";
+import TerminalQuiz from "@/components/study-quiz/TerminalQuiz";
 import type { JsonQuizDefinition, QuizSectionJson } from "@/lib/json-quizzes";
 
 // -------- header props --------
@@ -81,6 +82,8 @@ function renderSection(section: QuizSectionJson, header: HeaderProps | null, isM
           allowAnyRowOrder={section.table.allowAnyRowOrder ?? false}
         />
       );
+    case "terminal":
+      return <TerminalQuiz {...shared} terminal={section.terminal} />;
     default:
       return null;
   }

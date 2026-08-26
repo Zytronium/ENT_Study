@@ -29,8 +29,8 @@ lib/json_quizzes/
 
 Under the hood, `app/[slug]/page.tsx` looks up the quiz by slug and hands it to
 `components/study-quiz/JsonQuizRenderer.tsx`, a client component that maps the JSON onto the same
-`QuestionQuiz`, `MatchToDefinitionsQuiz`, `CalculationQuiz`, `FlashcardQuiz`, `TableWithBlanksQuiz`, and
-`TabbedQuiz` components described in `QUIZ_COMPONENTS.md`. Every field name below matches the prop name on
+`QuestionQuiz`, `MatchToDefinitionsQuiz`, `CalculationQuiz`, `FlashcardQuiz`, `TableWithBlanksQuiz`,
+`TerminalQuiz`, and `TabbedQuiz` components described in `QUIZ_COMPONENTS.md`. Every field name below matches the prop name on
 those components, so the JSON is essentially their props serialized to JSON.
 
 ---
@@ -41,7 +41,7 @@ those components, so the JSON is essentially their props serialized to JSON.
 | :--- | :--- | :--- |
 | `slug` | `string` | Route segment. The quiz is served at `/<slug>`. Must be unique. |
 | `title` | `string` | Quiz title, shown in the header and on the home dashboard. |
-| `type` | `string` | One of `questions`, `matching`, `calculation`, `flashcards`, `table`, `tabbed`. |
+| `type` | `string` | One of `questions`, `matching`, `calculation`, `flashcards`, `table`, `terminal`, `tabbed`. |
 | `homeDescription` | `string` | Description shown on the home dashboard card. |
 
 ## Optional Top-Level Fields
@@ -108,6 +108,12 @@ directly, plus optional `heading` and `description` strings for the quiz content
 ### `type: "table"`
 `table`: an object with `columns`, `rows`, optional `columnOptions`, `blankCountsByStage`, and
 `allowAnyRowOrder` (default `false`), matching `TableWithBlanksQuiz`'s props.
+
+### `type: "terminal"`
+`terminal`: an object with `platform` (`"windows"` or `"linux"`) and a `tasks` array. Each task has a `prompt` and
+`steps`; each step has accepted `commands` and simulated `output`. A task may also include a `question` with `prompt`,
+`options`, `answer`, optional `aliases`, and optional `explanation`. Tasks without a question are completed by entering
+the command; tasks with a question require entering the command and selecting the correct answer.
 
 ---
 

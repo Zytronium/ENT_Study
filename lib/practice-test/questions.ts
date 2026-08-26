@@ -3429,4 +3429,76 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "explanation": "SOA records contain authoritative information about a DNS zone."
     }
   },
+  {
+    "id": "q-network-command-ipconfig-all",
+    "moduleId": "networking-tools",
+    "moduleName": "Networking Tools",
+    "category": "Networking Commands",
+    "primary": {
+      "prompt": "Which Windows command displays all IP configuration information, including MAC address, DNS, and DHCP details?",
+      "options": ["ipconfig /all", "ipconfig", "nslookup", "tracert"],
+      "answer": "ipconfig /all",
+      "explanation": "The study guide identifies ipconfig /all as the Windows command that displays all IP configuration information."
+    },
+    "alternate": {
+      "prompt": "A technician needs the complete Windows IP configuration rather than only the basic address summary. Which command should they enter?",
+      "options": ["ipconfig /all", "ipconfig", "pathping", "ping"],
+      "answer": "ipconfig /all",
+      "explanation": "The /all option displays the full ipconfig information, including MAC address, DNS, and DHCP details."
+    }
+  },
+  {
+    "id": "q-network-command-pathping",
+    "moduleId": "networking-tools",
+    "moduleName": "Networking Tools",
+    "category": "Networking Commands",
+    "primary": {
+      "prompt": "Which Windows troubleshooting command combines ping and tracert?",
+      "options": ["pathping", "nslookup", "ipconfig", "tracert"],
+      "answer": "pathping",
+      "explanation": "The study guide describes pathping as a combination of ping and tracert."
+    },
+    "alternate": {
+      "prompt": "Which command combines reachability testing with route tracing on Windows?",
+      "options": ["pathping", "ping", "ipconfig /all", "nslookup"],
+      "answer": "pathping",
+      "explanation": "Pathping combines the functions of ping and tracert."
+    }
+  },
+  {
+    "id": "q-network-command-linux-ip",
+    "moduleId": "networking-tools",
+    "moduleName": "Networking Tools",
+    "category": "Networking Commands",
+    "primary": {
+      "prompt": "Which Linux command is the equivalent of Windows ipconfig for displaying interfaces and IP addresses?",
+      "options": ["ifconfig", "ping", "traceroute", "dig"],
+      "answer": "ifconfig",
+      "explanation": "ifconfig displays Linux network interfaces and their IP addresses."
+    },
+    "alternate": {
+      "prompt": "A Linux administrator needs to inspect network interfaces and assigned addresses. Which command should they use?",
+      "options": ["ifconfig", "dig", "ping", "traceroute"],
+      "answer": "ifconfig",
+      "explanation": "The ifconfig command displays Linux interface and IP address information."
+    }
+  },
+  {
+    "id": "q-network-command-linux-dig",
+    "moduleId": "networking-tools",
+    "moduleName": "Networking Tools",
+    "category": "Networking Commands",
+    "primary": {
+      "prompt": "Which Linux networking command shows root name servers?",
+      "options": ["dig", "ifconfig", "ping", "traceroute"],
+      "answer": "dig",
+      "explanation": "The dig command shows root name servers and queries DNS information."
+    },
+    "alternate": {
+      "prompt": "Which command would you use on Linux to inspect the root name servers?",
+      "options": ["dig", "ifconfig", "ping", "traceroute"],
+      "answer": "dig",
+      "explanation": "Linux dig is the DNS command used to show root name servers."
+    }
+  },
 ];
