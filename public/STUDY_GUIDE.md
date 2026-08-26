@@ -822,9 +822,9 @@ We all know the OSI model by now:
 
 The TCP/IP Model just compresses it into 4 layers:
 
-​4. **Application** - consists of OSI's Application, Presentation, and Session layers
-​3. **Transport** - consists of just the Transport layer of the OSI model
-​2. **Internet** - consists of just the Network layer of OSI
-​1. **Network Access** - consists of the bottom 2 OSI layers, Data-Link and Physical
+​4. **Application** - consists of OSI's Application, Presentation, and Session layers  
+​3. **Transport** - consists of just the Transport layer of the OSI model  
+​2. **Internet** - consists of just the Network layer of OSI  
+​1. **Network Access** - consists of the bottom 2 OSI layers, Data-Link and Physical  
 
 Don't get the Netwrok Access layer confused with the OSI's Network layer. Remember that the Inter***net*** layer is the ***Net***work layer.
