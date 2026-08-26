@@ -1,0 +1,88 @@
+{
+  "slug": "tcp-ip-model",
+  "title": "TCP/IP Model",
+  "date": "8/26/26",
+  "homeDescription": "Match the four TCP/IP Model layers to their definitions, then identify layers from descriptions.",
+  "studyGuideAnchor": "tcpip-model",
+  "studyGuideDescription": "Practice matching TCP/IP Model layer definitions and identifying layers from descriptions.",
+  "moduleTag": "DIAGNOSTIC_MODULE",
+  "moduleCode": "TCP_IP_LAYER_DEFINITIONS",
+  "type": "tabbed",
+  "tabs": [
+    {
+      "id": "definitions",
+      "label": "[DEFINITIONS]",
+      "type": "matching",
+      "heading": "[TCP_IP_DEFINITION_MATCHING]",
+      "description": "Match each TCP/IP Model layer to its definition.",
+      "mode": "auto",
+      "items": [
+        {
+          "id": "tcpip-application-definition",
+          "term": "Application",
+          "definition": "The highest TCP/IP Model layer; consists of the OSI Application, Presentation, and Session layers."
+        },
+        {
+          "id": "tcpip-transport-definition",
+          "term": "Transport",
+          "definition": "The TCP/IP Model layer that consists of just the Transport layer of the OSI model."
+        },
+        {
+          "id": "tcpip-internet-definition",
+          "term": "Internet",
+          "definition": "The TCP/IP Model layer that consists of just the Network layer of OSI."
+        },
+        {
+          "id": "tcpip-network-access-definition",
+          "term": "Network Access",
+          "definition": "The lowest TCP/IP Model layer; consists of the Data-Link and Physical layers."
+        }
+      ]
+    },
+    {
+      "id": "descriptions",
+      "label": "[DESCRIPTIONS]",
+      "type": "questions",
+      "heading": "[TCP_IP_LAYER_IDENTIFICATION]",
+      "description": "Identify the TCP/IP Model layer described by each clue. These descriptions do not use OSI layer names.",
+      "questions": [
+        {
+          "id": "tcpip-application-description",
+          "category": "Layer Description",
+          "prompt": "Which TCP/IP Model layer provides network services directly to user applications, such as name resolution and web communication?",
+          "options": ["Application", "Transport", "Internet", "Network Access"],
+          "answer": "Application",
+          "explanation": "The Application layer provides network services used directly by software applications.",
+          "canTypeInHardMode": true
+        },
+        {
+          "id": "tcpip-transport-description",
+          "category": "Layer Description",
+          "prompt": "Which TCP/IP Model layer provides end-to-end delivery between applications and can manage reliability, sequencing, and flow control?",
+          "options": ["Application", "Transport", "Internet", "Network Access"],
+          "answer": "Transport",
+          "explanation": "The Transport layer manages communication between applications, including delivery controls such as reliability and flow control.",
+          "canTypeInHardMode": true
+        },
+        {
+          "id": "tcpip-internet-description",
+          "category": "Layer Description",
+          "prompt": "Which TCP/IP Model layer uses logical addresses and routing to move packets between separate networks?",
+          "options": ["Application", "Transport", "Internet", "Network Access"],
+          "answer": "Internet",
+          "explanation": "The Internet layer handles logical addressing and routing packets between networks.",
+          "canTypeInHardMode": true
+        },
+        {
+          "id": "tcpip-network-access-description",
+          "category": "Layer Description",
+          "prompt": "Which TCP/IP Model layer handles local delivery over a network connection, including framing, hardware addressing, and access to the transmission medium?",
+          "options": ["Application", "Transport", "Internet", "Network Access"],
+          "answer": "Network Access",
+          "explanation": "The Network Access layer handles local transmission, framing, hardware addressing, and access to the network medium.",
+          "canTypeInHardMode": true
+        }
+      ]
+    }
+  ]
+}

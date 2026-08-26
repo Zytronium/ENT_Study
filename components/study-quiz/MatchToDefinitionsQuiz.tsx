@@ -286,11 +286,18 @@ export default function MatchToDefinitionsQuiz({
         onPointerCancel={() => setDragging(null)}
       >
         {!isHardMode && (
-          <p className="text-xs text-slate-500">
-            {useDropdown
-              ? "Pick the matching term from the dropdown on each item."
-              : "Drag each definition to its matching term, or click both sides to connect them."}
-          </p>
+          useDropdown ? (
+            <p className="text-xs text-slate-500">
+              Pick the matching term from the dropdown on each item.
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 gap-2 sm:gap-4 md:grid-cols-[minmax(0,1fr)_minmax(13rem,0.6fr)] md:items-baseline md:gap-8">
+              <p className="text-xs text-slate-500">
+                Drag each definition to its matching term, or click both sides to connect them.
+              </p>
+              <p className="hidden text-[10px] font-mono text-cyan-400 md:block">AVAILABLE TERMS</p>
+            </div>
+          )
         )}
         {!isHardMode ? (
           useDropdown ? (
@@ -360,7 +367,7 @@ export default function MatchToDefinitionsQuiz({
             </div>
           ) : (
             // -------- drag-to-connect mode --------
-            <div className="grid grid-cols-1 gap-2 sm:gap-4 md:grid-cols-[minmax(0,1fr)_minmax(13rem,0.6fr)] md:items-start md:gap-8">
+            <div className="grid grid-cols-1 gap-2 sm:gap-4 md:grid-cols-[minmax(0,1fr)_minmax(13rem,0.6fr)] md:items-stretch md:gap-8">
               <div className="space-y-2">
                 {items.map((item) => {
                   const itemIdStr = String(item.id);
@@ -383,7 +390,7 @@ export default function MatchToDefinitionsQuiz({
                         setDragging({ itemId: itemIdStr, ...point });
                       }}
                       onClick={() => !showResults && setSelectedItemId(itemIdStr)}
-                      className={`rounded-lg border p-2 transition-all touch-none select-none ${
+                      className={`rounded-lg border p-3 transition-all touch-none select-none ${
                         showResults
                           ? isCorrect
                             ? "border-emerald-500/60 bg-emerald-950/20"
@@ -402,7 +409,7 @@ export default function MatchToDefinitionsQuiz({
                             </span>
                           )}
                           <p className="text-xs text-slate-300 leading-snug font-mono">
-                            &ldquo;{item.definition}&rdquo;
+                            {item.definition}
                           </p>
                           {item.detailHint && (
                             <p className="mt-0.5 text-[10px] text-slate-500 font-mono italic">{item.detailHint}</p>
@@ -428,9 +435,9 @@ export default function MatchToDefinitionsQuiz({
                   );
                 })}
               </div>
-              <div className="space-y-2 md:pt-0">
-                <p className="text-[10px] font-mono text-cyan-400">AVAILABLE TERMS</p>
-                <div className="space-y-5">
+              <div className="space-y-2 md:pt-0 md:flex md:flex-col md:h-full">
+                <p className="mt-0 text-[10px] font-mono text-cyan-400 md:hidden">AVAILABLE TERMS</p>
+                <div className="flex-1 flex flex-col justify-between gap-2 md:gap-4">
                   {shuffledOptions.map((term) => {
                     const matchedItem = items.find((item) => answers[String(item.id)] === term);
                     const isSelected = selectedItemId !== null && answers[selectedItemId] === term;
@@ -445,7 +452,7 @@ export default function MatchToDefinitionsQuiz({
                         data-match-term={term}
                         disabled={showResults}
                         onClick={() => handleTargetClick(term)}
-                        className={`w-full rounded-md border px-1.5 py-3 text-left text-xs transition-all ${
+                        className={`w-full flex-1 rounded-md border px-1.5 py-2 text-left text-xs transition-all ${
                           showResults
                             ? isCorrect
                               ? "border-emerald-500 bg-emerald-950/50 text-emerald-300"
@@ -474,7 +481,7 @@ export default function MatchToDefinitionsQuiz({
               return (
                 <div key={item.id}
                      className={`p-2.5 rounded-lg border transition-all ${showResults ? isCorrect ? "border-emerald-500/60 bg-emerald-950/20" : "border-rose-500/60 bg-rose-950/20" : "border-slate-800/80 bg-slate-900/70"}`}>
-                  <p className="mb-2 text-xs text-slate-300 leading-snug">&ldquo;{item.definition}&rdquo;</p>
+                  <p className="mb-2 text-xs text-slate-300 leading-snug">{item.definition}</p>
                   <input type="text" value={userVal} onChange={(e) => handleAnswerChange(item.id, e.target.value)}
                          disabled={showResults} placeholder="Type term..."
                          className={`w-full p-2 text-xs sm:text-sm font-mono rounded-lg outline-none border transition-colors ${showResults ? isCorrect ? "border-emerald-500 text-emerald-400 bg-emerald-950/30" : "border-rose-500 text-rose-400 bg-rose-950/30" : "border-slate-700 text-slate-200 bg-slate-950 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400"}`}/>

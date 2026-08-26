@@ -31,6 +31,7 @@ describe("Master Questions Coverage & Quality", () => {
     "ip-address-classes",
     "ports",
     "nat",
+    "tcp-ip-model",
   ];
 
   it("should verify master questions and activities are defined and populated", () => {

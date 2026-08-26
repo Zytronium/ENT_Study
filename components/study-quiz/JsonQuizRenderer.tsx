@@ -33,7 +33,6 @@ function buildSharedProps(
       description: section.description,
       initialHardMode: isMastery,
       hideHeader: true,
-      isEmbedded: true,
     };
   }
 

@@ -3501,4 +3501,76 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "explanation": "Linux dig is the DNS command used to show root name servers."
     }
   },
+  {
+    "id": "q-tcpip-application-description",
+    "moduleId": "tcp-ip-model",
+    "moduleName": "TCP/IP Model",
+    "category": "Layer Descriptions",
+    "primary": {
+      "prompt": "Which TCP/IP Model layer provides network services directly to user applications, such as name resolution and web communication?",
+      "options": ["Application", "Transport", "Internet", "Network Access"],
+      "answer": "Application",
+      "explanation": "The Application layer provides network services used directly by software applications."
+    },
+    "alternate": {
+      "prompt": "Which TCP/IP layer provides services that software applications use to communicate over a network?",
+      "options": ["Application", "Transport", "Internet", "Network Access"],
+      "answer": "Application",
+      "explanation": "The Application layer provides network services directly to user applications."
+    }
+  },
+  {
+    "id": "q-tcpip-transport-description",
+    "moduleId": "tcp-ip-model",
+    "moduleName": "TCP/IP Model",
+    "category": "Layer Descriptions",
+    "primary": {
+      "prompt": "Which TCP/IP Model layer provides end-to-end delivery between applications and can manage reliability, sequencing, and flow control?",
+      "options": ["Application", "Transport", "Internet", "Network Access"],
+      "answer": "Transport",
+      "explanation": "The Transport layer manages communication between applications, including delivery controls such as reliability and flow control."
+    },
+    "alternate": {
+      "prompt": "Which TCP/IP layer manages communication between applications from source to destination?",
+      "options": ["Application", "Transport", "Internet", "Network Access"],
+      "answer": "Transport",
+      "explanation": "The Transport layer provides end-to-end communication between applications."
+    }
+  },
+  {
+    "id": "q-tcpip-internet-description",
+    "moduleId": "tcp-ip-model",
+    "moduleName": "TCP/IP Model",
+    "category": "Layer Descriptions",
+    "primary": {
+      "prompt": "Which TCP/IP Model layer uses logical addresses and routing to move packets between separate networks?",
+      "options": ["Application", "Transport", "Internet", "Network Access"],
+      "answer": "Internet",
+      "explanation": "The Internet layer handles logical addressing and routing packets between networks."
+    },
+    "alternate": {
+      "prompt": "Which TCP/IP layer determines how packets reach a destination across interconnected networks?",
+      "options": ["Application", "Transport", "Internet", "Network Access"],
+      "answer": "Internet",
+      "explanation": "The Internet layer uses logical addressing and routing to move packets between networks."
+    }
+  },
+  {
+    "id": "q-tcpip-network-access-description",
+    "moduleId": "tcp-ip-model",
+    "moduleName": "TCP/IP Model",
+    "category": "Layer Descriptions",
+    "primary": {
+      "prompt": "Which TCP/IP Model layer handles local delivery over a network connection, including framing, hardware addressing, and access to the transmission medium?",
+      "options": ["Application", "Transport", "Internet", "Network Access"],
+      "answer": "Network Access",
+      "explanation": "The Network Access layer handles local transmission, framing, hardware addressing, and access to the network medium."
+    },
+    "alternate": {
+      "prompt": "Which TCP/IP layer is responsible for sending data across the local connection to the next device?",
+      "options": ["Application", "Transport", "Internet", "Network Access"],
+      "answer": "Network Access",
+      "explanation": "The Network Access layer handles local delivery and access to the transmission medium."
+    }
+  },
 ];

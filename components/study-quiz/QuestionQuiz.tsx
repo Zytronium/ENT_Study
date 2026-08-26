@@ -129,7 +129,7 @@ export default function QuestionQuiz({
   externalShowResults,
 }: QuestionQuizProps) {
   const [questions, setQuestions] = useState<QuestionQuizItem[]>(() => {
-    const list = initialHardMode ? shuffleArray(initialQuestions) : initialQuestions;
+    const list = shuffleArray(initialQuestions);
     return list.map((q) => ({
       ...q,
       options: q.options ? shuffleArray(q.options) : undefined,
