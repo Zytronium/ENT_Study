@@ -2098,34 +2098,6 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
     }
   },
   {
-    "id": "q-switches-domains",
-    "moduleId": "layer-2-switches",
-    "moduleName": "Layer 2 Switches",
-    "category": "Switch Operation",
-    "primary": {
-      "prompt": "What effect does a standard Layer 2 switch have on collision domains and broadcast domains?",
-      "options": [
-        "Each switch port is its own separate collision domain; all ports belong to one single broadcast domain",
-        "Each switch port is its own separate broadcast domain and collision domain",
-        "All switch ports share a single collision domain and single broadcast domain",
-        "Switches create multiple broadcast domains but only one collision domain"
-      ],
-      "answer": "Each switch port is its own separate collision domain; all ports belong to one single broadcast domain",
-      "explanation": "Switches break up collision domains per port, but forward broadcast frames to all ports within the same VLAN."
-    },
-    "alternate": {
-      "prompt": "How does a standard Layer 2 Ethernet switch segment network collision domains and broadcast domains?",
-      "options": [
-        "Separates collision domains per port, but maintains a single shared broadcast domain",
-        "Separates both collision domains and broadcast domains per port",
-        "Merges all collision domains and broadcast domains into one",
-        "Does not affect either collision or broadcast domains"
-      ],
-      "answer": "Separates collision domains per port, but maintains a single shared broadcast domain",
-      "explanation": "Each port on a switch isolates collisions, while broadcasts propagate to all ports by default."
-    }
-  },
-  {
     "id": "q-ip-structure",
     "moduleId": "network-layer-ip-addresses",
     "moduleName": "Network Layer - IP Addresses",
