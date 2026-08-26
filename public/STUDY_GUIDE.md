@@ -779,4 +779,32 @@ records:
 | TXT   | imap | "SRV target: mail.protonmail.ch, port 993 (IMAP)" |          | 3600 |
 | TXT   | smtp | "SRV target: mail.protonmail.ch, port 587 (SMTP)" |          | 3600 |
 
----
+## Networking Commands
+
+### Windows
+To open the command promps, search `cmd` in the start menu, which should bring up command prompt; select it. From there,
+you can start entering commands. Below is a list of relevant commands you may be using:
+
+- `ipconfig` - Shows IP address information like IP address, subnet mask, and default gateway.
+- `ipconfig /all` - Shows all IP address information inlcluding but not limited to MAC address, DNS number, DHCP enabled, and DHCP server.
+- `ping <ip/name>` - 
+- `nslookup <domain name>` - looksup nameservers of the domain
+- `tracert <ip>` -
+- `pathping <ip>` - combination of `ping` and `tracert` 
+
+`ipconfig` and `ipconfig /all` are info gathering commands. The rest are troubleshooting commands.
+
+### Linux
+- `ifconfig` (or more common today, `ip addr show`) = `ipconfig`
+- `ping` = `ping`
+- `traceroute` = `tracert`
+- `dig` - shows root name servers. (not quite the same as `nslookup`) 
+
+3 steps to troubleshooting with `ping`:
+1. ping the default gateway - tests connection to router
+2. ping 8.8.8.8 (Google's DNS server) - tests connection out to the internet
+3. ping a domain name (e.i. google.com) - tests DNS
+
+If step 1 fails, you probably forgot to check if anyone else on the network can even connect to the internet/router.  
+If step 1 succeeds but 2 fails, it means you can't get past the default gateway to the internet.
+If those steps succeed but step 3 fails, it means there's a DNS error.
