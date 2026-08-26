@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useRef, useEffect, type PointerEvent } from "react";
 import QuizHeader from "./QuizHeader";
 
 export interface DefinitionItem {
@@ -32,6 +32,9 @@ export interface MatchToDefinitionsQuizProps {
   externalAnswers?: Record<string, string>;
   externalShowResults?: boolean;
 }
+
+// -------- constants --------
+const DROPDOWN_THRESHOLD = 6;
 
 function shuffleArray<T>(array: T[]): T[] {
   const arr = [...array];
@@ -92,46 +95,55 @@ export function validateDefinitionMatch(item: DefinitionItem, userAns: string): 
 }
 
 export default function MatchToDefinitionsQuiz({
-  moduleTag,
-  moduleCode,
-  title,
-  heading = "[TECHNICAL_DEFINITION_MATCHING]",
-  description = "Match each technical definition or description to the correct standard networking term.",
-  studyGuideHref,
-  items: initialItems,
-  options: customOptions,
-  selectPlaceholder = "-- Select Term --",
-  mode = "auto",
-  isEmbedded = false,
-  hideHeader = false,
-  initialHardMode = false,
-  onValidateSection,
-  onAnswersChange,
-  externalAnswers,
-  externalShowResults,
-}: MatchToDefinitionsQuizProps) {
+                                                 moduleTag,
+                                                 moduleCode,
+                                                 title,
+                                                 heading = "[TECHNICAL_DEFINITION_MATCHING]",
+                                                 description = "Match each technical definition or description to the correct standard networking term.",
+                                                 studyGuideHref,
+                                                 items: initialItems,
+                                                 options: customOptions,
+                                                 isEmbedded = false,
+                                                 hideHeader = false,
+                                                 initialHardMode = false,
+                                                 onValidateSection,
+                                                 onAnswersChange,
+                                                 externalAnswers,
+                                                 externalShowResults,
+                                               }: MatchToDefinitionsQuizProps) {
   const [items, setItems] = useState<DefinitionItem[]>(() => {
-    return initialHardMode ? shuffleArray(initialItems) : initialItems;
+    return shuffleArray(initialItems);
   });
 
   const [internalAnswers, setInternalAnswers] = useState<Record<string, string>>({});
   const [internalShowResults, setInternalShowResults] = useState(false);
   const [isHardMode, setIsHardMode] = useState(initialHardMode);
   const [hasCompletedOnce, setHasCompletedOnce] = useState(false);
+  const [shuffledOptions, setShuffledOptions] = useState<string[]>(() =>
+    shuffleArray(customOptions && customOptions.length > 0 ? customOptions : initialItems.map((item) => item.term)),
+  );
+  const [dragging, setDragging] = useState<{ itemId: string; x: number; y: number } | null>(null);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const boardRef = useRef<HTMLDivElement>(null);
+  const sourceRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const targetRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const [lineSegments, setLineSegments] = useState<Array<{
+    id: string;
+    x1: number;
+    y1: number;
+    x2: number;
+    y2: number;
+    correct: boolean;
+  }>>([]);
+  const [dragSegment, setDragSegment] = useState<{ x1: number; y1: number; x2: number; y2: number } | null>(null);
 
   const answers = externalAnswers ?? internalAnswers;
   const showResults = externalShowResults ?? internalShowResults;
 
-  const availableOptions = useMemo(() => {
-    if (customOptions && customOptions.length > 0) return customOptions;
-    const unique = Array.from(new Set(initialItems.map((i) => i.term)));
-    return unique.sort((a, b) => a.localeCompare(b));
-  }, [customOptions, initialItems]);
-
-  const effectiveMode = useMemo(() => {
-    if (mode !== "auto") return mode;
-    return availableOptions.length <= 4 ? "buttons" : "select";
-  }, [mode, availableOptions]);
+  // -------- layout mode --------
+  // Once there are more than DROPDOWN_THRESHOLD items, drag-to-connect lines get
+  // too cluttered, so we fall back to a plain dropdown select per item.
+  const useDropdown = items.length > DROPDOWN_THRESHOLD;
 
   const handleAnswerChange = (itemId: string | number, value: string) => {
     const updated = { ...answers, [String(itemId)]: value };
@@ -139,6 +151,32 @@ export default function MatchToDefinitionsQuiz({
       setInternalAnswers(updated);
     }
     onAnswersChange?.(updated);
+  };
+
+  const getBoardPoint = (clientX: number, clientY: number) => {
+    const board = boardRef.current?.getBoundingClientRect();
+    if (!board) return { x: clientX, y: clientY };
+    return { x: clientX - board.left, y: clientY - board.top };
+  };
+
+  const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (dragging) setDragging({ ...dragging, ...getBoardPoint(event.clientX, event.clientY) });
+  };
+
+  const handlePointerUp = (event: PointerEvent<HTMLDivElement>) => {
+    if (!dragging) return;
+    const target = document.elementFromPoint(event.clientX, event.clientY)?.closest<HTMLButtonElement>(
+      "[data-match-term]",
+    );
+    if (target?.dataset.matchTerm) handleAnswerChange(dragging.itemId, target.dataset.matchTerm);
+    setDragging(null);
+  };
+
+  const handleTargetClick = (term: string) => {
+    if (selectedItemId) {
+      handleAnswerChange(selectedItemId, term);
+      setSelectedItemId(null);
+    }
   };
 
   const results = useMemo(() => {
@@ -151,6 +189,39 @@ export default function MatchToDefinitionsQuiz({
     });
     return { map, correct, total: items.length };
   }, [items, answers]);
+
+  useEffect(() => {
+    if (useDropdown) return;
+    const board = boardRef.current?.getBoundingClientRect();
+    if (!board) return;
+    const nextLines = Object.entries(answers).flatMap(([itemId, term]) => {
+      const source = sourceRefs.current[itemId]?.getBoundingClientRect();
+      const target = targetRefs.current[term]?.getBoundingClientRect();
+      if (!source || !target) return [];
+      return [{
+        id: itemId,
+        x1: source.right - board.left,
+        y1: source.top + source.height / 2 - board.top,
+        x2: target.left - board.left,
+        y2: target.top + target.height / 2 - board.top,
+        correct: Boolean(showResults && results.map[itemId]),
+      }];
+    });
+    setLineSegments(nextLines);
+    if (dragging) {
+      const source = sourceRefs.current[dragging.itemId]?.getBoundingClientRect();
+      if (source) {
+        setDragSegment({
+          x1: source.right - board.left,
+          y1: source.top + source.height / 2 - board.top,
+          x2: dragging.x,
+          y2: dragging.y,
+        });
+      }
+    } else {
+      setDragSegment(null);
+    }
+  }, [answers, items, shuffledOptions, showResults, results.map, dragging, useDropdown]);
 
   const allCorrect = results.correct === results.total;
 
@@ -166,16 +237,21 @@ export default function MatchToDefinitionsQuiz({
 
   const handleResetAndScramble = useCallback(() => {
     setItems(shuffleArray(initialItems));
+    setShuffledOptions(
+      shuffleArray(customOptions && customOptions.length > 0 ? customOptions : initialItems.map((item) => item.term)),
+    );
     const resetAns: Record<string, string> = {};
     if (!externalAnswers) {
       setInternalAnswers(resetAns);
       setInternalShowResults(false);
     }
     onAnswersChange?.(resetAns);
+    setSelectedItemId(null);
+    setDragging(null);
     if (allCorrect || hasCompletedOnce) {
       setIsHardMode(true);
     }
-  }, [initialItems, allCorrect, hasCompletedOnce, externalAnswers, onAnswersChange]);
+  }, [initialItems, customOptions, allCorrect, hasCompletedOnce, externalAnswers, onAnswersChange]);
 
   const content = (
     <div className="space-y-6 font-mono">
@@ -202,131 +278,223 @@ export default function MatchToDefinitionsQuiz({
         </p>
       )}
 
-      <div className="space-y-4">
-        {items.map((item, idx) => {
-          const itemIdStr = String(item.id);
-          const userVal = answers[itemIdStr] || "";
-          const isCorrect = results.map[itemIdStr];
-
-          return (
-            <div
-              key={item.id}
-              className={`p-4 rounded-lg border transition-all ${
-                showResults
-                  ? isCorrect
-                    ? "border-emerald-500/60 bg-emerald-950/20"
-                    : "border-rose-500/60 bg-rose-950/20"
-                  : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
-              }`}
-            >
-              <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
-                <div className="flex-1 space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-900/50 px-1.5 py-0.5 rounded shrink-0">
-                      #{idx + 1}
-                    </span>
-                    {item.hint && (
-                      <span className="text-[10px] text-cyan-400 font-mono bg-cyan-950/40 border border-cyan-900/50 px-1.5 py-0.5 rounded">
-                        {item.hint}
-                      </span>
+      <div
+        ref={boardRef}
+        className="relative space-y-3"
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={() => setDragging(null)}
+      >
+        {!isHardMode && (
+          <p className="text-xs text-slate-500">
+            {useDropdown
+              ? "Pick the matching term from the dropdown on each item."
+              : "Drag each definition to its matching term, or click both sides to connect them."}
+          </p>
+        )}
+        {!isHardMode ? (
+          useDropdown ? (
+            // -------- dropdown mode --------
+            <div className="space-y-2.5">
+              {items.map((item) => {
+                const itemIdStr = String(item.id);
+                const isCorrect = results.map[itemIdStr];
+                const userVal = answers[itemIdStr] || "";
+                return (
+                  <div
+                    key={item.id}
+                    className={`rounded-lg border p-2.5 transition-all ${
+                      showResults
+                        ? isCorrect
+                          ? "border-emerald-500/60 bg-emerald-950/20"
+                          : "border-rose-500/60 bg-rose-950/20"
+                        : "border-slate-800/80 bg-slate-900/70 hover:border-slate-700"
+                    }`}
+                  >
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+                      <div className="flex-1 min-w-0">
+                        {item.hint && (
+                          <span
+                            className="mb-1 inline-block text-[10px] text-cyan-400 font-mono bg-cyan-950/40 border border-cyan-900/50 px-1.5 py-0.5 rounded">
+                            {item.hint}
+                          </span>
+                        )}
+                        <p className="text-xs text-slate-300 leading-snug font-mono">
+                          &ldquo;{item.definition}&rdquo;
+                        </p>
+                        {item.detailHint && (
+                          <p className="mt-0.5 text-[10px] text-slate-500 font-mono italic">{item.detailHint}</p>
+                        )}
+                      </div>
+                      <select
+                        value={userVal}
+                        disabled={showResults}
+                        onChange={(e) => handleAnswerChange(item.id, e.target.value)}
+                        className={`shrink-0 rounded-md border px-2 py-1.5 text-xs font-mono outline-none transition-colors sm:w-48 ${
+                          showResults
+                            ? isCorrect
+                              ? "border-emerald-500 bg-emerald-950/30 text-emerald-300"
+                              : "border-rose-500 bg-rose-950/30 text-rose-300"
+                            : userVal
+                              ? "border-cyan-400 bg-cyan-950/30 text-cyan-300"
+                              : "border-slate-700 bg-slate-950 text-slate-400"
+                        }`}
+                      >
+                        <option value="">Select a term...</option>
+                        {shuffledOptions.map((term) => (
+                          <option key={term} value={term}>
+                            {term}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    {showResults && !isCorrect && (
+                      <div
+                        className="mt-2 text-xs font-mono text-rose-400 bg-rose-950/30 border border-rose-900/50 p-2 rounded">
+                        Correct answer: <span className="text-emerald-400 font-bold">{item.term}</span>
+                      </div>
                     )}
                   </div>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-mono">
-                    &ldquo;{item.definition}&rdquo;
-                  </p>
-                  {item.detailHint && (
-                    <p className="text-[11px] text-slate-500 font-mono italic">
-                      {item.detailHint}
-                    </p>
-                  )}
-                </div>
-
-                <div className="w-full md:w-64 shrink-0">
-                  {isHardMode ? (
-                    <input
-                      type="text"
-                      value={userVal}
-                      onChange={(e) => handleAnswerChange(item.id, e.target.value)}
-                      disabled={showResults}
-                      placeholder="Type term..."
-                      className={`w-full p-2 text-xs sm:text-sm font-mono rounded-lg outline-none border transition-colors ${
+                );
+              })}
+            </div>
+          ) : (
+            // -------- drag-to-connect mode --------
+            <div className="grid grid-cols-1 gap-2 sm:gap-4 md:grid-cols-[minmax(0,1fr)_minmax(13rem,0.6fr)] md:items-start md:gap-8">
+              <div className="space-y-2">
+                {items.map((item) => {
+                  const itemIdStr = String(item.id);
+                  const isCorrect = results.map[itemIdStr];
+                  const isMatched = Boolean(answers[itemIdStr]);
+                  return (
+                    <div
+                      key={item.id}
+                      ref={(element) => {
+                        sourceRefs.current[itemIdStr] = element as unknown as HTMLButtonElement;
+                      }}
+                      role="button"
+                      tabIndex={showResults ? -1 : 0}
+                      aria-disabled={showResults}
+                      onPointerDown={(event) => {
+                        if (showResults) return;
+                        (event.currentTarget as HTMLDivElement).setPointerCapture(event.pointerId);
+                        const point = getBoardPoint(event.clientX, event.clientY);
+                        setSelectedItemId(itemIdStr);
+                        setDragging({ itemId: itemIdStr, ...point });
+                      }}
+                      onClick={() => !showResults && setSelectedItemId(itemIdStr)}
+                      className={`rounded-lg border p-2 transition-all touch-none select-none ${
                         showResults
                           ? isCorrect
-                            ? "border-emerald-500 text-emerald-400 bg-emerald-950/30"
-                            : "border-rose-500 text-rose-400 bg-rose-950/30"
-                          : "border-slate-700 text-slate-200 bg-slate-950 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400"
-                      }`}
-                    />
-                  ) : effectiveMode === "buttons" ? (
-                    <div className="space-y-1.5">
-                      {availableOptions.map((opt) => {
-                        const isSelected = userVal === opt;
-                        const isThisCorrect = opt === item.term;
-
-                        let btnClasses =
-                          "w-full text-left p-2 rounded text-xs font-mono border transition-all cursor-pointer ";
-                        if (showResults) {
-                          if (isThisCorrect) {
-                            btnClasses += "bg-emerald-950/60 border-emerald-500 text-emerald-300 font-bold";
-                          } else if (isSelected && !isThisCorrect) {
-                            btnClasses += "bg-rose-950/60 border-rose-500 text-rose-300 line-through";
-                          } else {
-                            btnClasses += "bg-slate-950/40 border-slate-800/40 text-slate-600 opacity-60";
-                          }
-                        } else if (isSelected) {
-                          btnClasses +=
-                            "bg-emerald-950/40 border-emerald-400 text-emerald-300 font-bold shadow-sm";
-                        } else {
-                          btnClasses +=
-                            "bg-slate-950 border-slate-800 hover:border-slate-700 text-slate-300";
-                        }
-
-                        return (
-                          <button
-                            key={opt}
-                            type="button"
-                            disabled={showResults}
-                            onClick={() => handleAnswerChange(item.id, opt)}
-                            className={btnClasses}
-                          >
-                            <span className="mr-1.5 font-bold">{isSelected ? "[●]" : "[ ]"}</span>
-                            {opt}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <select
-                      value={userVal}
-                      onChange={(e) => handleAnswerChange(item.id, e.target.value)}
-                      disabled={showResults}
-                      className={`w-full bg-slate-950 border p-2 text-xs sm:text-sm font-mono rounded-lg outline-none transition-colors ${
-                        showResults
-                          ? isCorrect
-                            ? "border-emerald-500 text-emerald-400 bg-emerald-950/30"
-                            : "border-rose-500 text-rose-400 bg-rose-950/30"
-                          : "border-slate-700 text-slate-200 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400"
+                            ? "border-emerald-500/60 bg-emerald-950/20"
+                            : "border-rose-500/60 bg-rose-950/20"
+                          : isMatched
+                            ? "border-cyan-400 bg-cyan-950/20 cursor-grab active:cursor-grabbing"
+                            : "border-slate-800/80 bg-slate-900/70 hover:border-cyan-500/60 cursor-grab active:cursor-grabbing"
                       }`}
                     >
-                      <option value="">{selectPlaceholder}</option>
-                      {availableOptions.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
-                  )}
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0 flex-1">
+                          {item.hint && (
+                            <span
+                              className="mb-1 inline-block text-[10px] text-cyan-400 font-mono bg-cyan-950/40 border border-cyan-900/50 px-1.5 py-0.5 rounded">
+                              {item.hint}
+                            </span>
+                          )}
+                          <p className="text-xs text-slate-300 leading-snug font-mono">
+                            &ldquo;{item.definition}&rdquo;
+                          </p>
+                          {item.detailHint && (
+                            <p className="mt-0.5 text-[10px] text-slate-500 font-mono italic">{item.detailHint}</p>
+                          )}
+                        </div>
+                        <span
+                          className={`shrink-0 text-[10px] font-mono px-1.5 py-0.5 rounded border ${
+                            isMatched
+                              ? "border-cyan-400 text-cyan-300 bg-cyan-950/30"
+                              : "border-slate-700 text-slate-500"
+                          }`}
+                        >
+                          {isMatched ? answers[itemIdStr] : "drag →"}
+                        </span>
+                      </div>
+                      {showResults && !isCorrect && (
+                        <div
+                          className="mt-1.5 text-[10px] font-mono text-rose-400 bg-rose-950/30 border border-rose-900/50 p-1.5 rounded">
+                          Correct answer: <span className="text-emerald-400 font-bold">{item.term}</span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="space-y-2 md:pt-0">
+                <p className="text-[10px] font-mono text-cyan-400">AVAILABLE TERMS</p>
+                <div className="space-y-5">
+                  {shuffledOptions.map((term) => {
+                    const matchedItem = items.find((item) => answers[String(item.id)] === term);
+                    const isSelected = selectedItemId !== null && answers[selectedItemId] === term;
+                    const isCorrect = matchedItem ? results.map[String(matchedItem.id)] : undefined;
+                    return (
+                      <button
+                        key={term}
+                        ref={(element) => {
+                          targetRefs.current[term] = element;
+                        }}
+                        type="button"
+                        data-match-term={term}
+                        disabled={showResults}
+                        onClick={() => handleTargetClick(term)}
+                        className={`w-full rounded-md border px-1.5 py-3 text-left text-xs transition-all ${
+                          showResults
+                            ? isCorrect
+                              ? "border-emerald-500 bg-emerald-950/50 text-emerald-300"
+                              : matchedItem
+                                ? "border-rose-500 bg-rose-950/50 text-rose-300"
+                                : "border-slate-800 bg-slate-950/50 text-slate-600"
+                            : isSelected
+                              ? "border-cyan-400 bg-cyan-950/40 text-cyan-300"
+                              : "border-cyan-900/70 bg-slate-950 text-slate-300 hover:border-cyan-500"
+                        }`}
+                      >
+                        {matchedItem ? "[●] " : "[ ] "}{term}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
-
-              {showResults && !isCorrect && (
-                <div className="mt-2 text-xs font-mono text-rose-400 bg-rose-950/30 border border-rose-900/50 p-2 rounded">
-                  Correct answer: <span className="text-emerald-400 font-bold">{item.term}</span>
-                </div>
-              )}
             </div>
-          );
-        })}
+          )
+        ) : (
+          <div className="space-y-3">
+            {items.map((item) => {
+              const itemIdStr = String(item.id);
+              const userVal = answers[itemIdStr] || "";
+              const isCorrect = results.map[itemIdStr];
+              return (
+                <div key={item.id}
+                     className={`p-2.5 rounded-lg border transition-all ${showResults ? isCorrect ? "border-emerald-500/60 bg-emerald-950/20" : "border-rose-500/60 bg-rose-950/20" : "border-slate-800/80 bg-slate-900/70"}`}>
+                  <p className="mb-2 text-xs text-slate-300 leading-snug">&ldquo;{item.definition}&rdquo;</p>
+                  <input type="text" value={userVal} onChange={(e) => handleAnswerChange(item.id, e.target.value)}
+                         disabled={showResults} placeholder="Type term..."
+                         className={`w-full p-2 text-xs sm:text-sm font-mono rounded-lg outline-none border transition-colors ${showResults ? isCorrect ? "border-emerald-500 text-emerald-400 bg-emerald-950/30" : "border-rose-500 text-rose-400 bg-rose-950/30" : "border-slate-700 text-slate-200 bg-slate-950 focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400"}`}/>
+                  {showResults && !isCorrect && <div className="mt-2 text-xs text-rose-400">Correct answer: <span
+                    className="text-emerald-400 font-bold">{item.term}</span></div>}
+                </div>
+              );
+            })}
+          </div>
+        )}
+        {!isHardMode && !useDropdown && (
+          <svg className="pointer-events-none absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
+            {lineSegments.map((line) => (
+              <line key={line.id} x1={line.x1} y1={line.y1} x2={line.x2} y2={line.y2}
+                    stroke={line.correct ? "var(--accent)" : "var(--accent-cyan)"} strokeWidth="2"/>
+            ))}
+            {dragSegment && <line x1={dragSegment.x1} y1={dragSegment.y1} x2={dragSegment.x2} y2={dragSegment.y2}
+                                  stroke="var(--accent-cyan)" strokeWidth="2"/>}
+          </svg>
+        )}
       </div>
 
       {!isEmbedded && (
