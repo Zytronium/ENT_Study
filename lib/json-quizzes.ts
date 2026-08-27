@@ -63,15 +63,29 @@ export type TableConfigJson = {
   allowAnyRowOrder?: boolean;
 };
 
-export type TerminalCommandStepJson = {
+// -------- terminal state types --------
+export type TerminalStateValue = string | number | boolean;
+export type TerminalStateCondition = Record<string, TerminalStateValue>;
+
+export type TerminalCommandOutcomeJson = {
   commands: string[];
-  output: string;
+  when?: TerminalStateCondition; // omit for the default/fallback outcome
+  output: string; // supports {{key}} substitution against current state
+  setState?: Record<string, TerminalStateValue>;
+  advance?: boolean; // default true; false keeps the student on this step
+};
+
+export type TerminalCommandStepJson = {
+  commands: string[]; // still required; used when "outcomes" is absent, and as the fallback match pool
+  output: string; // still required; used when "outcomes" is absent, or as a last-resort fallback
+  outcomes?: TerminalCommandOutcomeJson[]; // optional: state-aware branching, checked before commands/output
 };
 
 export type TerminalTaskJson = {
   id: string | number;
   prompt: string;
   steps: TerminalCommandStepJson[];
+  initialState?: Record<string, TerminalStateValue>;
   question?: {
     prompt: string;
     options: string[];
@@ -84,6 +98,7 @@ export type TerminalTaskJson = {
 export type TerminalConfigJson = {
   platform: "windows" | "linux";
   tasks: TerminalTaskJson[];
+  initialState?: Record<string, TerminalStateValue>; // hidden per-task scenario data
 };
 
 // -------- section types (used standalone or as tabs inside a tabbed quiz) --------

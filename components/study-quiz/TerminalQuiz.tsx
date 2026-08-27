@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import QuizHeader from "./QuizHeader";
-import type { TerminalConfigJson, TerminalTaskJson } from "@/lib/json-quizzes";
+import type { TerminalConfigJson, TerminalTaskJson, TerminalCommandStepJson, TerminalStateValue } from "@/lib/json-quizzes";
 
 type TerminalQuizProps = {
   moduleTag?: string;
@@ -46,17 +46,72 @@ function isAnswerCorrect(task: TerminalTaskJson, answer: string) {
   );
 }
 
+// -------- terminal state helpers --------
+function stateMatches(condition: Record<string, TerminalStateValue> | undefined, state: Record<string, TerminalStateValue>) {
+  if (!condition) return true;
+  return Object.entries(condition).every(([key, value]) => state[key] === value);
+}
+
+function applyTemplate(text: string, state: Record<string, TerminalStateValue>) {
+  return text.replace(/\{\{(\w+)\}\}/g, (match, key) => {
+    const value = state[key];
+    return value === undefined ? match : String(value);
+  });
+}
+
+function getInitialTaskState(task: TerminalTaskJson | undefined, terminal: TerminalConfigJson) {
+  return { ...terminal.initialState, ...task?.initialState };
+}
+
+function resolveOutcome(step: TerminalCommandStepJson, command: string, state: Record<string, TerminalStateValue>) {
+  if (!step.outcomes) return null;
+  return step.outcomes.find(
+    (outcome) =>
+      outcome.commands.some((candidate) => normalize(candidate) === normalize(command)) &&
+      stateMatches(outcome.when, state)
+  ) ?? null;
+}
+
+function stepAcceptsCommand(
+  step: TerminalCommandStepJson,
+  command: string,
+  state: Record<string, TerminalStateValue>,
+) {
+  const pool = [
+    ...step.commands,
+    ...(step.outcomes?.filter((outcome) => stateMatches(outcome.when, state)).flatMap((outcome) => outcome.commands) ?? []),
+  ];
+  return pool.some((candidate) => normalize(candidate) === normalize(command));
+}
+
+function findKnownStep(
+  terminal: TerminalConfigJson,
+  command: string,
+  state: Record<string, TerminalStateValue>,
+) {
+  for (const knownTask of terminal.tasks) {
+    for (const knownStep of knownTask.steps) {
+      const outcome = resolveOutcome(knownStep, command, state);
+      if (outcome) return { step: knownStep, outcome };
+      if (knownStep.commands.some((candidate) => normalize(candidate) === normalize(command))) {
+        return { step: knownStep, outcome: null };
+      }
+    }
+  }
+  return null;
+}
+
 export default function TerminalQuiz({
-  moduleTag,
-  moduleCode,
-  title,
-  heading = "[TERMINAL_COMMAND_CHALLENGE]",
-  description,
-  studyGuideHref,
-  terminal,
-  isEmbedded = false,
-  initialHardMode = false,
-}: TerminalQuizProps) {
+                                       moduleTag,
+                                       moduleCode,
+                                       title,
+                                       heading = "[TERMINAL_COMMAND_CHALLENGE]",
+                                       description,
+                                       studyGuideHref,
+                                       terminal,
+                                       isEmbedded = false,
+                                       initialHardMode = false,
+                                     }: TerminalQuizProps) {
   const initialTasks = useMemo(
     () => shuffleTaskOptions(initialHardMode ? shuffle(terminal.tasks) : terminal.tasks),
     [initialHardMode, terminal.tasks]
@@ -74,6 +129,9 @@ export default function TerminalQuiz({
   const [questionReady, setQuestionReady] = useState(false);
   const [wrongCommandPulse, setWrongCommandPulse] = useState(false);
   const [awaitingNextTask, setAwaitingNextTask] = useState(false);
+  const [taskState, setTaskState] = useState<Record<string, TerminalStateValue>>(
+    getInitialTaskState(initialTasks[0], terminal),
+  );
   const commandInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -103,10 +161,6 @@ export default function TerminalQuiz({
 
   const appendTranscript = (lines: TranscriptLine[]) => setTranscript((previous) => [...previous, ...lines]);
 
-  const findKnownStep = (command: string) => terminal.tasks
-    .flatMap((knownTask) => knownTask.steps)
-    .find((knownStep) => knownStep.commands.some((candidate) => normalize(candidate) === normalize(command)));
-
   const pulseWrongCommand = () => {
     setWrongCommandPulse(false);
     window.setTimeout(() => setWrongCommandPulse(true), 0);
@@ -117,14 +171,17 @@ export default function TerminalQuiz({
     if (!task || !currentStep || !input.trim() || isRunning) return;
     const command = input.trim();
     setInput("");
-    const isAccepted = currentStep.commands.some((candidate) => normalize(candidate) === normalize(command));
-    const knownStep = findKnownStep(command);
-    if (!isAccepted && !knownStep) {
+
+    const outcome = resolveOutcome(currentStep, command, taskState);
+    const isAccepted = outcome ? true : stepAcceptsCommand(currentStep, command, taskState);
+    const knownMatch = !isAccepted ? findKnownStep(terminal, command, taskState) : null;
+
+    if (!isAccepted && !knownMatch) {
       appendTranscript([
         { kind: "command", text: command },
         { kind: "error", text: terminal.platform === "windows"
-          ? `\'${command}\' is not recognized as an internal or external command,\noperable program or batch file.`
-          : `bash: ${command}: command not found` },
+            ? `\'${command}\' is not recognized as an internal or external command,\noperable program or batch file.`
+            : `bash: ${command}: command not found` },
       ]);
       pulseWrongCommand();
       setFeedback(null);
@@ -135,16 +192,25 @@ export default function TerminalQuiz({
     setFeedback("Running simulated command...");
     setIsRunning(true);
     window.setTimeout(() => {
-      appendTranscript([{ kind: "output", text: (knownStep ?? currentStep).output }]);
+      const rawOutput = outcome?.output ?? knownMatch?.outcome?.output ?? (knownMatch?.step ?? currentStep).output;
+      appendTranscript([{ kind: "output", text: applyTemplate(rawOutput, taskState) }]);
       setIsRunning(false);
 
-      if (!isAccepted) {
+      if (outcome?.setState) {
+        setTaskState((previous) => ({ ...previous, ...outcome.setState }));
+      }
+
+      const wasWrongStep = !isAccepted;
+      if (wasWrongStep) {
         pulseWrongCommand();
         setFeedback(null);
         return;
       }
 
+      const shouldAdvance = outcome ? outcome.advance !== false : true;
       setFeedback(null);
+      if (!shouldAdvance) return;
+
       if (stepIndex < task.steps.length - 1) {
         setStepIndex(stepIndex + 1);
         return;
@@ -175,6 +241,7 @@ export default function TerminalQuiz({
     setQuestionReady(false);
     setFeedback(null);
     setAwaitingNextTask(false);
+    setTaskState(getInitialTaskState(tasks[taskIndex + 1], terminal));
   };
 
   const submitAnswer = (answer: string) => {
@@ -200,6 +267,7 @@ export default function TerminalQuiz({
     setQuestionReady(false);
     setWrongCommandPulse(false);
     setAwaitingNextTask(false);
+    setTaskState(getInitialTaskState(nextTasks[0], terminal));
     if (allCorrect) setHasCompletedOnce(true);
   };
 

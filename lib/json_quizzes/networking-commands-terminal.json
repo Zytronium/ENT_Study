@@ -185,6 +185,123 @@
           }
         ]
       }
+    },
+    {
+      "id": "windows-troubleshooting",
+      "label": "[TROUBLESHOOTING]",
+      "type": "terminal",
+      "heading": "[WINDOWS_TROUBLESHOOTING_LAB]",
+      "description": "Diagnose and resolve three connectivity problems using a simulated Windows command prompt. Commands and their effects are simulated and never touch your device.",
+      "terminal": {
+        "platform": "windows",
+        "initialState": {
+          "ip": "169.254.83.12",
+          "dnsBroken": true,
+          "gatewayMismatched": true,
+          "adapterDisabled": true
+        },
+        "tasks": [
+          {
+            "id": "apipa-address",
+            "prompt": "A user reports they have no internet access. Check the device's IP configuration to identify the problem.",
+            "initialState": { "ip": "169.254.83.12", "subnetMask": "255.255.0.0", "gateway": "" },
+            "steps": [
+              {
+                "commands": ["ipconfig", "ipconfig /all"],
+                "output": "Windows IP Configuration\n\nEthernet adapter Ethernet:\n\n   Connection-specific DNS Suffix  . :\n   IPv4 Address. . . . . . . . . . . : {{ip}}\n   Subnet Mask . . . . . . . . . . . : {{subnetMask}}\n   Default Gateway . . . . . . . . . : {{gateway}}"
+              }
+            ],
+            "question": {
+              "prompt": "The address 169.254.83.12 with no default gateway indicates what?",
+              "options": [
+                "The adapter failed to get a DHCP lease and self-assigned an APIPA address",
+                "The device is correctly configured for a static IP",
+                "The device has two active default gateways",
+                "The DNS server address is misconfigured"
+              ],
+              "answer": "The adapter failed to get a DHCP lease and self-assigned an APIPA address",
+              "aliases": ["apipa", "failed dhcp lease"],
+              "explanation": "A 169.254.x.x address with no gateway is an APIPA address, assigned when DHCP fails."
+            }
+          },
+          {
+            "id": "release-renew",
+            "prompt": "Release the current lease and request a new one from the DHCP server.",
+            "initialState": { "ip": "169.254.83.12", "subnetMask": "255.255.0.0", "gateway": "" },
+            "steps": [
+              {
+                "commands": ["ipconfig /release", "ipconfig /release Ethernet"],
+                "output": "\nEthernet adapter Ethernet:\n\n   Connection-specific DNS Suffix  . :\n   IPv4 Address. . . . . . . . . . . : 0.0.0.0\n   Subnet Mask . . . . . . . . . . . : 0.0.0.0\n   Default Gateway . . . . . . . . . :",
+                "outcomes": [
+                  {
+                    "commands": ["ipconfig /release", "ipconfig /release Ethernet"],
+                    "output": "\nEthernet adapter Ethernet:\n\n   Connection-specific DNS Suffix  . :\n   IPv4 Address. . . . . . . . . . . : 0.0.0.0\n   Subnet Mask . . . . . . . . . . . : 0.0.0.0\n   Default Gateway . . . . . . . . . :",
+                    "advance": true
+                  },
+                  {
+                    "commands": ["ipconfig /renew", "ipconfig /renew Ethernet"],
+                    "when": { "ip": "169.254.83.12" },
+                    "output": "\nEthernet adapter Ethernet:\n\n   Connection-specific DNS Suffix  . : lan\n   IPv4 Address. . . . . . . . . . . : {{ip}}\n   Subnet Mask . . . . . . . . . . . : 255.255.255.0\n   Default Gateway . . . . . . . . . : 192.168.1.1",
+                    "setState": { "ip": "192.168.1.24", "subnetMask": "255.255.255.0", "gateway": "192.168.1.1" },
+                    "advance": true
+    }
+  ]
+}
+            ]
+          },
+          {
+            "id": "dns-name-resolution-fails",
+            "prompt": "A different user can reach IP addresses but web pages will not load by name. Test whether DNS resolution is working for example.com.",
+            "initialState": { "ip": "192.168.1.24", "subnetMask": "255.255.255.0", "gateway": "192.168.1.1", "dnsBroken": false, "gatewayMismatched": false, "adapterDisabled": false },
+            "steps": [
+              {
+                "commands": ["nslookup example.com", "nslookup <domain name>"],
+                "output": "DNS request timed out.\n    timeout was 2 seconds.\nServer:  UnKnown\nAddress:  192.168.1.1\n\n*** UnKnown can't find example.com: Server failed",
+                "outcomes": [
+                  {
+                    "commands": ["ipconfig"],
+                    "output": "Windows IP Configuration\n\nEthernet adapter Ethernet:\n\n   Connection-specific DNS Suffix  . :\n   IPv4 Address. . . . . . . . . . . : {{ip}}\n   Subnet Mask . . . . . . . . . . . : {{subnetMask}}\n   Default Gateway . . . . . . . . . : {{gateway}}",
+                    "advance": false
+                  },
+                  {
+                    "commands": ["ping 192.168.1.1", "ping <default gateway>"],
+                    "output": "\nPinging 192.168.1.1 with 32 bytes of data:\nReply from 192.168.1.1: bytes=32 time<1ms TTL=64\nReply from 192.168.1.1: bytes=32 time<1ms TTL=64\n\nPing statistics for 192.168.1.1:\n    Packets: Sent = 2, Received = 2, Lost = 0 (0% loss),",
+                    "advance": false
+                  },
+                  {
+                    "commands": ["ping example.com"],
+                    "output": "\nPinging example.com [93.184.216.34] with 32 bytes of data:\nReply from 93.184.216.34: bytes=32 time=18ms TTL=54\nReply from 93.184.216.34: bytes=32 time=17ms TTL=54\n\nPing statistics for 93.184.216.34:\n    Packets: Sent = 2, Received = 2, Lost = 0 (0% loss),",
+                    "advance": false
+                  },
+                  {
+                    "commands": ["nslookup example.com", "nslookup <domain name>"],
+                    "when": { "dnsBroken": true },
+                    "output": "DNS request timed out.\n    timeout was 2 seconds.\nServer:  UnKnown\nAddress:  192.168.1.1\n\n*** UnKnown can't find example.com: Server failed",
+                    "advance": false
+                  },
+                  {
+                    "commands": ["nslookup example.com", "nslookup <domain name>"],
+                    "output": "Server:  router.local\nAddress:  192.168.1.1\n\nNon-authoritative answer:\nName:    example.com\nAddresses:  93.184.216.34",
+                    "advance": true
+                  },
+                  {
+                    "commands": ["ipconfig /flushdns"],
+                    "output": "Windows IP Configuration\n\nSuccessfully flushed the DNS Resolver Cache.",
+                    "setState": { "dnsBroken": false },
+                    "advance": false
+                  }
+                ]
+              }
+            ],
+            "question": {
+              "prompt": "Which command clears a corrupted local DNS cache that can cause lookups to fail?",
+              "options": ["ipconfig /flushdns", "ipconfig /release", "tracert", "pathping"],
+              "answer": "ipconfig /flushdns",
+              "explanation": "ipconfig /flushdns clears the local DNS resolver cache, which can resolve stale or corrupted lookup failures."
+            }
+          }
+        ]
+      }
     }
   ]
 }
