@@ -849,7 +849,7 @@ Using a VPN is typically the better option.
 
 **Site to Site** - Company site to company site (i.e. campus to campus). This is typically done with routers.
 
-**Client to site** - Remote site to company site (i.e. home office to work building). This is typically done with software 
+**Client to Site** - Remote site to company site (i.e. home office to work building). This is typically done with software 
 on the client side and a router on the company side.
 
 A **VPN Concentrator** is a specialty device.
