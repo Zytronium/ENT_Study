@@ -3627,4 +3627,130 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "explanation": "PAAS manages more of the platform while the customer decides what software runs on it."
     }
   },
+  {
+    "id": "q-virtualization-definition",
+    "moduleId": "virtualization",
+    "moduleName": "Virtualization",
+    "category": "Core Concepts",
+    "primary": {
+      "prompt": "What does virtualization allow a computer to do?",
+      "options": ["Run a virtual operating system", "Run multiple operating systems directly on physical hardware", "Give one operating system exclusive access to all server resources", "Replace the host operating system with a physical server"],
+      "answer": "Run a virtual operating system",
+      "explanation": "Virtualization uses hypervisors to run a virtual operating system."
+    },
+    "alternate": {
+      "prompt": "Which technology uses a hypervisor to load an operating system in a virtual environment?",
+      "options": ["Virtualization", "NAT", "Cloud computing", "VPN"],
+      "answer": "Virtualization",
+      "explanation": "Virtualization uses hypervisors to run virtual operating systems."
+    }
+  },
+  {
+    "id": "q-virtualization-benefits",
+    "moduleId": "virtualization",
+    "moduleName": "Virtualization",
+    "category": "Benefits",
+    "primary": {
+      "prompt": "Which is a benefit of using virtualization on a server?",
+      "options": ["Multiple virtual machines can share the server's resources", "Each virtual machine can receive dedicated physical resources", "Every virtual machine can use the full server without sharing resources", "A virtual machine can run without a host operating system or hypervisor"],
+      "answer": "Multiple virtual machines can share the server's resources",
+      "explanation": "Virtualization allows multiple virtual machines with different operating systems to share and use server resources."
+    },
+    "alternate": {
+      "prompt": "Why are virtual machines commonly used on servers?",
+      "options": ["They allow multiple operating systems to use server resources at once", "They prevent any operating system from sharing resources", "They require a separate physical server for every virtual machine", "They eliminate the need for an operating system"],
+      "answer": "They allow multiple operating systems to use server resources at once",
+      "explanation": "Virtualization lets multiple virtual machines run on different operating systems while sharing server resources."
+    }
+  },
+  {
+    "id": "q-virtualization-portability",
+    "moduleId": "virtualization",
+    "moduleName": "Virtualization",
+    "category": "Benefits",
+    "primary": {
+      "prompt": "What can be transported to another physical server relatively easily with virtualization?",
+      "options": ["A backup of the entire virtual machine", "A backup of the physical server's hardware", "An image containing only the host operating system", "A copy of the server's physical memory modules"],
+      "answer": "A backup of the entire virtual machine",
+      "explanation": "Virtualization makes it easier to transport a backup of an entire virtual machine to another physical server."
+    },
+    "alternate": {
+      "prompt": "Which virtualization capability simplifies moving a system to another physical server?",
+      "options": ["Transporting a backup of the entire virtual machine", "Replacing the server with a modem", "Converting the VM into a network cable", "Removing the virtual machine's operating system"],
+      "answer": "Transporting a backup of the entire virtual machine",
+      "explanation": "A backup of an entire virtual machine can be transported to another physical server."
+    }
+  },
+  {
+    "id": "q-virtualization-type-1",
+    "moduleId": "virtualization",
+    "moduleName": "Virtualization",
+    "category": "Hypervisor Types",
+    "primary": {
+      "prompt": "A hypervisor runs directly on the physical server hardware. Which type is it?",
+      "options": ["Type 1", "Type 2", "PAT", "Client to Site"],
+      "answer": "Type 1",
+      "explanation": "Type 1 hypervisors are bare metal and run directly on the hardware."
+    },
+    "alternate": {
+      "prompt": "Which hypervisor type is also called bare metal?",
+      "options": ["Type 1", "Type 2", "SAAS", "Network Access"],
+      "answer": "Type 1",
+      "explanation": "Type 1 hypervisors run directly on the physical server hardware and are called bare metal."
+    }
+  },
+  {
+    "id": "q-virtualization-type-1-example",
+    "moduleId": "virtualization",
+    "moduleName": "Virtualization",
+    "category": "Hypervisor Examples",
+    "primary": {
+      "prompt": "Which product is an example of a Type 1 hypervisor?",
+      "options": ["VMware ESXi", "Oracle VirtualBox", "VMware Workstation", "MS Virtual PC"],
+      "answer": "VMware ESXi",
+      "explanation": "Microsoft Hyper-V, VMware ESXi, Citrix XenServer, and ProxMox are Type 1 examples."
+    },
+    "alternate": {
+      "prompt": "An administrator needs a bare-metal hypervisor. Which listed product should they select?",
+      "options": ["Microsoft Hyper-V", "Oracle VirtualBox", "VMware Workstation", "MS Virtual PC"],
+      "answer": "Microsoft Hyper-V",
+      "explanation": "Microsoft Hyper-V an example of a Type 1 bare-metal hypervisor."
+    }
+  },
+  {
+    "id": "q-virtualization-type-2",
+    "moduleId": "virtualization",
+    "moduleName": "Virtualization",
+    "category": "Hypervisor Types",
+    "primary": {
+      "prompt": "A hypervisor runs on an existing operating system, and both systems share resources. Which type is it?",
+      "options": ["Type 2", "Type 1", "Bare metal", "Network Access"],
+      "answer": "Type 2",
+      "explanation": "Type 2 hypervisors run on an existing operating system, so the host OS and virtual machine share resources."
+    },
+    "alternate": {
+      "prompt": "Which hypervisor type is commonly run on a personal computer with a host operating system?",
+      "options": ["Type 2", "Type 1", "PAAS", "Internet"],
+      "answer": "Type 2",
+      "explanation": "Type 2 hypervisors run on an existing host operating system and are commonly used on personal computers."
+    }
+  },
+  {
+    "id": "q-virtualization-type-2-example",
+    "moduleId": "virtualization",
+    "moduleName": "Virtualization",
+    "category": "Hypervisor Examples",
+    "primary": {
+      "prompt": "Which product is an example of a Type 2 hypervisor?",
+      "options": ["Oracle VirtualBox", "Microsoft Hyper-V", "VMware ESXi", "Citrix XenServer"],
+      "answer": "Oracle VirtualBox",
+      "explanation": "VMware Workstation, Oracle VirtualBox, and MS Virtual PC are Type 2 examples."
+    },
+    "alternate": {
+      "prompt": "Which desktop virtualization product is a Type 2 hypervisor?",
+      "options": ["VMware Workstation", "VMware ESXi", "Microsoft Hyper-V", "ProxMox"],
+      "answer": "VMware Workstation",
+      "explanation": "VMware Workstation is an example of a Type 2 hypervisor."
+    }
+  },
 ];

@@ -27,7 +27,8 @@ export type ModuleId =
   | "ip-address-assignment"
   | "dns"
   | "tcp-ip-model"
-  | "cloud-computing";
+  | "cloud-computing"
+  | "virtualization";
 
 export interface QuestionWording {
   prompt: string;

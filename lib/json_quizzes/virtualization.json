@@ -1,0 +1,152 @@
+{
+  "slug": "virtualization",
+  "title": "Virtualization",
+  "date": "8/27/26",
+  "homeDescription": "Review virtual machines, shared server resources, and Type 1 and Type 2 hypervisors.",
+  "studyGuideAnchor": "virtualization",
+  "studyGuideDescription": "Practice identifying virtualization concepts and hypervisor types.",
+  "moduleTag": "DIAGNOSTIC_MODULE",
+  "moduleCode": "VIRTUALIZATION",
+  "type": "tabbed",
+  "tabs": [
+    {
+      "id": "questions",
+      "label": "[QUESTIONS]",
+      "type": "questions",
+      "heading": "[VIRTUALIZATION_CHECK]",
+      "description": "Test your knowledge of virtual machines and hypervisor types.",
+      "questions": [
+    {
+      "id": "virtualization-definition",
+      "category": "Core Concepts",
+      "prompt": "What does virtualization allow a computer to do?",
+      "options": [
+        "Run a virtual operating system",
+        "Run multiple operating systems directly on physical hardware",
+        "Give one operating system exclusive access to all server resources",
+        "Replace the host operating system with a physical server"
+      ],
+      "answer": "Run a virtual operating system",
+      "explanation": "Virtualization uses hypervisors to run a virtual operating system."
+    },
+    {
+      "id": "virtualization-benefits",
+      "category": "Benefits",
+      "prompt": "Which is a benefit of using virtualization on a server?",
+      "options": [
+        "Multiple virtual machines can share the server's resources",
+        "Each virtual machine can receive dedicated physical resources",
+        "Every virtual machine can use the full server without sharing resources",
+        "A virtual machine can run without a host operating system or hypervisor"
+      ],
+      "answer": "Multiple virtual machines can share the server's resources",
+      "explanation": "Virtualization allows multiple virtual machines with different operating systems to share and use server resources."
+    },
+    {
+      "id": "virtualization-portability",
+      "category": "Benefits",
+      "prompt": "What can be transported to another physical server relatively easily with virtualization?",
+      "options": [
+        "A backup of the entire virtual machine",
+        "A backup of the physical server's hardware",
+        "An image containing only the host operating system",
+        "A copy of the server's physical memory modules"
+      ],
+      "answer": "A backup of the entire virtual machine",
+      "explanation": "Virtualization makes it easier to transport a backup of an entire virtual machine to another physical server."
+    },
+    {
+      "id": "virtualization-type-1",
+      "category": "Hypervisor Types",
+      "prompt": "A hypervisor runs directly on the physical server hardware. Which type is it?",
+      "options": ["Type 1", "Type 2", "PAT", "Client to Site"],
+      "answer": "Type 1",
+      "explanation": "Type 1 hypervisors are bare metal and run directly on the hardware."
+    },
+    {
+      "id": "virtualization-type-1-example",
+      "category": "Hypervisor Examples",
+      "prompt": "Which product is an example of a Type 1 hypervisor?",
+      "options": ["VMware ESXi", "Oracle VirtualBox", "VMware Workstation", "MS Virtual PC"],
+      "answer": "VMware ESXi",
+      "explanation": "Microsoft Hyper-V, VMware ESXi, Citrix XenServer, and ProxMox are listed as Type 1 examples."
+    },
+    {
+      "id": "virtualization-type-2",
+      "category": "Hypervisor Types",
+      "prompt": "A hypervisor runs on an existing operating system, and both systems share resources. Which type is it?",
+      "options": ["Type 2", "Type 1", "Bare metal", "Network Access"],
+      "answer": "Type 2",
+      "explanation": "Type 2 hypervisors run on an existing operating system, so the host OS and virtual machine share resources."
+    },
+    {
+      "id": "virtualization-type-2-example",
+      "category": "Hypervisor Examples",
+      "prompt": "Which product is an example of a Type 2 hypervisor?",
+      "options": ["Oracle VirtualBox", "Microsoft Hyper-V", "VMware ESXi", "Citrix XenServer"],
+      "answer": "Oracle VirtualBox",
+      "explanation": "VMware Workstation, Oracle VirtualBox, and MS Virtual PC are listed as Type 2 examples."
+      }
+      ]
+    },
+    {
+      "id": "flashcards",
+      "label": "[FLASHCARDS]",
+      "type": "flashcards",
+      "heading": "[HYPERVISOR_TYPE_FLASHCARDS]",
+      "description": "Identify whether each hypervisor example is Type 1 or Type 2.",
+      "defaultMode": "multiple-choice",
+      "cards": [
+        {
+          "id": "virtualization-flashcard-microsoft-hyper-v",
+          "category": "Hypervisor Examples",
+          "prompt": "What type of hypervisor is Microsoft Hyper-V?",
+          "options": ["Type 1", "Type 2"],
+          "answer": "Type 1"
+        },
+        {
+          "id": "virtualization-flashcard-vmware-esxi",
+          "category": "Hypervisor Examples",
+          "prompt": "What type of hypervisor is VMware ESXi?",
+          "options": ["Type 1", "Type 2"],
+          "answer": "Type 1"
+        },
+        {
+          "id": "virtualization-flashcard-citrix-xenserver",
+          "category": "Hypervisor Examples",
+          "prompt": "What type of hypervisor is Citrix XenServer?",
+          "options": ["Type 1", "Type 2"],
+          "answer": "Type 1"
+        },
+        {
+          "id": "virtualization-flashcard-proxmox",
+          "category": "Hypervisor Examples",
+          "prompt": "What type of hypervisor is ProxMox?",
+          "options": ["Type 1", "Type 2"],
+          "answer": "Type 1"
+        },
+        {
+          "id": "virtualization-flashcard-vmware-workstation",
+          "category": "Hypervisor Examples",
+          "prompt": "What type of hypervisor is VMware Workstation?",
+          "options": ["Type 1", "Type 2"],
+          "answer": "Type 2"
+        },
+        {
+          "id": "virtualization-flashcard-oracle-virtualbox",
+          "category": "Hypervisor Examples",
+          "prompt": "What type of hypervisor is Oracle VirtualBox?",
+          "options": ["Type 1", "Type 2"],
+          "answer": "Type 2"
+        },
+        {
+          "id": "virtualization-flashcard-ms-virtual-pc",
+          "category": "Hypervisor Examples",
+          "prompt": "What type of hypervisor is MS Virtual PC?",
+          "options": ["Type 1", "Type 2"],
+          "answer": "Type 2"
+        }
+      ]
+    }
+  ]
+}
