@@ -259,7 +259,7 @@ export default function HomeClient({ studyTopics }: { studyTopics: StudyTopicEnt
               </h2>
             </div>
             <span className="text-xs text-slate-500 font-mono">
-              SELECT A MODULE TO BEGIN INTERACTIVE DIAGNOSTIC
+              SELECT A MODULE TO BEGIN INTERACTIVE QUIZ
             </span>
           </div>
 
