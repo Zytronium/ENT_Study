@@ -1,7 +1,10 @@
 export interface ExamSubmissionPayload {
   score: number;
   totalPoints: number;
+  testLength?: PracticeTestLength;
 }
+
+export type PracticeTestLength = 60 | 100 | 150;
 
 export interface PracticeExamStats {
   totalAttempts: number;
@@ -22,6 +25,7 @@ export interface ExamSubmissionResponse {
   percentile?: number;
   previousAttempts?: number;
   stats?: PracticeExamStats;
+  byLength?: Partial<Record<PracticeTestLength, PracticeExamStats>>;
   message?: string;
   offline?: boolean;
 }
@@ -31,5 +35,6 @@ export interface GlobalAnalyticsResponse {
   averageScore: number;
   averagePercentage: number;
   passRate: number;
+  byLength?: Partial<Record<PracticeTestLength, PracticeExamStats>>;
   offline?: boolean;
 }

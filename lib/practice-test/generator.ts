@@ -47,7 +47,7 @@ export interface PracticeTestOptions {
 
 export function generatePracticeTest(options?: PracticeTestOptions): ActivePracticeItem[] {
   const targetPoints = options?.totalTargetPoints ?? 60;
-  const maxPerModule = options?.maxPerModule ?? 12;
+  const maxPerModule = options?.maxPerModule ?? Math.max(12, Math.ceil(targetPoints / 5));
 
   // Decide how many activities to include: at least 1 (e.g. 1 or 2)
   const numActivities = options?.activityCount ?? (Math.random() < 0.35 ? 2 : 1);

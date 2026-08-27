@@ -644,7 +644,7 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
                   [CUMULATIVE ASSESSMENT]
                 </span>
                 <span className="text-xs text-slate-500 font-mono">{"//"}</span>
-                <span className="text-xs text-slate-400 font-mono">60-POINT MASTER EXAM</span>
+                <span className="text-xs text-slate-400 font-mono">RANDOMIZED_PRACTICE_EXAM</span>
                 {examStats && examStats.totalAttempts > 0 && (
                   <>
                     <span className="text-xs text-slate-500 font-mono hidden sm:inline">{"//"}</span>
@@ -658,7 +658,7 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
                 <span className="text-cyan-400">Master Practice Exam</span>
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 font-mono leading-relaxed m-0">
-                Ready to test your knowledge so far? Take this randomized 60-point exam covering all units above,
+                Ready to test your knowledge so far? Take a randomized 60-, 100-, or 150-point exam covering all units above,
                 featuring multiple question types, interactive wire pinouts, and table matrix challenges.
               </p>
             </div>

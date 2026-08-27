@@ -225,7 +225,7 @@ export default function HomeClient({ studyTopics }: { studyTopics: StudyTopicEnt
                 COMPREHENSIVE_ASSESSMENT
               </span>
               <span className="text-xs text-slate-500 font-mono">{"//"}</span>
-              <span className="text-xs text-slate-400 font-mono">60_POINT_EXAM</span>
+              <span className="text-xs text-slate-400 font-mono">RANDOMIZED_PRACTICE_EXAM</span>
               {examStats && examStats.totalAttempts > 0 && (
                 <>
                   <span className="text-xs text-slate-500 font-mono hidden sm:inline">{"//"}</span>
@@ -239,7 +239,7 @@ export default function HomeClient({ studyTopics }: { studyTopics: StudyTopicEnt
               <span className="text-cyan-400">Master Practice Exam</span>
             </h2>
             <p className="text-xs sm:text-sm text-slate-400 mt-1 font-mono">
-              Test your CCNA knowledge so far with a randomized 60-point practice exam covering the networking concepts you&apos;ve learned.
+              Test your CCNA knowledge with a randomized 60-point, 100-point, or 150-point practice exam covering the networking concepts you&apos;ve learned.
             </p>
           </div>
           <Link

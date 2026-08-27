@@ -4,12 +4,13 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { ActivePracticeItem, MasterTableActivity } from "@/lib/practice-test/types";
 import { generatePracticeTest } from "@/lib/practice-test/generator";
-import { ExamSubmissionResponse, GlobalAnalyticsResponse } from "@/lib/practice-test/analytics-types";
+import { ExamSubmissionResponse, GlobalAnalyticsResponse, PracticeTestLength } from "@/lib/practice-test/analytics-types";
 import ReusableTableQuiz, { checkCellCorrect, isCellEligible } from "./ReusableTableQuiz";
 import WireOrderingActivity, { Wire } from "./WireOrderingActivity";
 
 export default function PracticeTestRunner() {
-  const [items, setItems] = useState<ActivePracticeItem[]>(() => generatePracticeTest());
+  const [selectedLength, setSelectedLength] = useState<PracticeTestLength | null>(null);
+  const [items, setItems] = useState<ActivePracticeItem[]>([]);
 
   // Answers state
   const [questionAnswers, setQuestionAnswers] = useState<Record<string, string>>({});
@@ -139,8 +140,13 @@ export default function PracticeTestRunner() {
     setQuestionAnswers({});
     setTableAnswers({});
     setWireOrders({});
-    setItems(generatePracticeTest());
+    setItems(generatePracticeTest({ totalTargetPoints: selectedLength ?? 60 }));
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleSelectLength = (length: PracticeTestLength) => {
+    setSelectedLength(length);
+    setItems(generatePracticeTest({ totalTargetPoints: length }));
   };
 
   const handleRetakeSame = () => {
@@ -162,7 +168,7 @@ export default function PracticeTestRunner() {
       const res = await fetch("/api/practice-test/attempts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ score, totalPoints }),
+        body: JSON.stringify({ score, totalPoints, testLength: selectedLength }),
       });
       if (res.ok) {
         const data: ExamSubmissionResponse = await res.json();
@@ -171,8 +177,9 @@ export default function PracticeTestRunner() {
           setGlobalStats((prev) => ({
             totalAttempts: data.stats!.totalAttempts,
             averagePercentage: data.stats!.averagePercentage,
-            averageScore: prev?.averageScore ?? Math.round((data.stats!.averagePercentage / 100) * 60 * 10) / 10,
+            averageScore: prev?.averageScore ?? Math.round((data.stats!.averagePercentage / 100) * totalPoints * 10) / 10,
             passRate: data.stats!.passRate,
+            byLength: data.byLength ?? prev?.byLength,
           }));
         }
       } else {
@@ -197,6 +204,56 @@ export default function PracticeTestRunner() {
 
   const percentage = Math.round((score / totalPoints) * 100);
   const isPassing = percentage >= 80;
+  const selectedStats = selectedLength === 60
+    ? globalStats?.byLength?.[selectedLength] ?? globalStats
+    : selectedLength
+      ? globalStats?.byLength?.[selectedLength]
+      : undefined;
+
+  if (selectedLength === null) {
+    return (
+      <div className="min-h-screen flex flex-col items-center pt-8 pb-12 px-3 sm:px-6 sm:py-8 w-full max-w-full overflow-x-hidden">
+        <main className="w-full max-w-5xl">
+          <section className="cyber-glass-panel terminal-quiz p-5 sm:p-8 rounded-xl border border-slate-800 shadow-2xl">
+            <div className="text-xs font-mono text-cyan-400 mb-2">{"// PRACTICE_TEST_CONFIGURATION"}</div>
+            <h1 className="text-2xl sm:text-3xl font-bold font-mono text-white">Choose your test length</h1>
+            <p className="mt-3 text-sm font-mono text-slate-400">Select a point value before the randomized exam loads.</p>
+            <Link
+              href="/"
+              className="inline-flex mt-5 px-3.5 py-2 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 hover:border-slate-600 rounded-lg font-mono text-xs font-bold transition-all items-center gap-1.5 cursor-pointer"
+            >
+              {"<"} BACK TO HUB
+            </Link>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
+              {([60, 100, 150] as PracticeTestLength[]).map((length) => (
+                <button
+                  key={length}
+                  type="button"
+                  onClick={() => handleSelectLength(length)}
+                  className="quiz-action-btn p-4 rounded-lg border border-cyan-500/40 bg-cyan-950/30 hover:bg-cyan-500/20 text-cyan-300 font-mono text-left transition-colors cursor-pointer"
+                >
+                  <span className="block text-lg font-bold">{length}-POINT TEST</span>
+                  <span className="block mt-1 text-xs text-slate-400">Up to {length === 60 ? 30 : length === 100 ? 50 : 75} questions</span>
+                  {globalStats && !globalStats.offline && (() => {
+                    const stats = length === 60
+                      ? globalStats.byLength?.[length] ?? globalStats
+                      : globalStats.byLength?.[length];
+                    return (
+                      <span className="block mt-3 pt-3 border-t border-cyan-500/20 text-[10px] text-emerald-400 font-bold">
+                        {stats
+                          ? `${stats.totalAttempts.toLocaleString()} ATTEMPTS RECORDED | ${stats.averagePercentage}% AVG ACCURACY`
+                          : "NO ATTEMPTS RECORDED"}
+                      </span>
+                    );
+                  })()}
+                </button>
+              ))}
+            </div>
+          </section>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center pt-8 pb-12 px-3 sm:px-6 sm:py-8 w-full max-w-full overflow-x-hidden">
@@ -219,7 +276,7 @@ export default function PracticeTestRunner() {
             <h1 className="text-xl sm:text-3xl font-bold tracking-tight text-white flex flex-wrap items-baseline gap-2 sm:gap-3 font-mono">
               <span className="text-emerald-400">ENT_PRACTICE_TEST</span>
               <span className="text-slate-600 font-light hidden sm:inline">|</span>
-              <span className="text-slate-300 text-lg sm:text-2xl font-semibold">60-Point Master Exam</span>
+              <span className="text-slate-300 text-lg sm:text-2xl font-semibold">{selectedLength}-Point Master Exam</span>
             </h1>
             <p className="text-xs sm:text-sm text-slate-400 mt-1 font-mono">
               Randomized evaluation pulled from all study modules. Includes interactive activities and alternate question formulations.
@@ -251,13 +308,14 @@ export default function PracticeTestRunner() {
                 {items.filter((i) => i.type === "activity").length} (10 pts each)
               </span>
             </span>
-            {globalStats && globalStats.totalAttempts > 0 && (
+            {globalStats && (
               <>
                 <span className="hidden sm:inline text-slate-500">|</span>
-                <span className="flex items-center gap-1.5">
+                <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
                   <span className="text-slate-400">COMMUNITY_TELEMETRY:</span>
-                  <span className="text-cyan-500 font-bold">{globalStats.totalAttempts.toLocaleString()} Attempts</span>
-                  <span className="text-slate-300">({globalStats.averagePercentage}% Avg)</span>
+                  <span className="text-slate-300">
+                    {selectedLength}PT: <b className="text-cyan-400">{selectedStats?.totalAttempts ?? 0} Attempts</b> / {selectedStats?.averagePercentage ?? 0}% avg / {selectedStats?.passRate ?? 0}% pass
+                  </span>
                 </span>
               </>
             )}
@@ -327,11 +385,11 @@ export default function PracticeTestRunner() {
               </div>
               {globalStats && globalStats.totalAttempts > 0 && !submissionResult?.offline && (
                 <div className="text-slate-400 text-[11px] shrink-0">
-                  <span className="text-slate-600">GLOBAL_AVG:</span>{" "}
-                  <span className="text-emerald-400 font-bold">{globalStats.averagePercentage}%</span>
+                  <span className="text-slate-600">TEST_AVG:</span>{" "}
+                  <span className="text-emerald-400 font-bold">{selectedStats?.averagePercentage ?? 0}%</span>
                   <span className="text-slate-700 mx-1.5">|</span>
                   <span className="text-slate-600">PASS_RATE:</span>{" "}
-                  <span className="text-cyan-400 font-bold">{globalStats.passRate}%</span>
+                  <span className="text-cyan-400 font-bold">{selectedStats?.passRate ?? 0}%</span>
                 </div>
               )}
             </div>

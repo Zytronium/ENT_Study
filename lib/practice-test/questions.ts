@@ -2972,13 +2972,13 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
     "category": "FTP Characteristics",
     "primary": {
       "prompt": "Which protocol is an unsecured, credential-based file-transfer protocol that uses TCP?",
-      "options": ["FTP", "SFTP", "TFTP", "SCP"],
+      "options": ["FTP", "SFTP", "TFTP", "RFTP"],
       "answer": "FTP",
       "explanation": "FTP uses usernames and passwords over TCP but is unsecured."
     },
     "alternate": {
       "prompt": "A file-transfer service uses TCP and usernames and passwords without security. Which protocol is it?",
-      "options": ["FTP", "SFTP", "TFTP", "SCP"],
+      "options": ["FTP", "SFTP", "TFTP", "RFTP"],
       "answer": "FTP",
       "explanation": "Standard FTP is unsecured, credential-based, and uses TCP."
     }
@@ -2989,14 +2989,14 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
     "moduleName": "FTP, SFTP, & TFTP",
     "category": "SFTP Characteristics",
     "primary": {
-      "prompt": "Which secured file-transfer protocol uses TCP, usernames and passwords, and shares port 22 with SSH?",
-      "options": ["FTP", "SFTP", "TFTP", "SCP"],
+      "prompt": "Which secured file-transfer protocol uses TCP with usernames and passwords?",
+      "options": ["FTP", "SFTP", "TFTP", "HTFP"],
       "answer": "SFTP",
-      "explanation": "SFTP is secured, uses TCP and credentials, and shares TCP port 22 with SSH."
+      "explanation": "SFTP is secured and uses TCP and credentials."
     },
     "alternate": {
-      "prompt": "Which protocol matches secured TCP file transfer with credentials and SSH's port?",
-      "options": ["FTP", "SFTP", "TFTP", "SCP"],
+      "prompt": "Which protocol matches secured TCP file transfer with credentials and shares SSH's port?",
+      "options": ["FTP", "SFTP", "TFTP", "HTTP"],
       "answer": "SFTP",
       "explanation": "SFTP uses TCP, usernames and passwords, and TCP port 22."
     }
@@ -3008,13 +3008,13 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
     "category": "TFTP Characteristics",
     "primary": {
       "prompt": "Which anonymous file-transfer protocol uses UDP and operates on port 69?",
-      "options": ["FTP", "SFTP", "TFTP", "SCP"],
+      "options": ["FTP", "SFTP", "TFTP", "FTFP"],
       "answer": "TFTP",
       "explanation": "TFTP uses UDP, is anonymous, and operates on UDP port 69."
     },
     "alternate": {
-      "prompt": "Which protocol provides anonymous file transfer over UDP port 69?",
-      "options": ["FTP", "SFTP", "TFTP", "SCP"],
+      "prompt": "Which protocol provides anonymous file transfer over UDP?",
+      "options": ["FTP", "SFTP", "TFTP", "FTFP"],
       "answer": "TFTP",
       "explanation": "TFTP is anonymous and uses UDP port 69."
     }
