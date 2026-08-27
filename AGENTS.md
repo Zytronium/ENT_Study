@@ -23,7 +23,9 @@ Quiz questions must ONLY cover material explicitly mentioned in the study guide.
 questions about topics, concepts, or details that are not present in the study guide content. Try not to make
 the correct answers exact quotes from the study guide unless necessary, as exact quotes stand out and look more 
 obvious than they should. Try to word questions and answers in a way that they might be worded on the CCNA cert exam.
-Avoid verbose correct answers when the other options are not verbose.
+Avoid verbose correct answers when the other options are not verbose. Do not word any quiz or test questions, answers, 
+or explanations like "according to the study guide," "based on the study guide," or anything else that references the 
+term study guide or any alternate way to say "study guide" in reference to this website's study guide. 
 
 ## Quiz Hard Mode
 After the user has gotten all the correct answers once, hard mode should activate, the same way it does on other 
