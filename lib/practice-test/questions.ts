@@ -1498,7 +1498,7 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "explanation": "WPA2 (using AES) and WPA3 are the secure standards; WEP, WPA (TKIP), and WPS are deprecated/insecure."
     },
     "alternate": {
-      "prompt": "Why does the study guide recommend against connecting to Open Wi-Fi networks?",
+      "prompt": "Why is it not recommend to connect to open Wi-Fi networks?",
       "options": [
         "They have no password protection, exposing users to data theft and potential malicious honeypots",
         "They only broadcast on the 6 GHz band",
@@ -3410,7 +3410,7 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "prompt": "Which Windows command displays all IP configuration information, including MAC address, DNS, and DHCP details?",
       "options": ["ipconfig /all", "ipconfig", "nslookup", "tracert"],
       "answer": "ipconfig /all",
-      "explanation": "The study guide identifies ipconfig /all as the Windows command that displays all IP configuration information."
+      "explanation": "ipconfig /all is the Windows command that displays all IP configuration information."
     },
     "alternate": {
       "prompt": "A technician needs the complete Windows IP configuration rather than only the basic address summary. Which command should they enter?",
@@ -3428,7 +3428,7 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "prompt": "Which Windows troubleshooting command combines ping and tracert?",
       "options": ["pathping", "nslookup", "ipconfig", "tracert"],
       "answer": "pathping",
-      "explanation": "The study guide describes pathping as a combination of ping and tracert."
+      "explanation": "Pathping is basically just a combination of ping and tracert."
     },
     "alternate": {
       "prompt": "Which command combines reachability testing with route tracing on Windows?",
