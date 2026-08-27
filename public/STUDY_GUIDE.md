@@ -828,3 +828,47 @@ The TCP/IP Model just compresses it into 4 layers:
 ​1. **Network Access** - consists of the bottom 2 OSI layers, Data-Link and Physical  
 
 Don't get the Netwrok Access layer confused with the OSI's Network layer. Remember that the Inter***net*** layer is the ***Net***work layer.
+
+## VPNs
+VPNs (Virtual Private Networks) connect 2 sites regardless of cabling or internet provider. They encrypt and hide your
+traffic from your ISP, keeping your internet traffic anonymous, private, and secure.
+
+To connect two locations, you can either:
+- Let your ISP connect them 
+  - requires both sites to have the same internet provider
+  - expensive
+  - not for remote users
+  - security risk
+- Use a VPN
+  - You control it
+  - provider-independant
+  - works for remote users
+  - secure connection
+
+Using a VPN is typically the better option.
+
+**Site to Site** - Company site to company site (i.e. campus to campus). This is typically done with routers.
+
+**Client to site** - Remote site to company site (i.e. home office to work building). This is typically done with software 
+on the client side and a router on the company side.
+
+A **VPN Concentrator** is a specialty device.
+
+VPNs use IPSec (Internet Protocol Secure). It provides network layer security, and has 2 functions: authentication and 
+encryption.
+
+## Cloud Computing: IAAS, PAAS, & SAAS
+Cloud computing is where servers in a data center are leased out as a service so you don't have to maintain as much.
+There are 3 main categories of cloud computing services: IAAS, PAAS, and SAAS.
+
+### IAAS
+Infrastructure as a service basically just provides the hardware and networking; you have to manage everything else.
+This requires more configuration work on your end, but grants you more freedom with the infrastructure.
+
+### PAAS
+Platform as a service provides and manages more things, leaving what you run on the platform up to you so you don't
+have to manage as much.
+
+### SAAS
+Software as a service provides almost everything, including the software you use. This allows you to just use the
+application rather than maintain it.
