@@ -872,3 +872,40 @@ have to manage as much.
 ### SAAS
 Software as a service provides almost everything, including the software you use. This allows you to just use the
 application rather than maintain it.
+
+## Virtualization
+Virtualization is where hypervisors, aka virtual machines, are used to run a virtual operating system.
+
+With physical machines, you can typically only run 1 OS (at a time), where you have all system resources
+(processor, RAM, drive space, etc.) to yourself but not nessesarily using it all. Additionally, if the system crashes
+or power gets cut, it can cause damage to the operating system or data.
+
+This is why virtual machines/hypervisors are commonly used on servers. With virtualization, you can run multiple 
+virtual machines on different operating systems at once, share and utilize all the server's resources, and easily
+transport a backup of the entire virtual machine to another physical server with no issues, all cheaper than with
+physical machines. If the system goes offline suddenly, you typically don't loose or damage much, if anything at all,
+as most of the memory is stored as swapfiles on the disk, which doesn't get wiped when the power gets cut. VMs can
+often boot right back into the same spot they were when the power was cut.
+
+There are two types of VMs.
+
+### Type 1
+Type 1 hypervisors are bare metal VMs. They run directly on the hardware; in other words, their OS(es) is/are loaded
+directly on the physical server. These are the most common type of hypervisor used commercially for cloud computing.
+
+Some examples of type 1 hypervisors are:
+- Microsoft Hyper-V
+- VMware ESXi
+- Citrix XenServer
+- ProxMox
+
+### Type 2
+Type 2 hypervisors run on an existing operating system; in other words, they load a virtual OS onto another OS. Both 
+systems have to share resources and the host OS often limits the VM's resources. These are VMs you can run on your
+personal computer at home if you wish, which you can use for, among other reasons, testing a new OS, installing viruses
+without risking the host PC, or running programs that can't natively run on your host OS.
+
+Some examples of type 2 hypervisors are:
+- VMware Workstation
+- Oracle VirtualBox
+- MS Virtual PC
