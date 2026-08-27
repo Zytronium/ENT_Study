@@ -1,0 +1,94 @@
+{
+  "slug": "cloud-computing",
+  "title": "Cloud Computing",
+  "date": "8/27/26",
+  "homeDescription": "Review the three cloud service categories: IAAS, PAAS, and SAAS.",
+  "studyGuideAnchor": "cloud-computing-iaas-paas-saas",
+  "studyGuideDescription": "Practice identifying IAAS, PAAS, and SAAS cloud service models.",
+  "moduleTag": "DIAGNOSTIC_MODULE",
+  "moduleCode": "CLOUD_SERVICE_MODELS",
+  "type": "tabbed",
+  "tabs": [
+    {
+      "id": "questions",
+      "label": "[QUESTIONS]",
+      "type": "questions",
+      "heading": "[CLOUD_SERVICE_MODEL_CHECK]",
+      "description": "Identify the cloud service model described by each scenario.",
+      "questions": [
+        {
+          "id": "cloud-definition",
+          "category": "Cloud Computing",
+          "prompt": "What is the primary idea behind cloud computing?",
+          "options": [
+            "Leasing servers in a data center as a service",
+            "Replacing every network with wireless links",
+            "Running only one operating system per server",
+            "Storing all data on a local workstation"
+          ],
+          "answer": "Leasing servers in a data center as a service",
+          "explanation": "Cloud computing leases servers in a data center as a service, reducing the amount of infrastructure you must maintain.",
+          "canTypeInHardMode": true
+        },
+        {
+          "id": "cloud-iaas",
+          "category": "Cloud Service Models",
+          "prompt": "A customer wants control over the operating system and other configuration while the provider supplies the hardware and networking. Which model best fits?",
+          "options": ["IAAS", "PAAS", "SAAS", "VPN"],
+          "answer": "IAAS",
+          "explanation": "IAAS provides the hardware and networking; the customer manages everything else.",
+          "canTypeInHardMode": true
+        },
+        {
+          "id": "cloud-saas",
+          "category": "Cloud Service Models",
+          "prompt": "A customer wants to use an application while the provider supplies and maintains the software. Which model would work best?",
+          "options": ["SAAS", "PAAS", "IAAS", "Bare metal"],
+          "answer": "SAAS",
+          "explanation": "SAAS provides almost everything, including the software, so the customer can use the application rather than maintain it.",
+          "canTypeInHardMode": true
+        },
+        {
+          "id": "cloud-paas",
+          "category": "Cloud Service Models",
+          "prompt": "A customer wants the provider to manage more of the platform but still wants control over what runs on it. Which model best fits?",
+          "options": ["PAAS", "SAAS", "IAAS", "VPN"],
+          "answer": "PAAS",
+          "explanation": "PAAS manages more of the platform, while the customer controls what runs on it.",
+          "canTypeInHardMode": true
+        }
+      ]
+    },
+    {
+      "id": "flashcards",
+      "label": "[FLASHCARDS]",
+      "type": "flashcards",
+      "heading": "[CLOUD_SERVICE_MODEL_FLASHCARDS]",
+      "description": "Review three quick cloud service model reminders.",
+      "defaultMode": "both",
+      "cards": [
+        {
+          "id": "cloud-flashcard-iaas",
+          "category": "Cloud Service Models",
+          "prompt": "Which model provides the hardware and networking while the customer manages everything else?",
+          "answer": "IAAS",
+          "aliases": ["IaaS", "Infrastructure as a service"]
+        },
+        {
+          "id": "cloud-flashcard-paas",
+          "category": "Cloud Service Models",
+          "prompt": "Which model manages more of the platform while the customer controls what runs on it?",
+          "answer": "PAAS",
+          "aliases": ["PaaS", "Platform as a service"]
+        },
+        {
+          "id": "cloud-flashcard-saas",
+          "category": "Cloud Service Models",
+          "prompt": "Which model provides almost everything, including the software, so the customer can use the application rather than maintain it?",
+          "answer": "SAAS",
+          "aliases": ["SaaS", "Software as a service"]
+        }
+      ]
+    }
+  ]
+}

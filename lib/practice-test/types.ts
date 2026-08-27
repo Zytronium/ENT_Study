@@ -26,7 +26,8 @@ export type ModuleId =
   | "ftp"
   | "ip-address-assignment"
   | "dns"
-  | "tcp-ip-model";
+  | "tcp-ip-model"
+  | "cloud-computing";
 
 export interface QuestionWording {
   prompt: string;

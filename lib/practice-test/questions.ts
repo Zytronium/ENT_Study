@@ -3545,4 +3545,86 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "explanation": "The Network Access layer handles local delivery and access to the transmission medium."
     }
   },
+  {
+    "id": "q-cloud-definition",
+    "moduleId": "cloud-computing",
+    "moduleName": "Cloud Computing",
+    "category": "Cloud Computing",
+    "primary": {
+      "prompt": "What is the primary idea behind cloud computing?",
+      "options": [
+        "Leasing servers in a data center as a service",
+        "Replacing every network with wireless links",
+        "Running only one operating system per server",
+        "Storing all data on a local workstation"
+      ],
+      "answer": "Leasing servers in a data center as a service",
+      "explanation": "Cloud computing leases servers in a data center as a service, reducing the amount of infrastructure you must maintain."
+    },
+    "alternate": {
+      "prompt": "Which description best matches cloud computing?",
+      "options": [
+        "Using leased data-center servers as a service",
+        "Using only local physical servers",
+        "Connecting devices without a router",
+        "Installing one operating system on every server"
+      ],
+      "answer": "Using leased data-center servers as a service",
+      "explanation": "Cloud computing provides leased servers from a data center as a service."
+    }
+  },
+  {
+    "id": "q-cloud-iaas",
+    "moduleId": "cloud-computing",
+    "moduleName": "Cloud Computing",
+    "category": "Cloud Service Models",
+    "primary": {
+      "prompt": "A customer wants control over the operating system and other configuration while the provider supplies the hardware and networking. Which model best fits?",
+      "options": ["IAAS", "PAAS", "SAAS", "VPN"],
+      "answer": "IAAS",
+      "explanation": "IAAS provides the hardware and networking; the customer manages everything else."
+    },
+    "alternate": {
+      "prompt": "A customer wants to manage the operating system and configuration while the provider manages the hardware and network. Which cloud model should they choose?",
+      "options": ["IAAS", "PAAS", "SAAS", "VPN"],
+      "answer": "IAAS",
+      "explanation": "IAAS supplies the hardware and networking while leaving operating-system and other configuration choices to the customer."
+    }
+  },
+  {
+    "id": "q-cloud-saas",
+    "moduleId": "cloud-computing",
+    "moduleName": "Cloud Computing",
+    "category": "Cloud Service Models",
+    "primary": {
+      "prompt": "A customer wants to use an application while the provider supplies and maintains the software. Which model would work best?",
+      "options": ["SAAS", "PAAS", "IAAS", "Bare metal"],
+      "answer": "SAAS",
+      "explanation": "SAAS provides almost everything, including the software, so the customer can use the application rather than maintain it."
+    },
+    "alternate": {
+      "prompt": "Which cloud service model lets a customer use provider-maintained software without managing the application itself?",
+      "options": ["SAAS", "PAAS", "IAAS", "Bare metal"],
+      "answer": "SAAS",
+      "explanation": "SAAS provides the software and nearly everything else needed for the customer to use the application."
+    }
+  },
+  {
+    "id": "q-cloud-paas",
+    "moduleId": "cloud-computing",
+    "moduleName": "Cloud Computing",
+    "category": "Cloud Service Models",
+    "primary": {
+      "prompt": "A customer wants the provider to manage more of the platform but still wants control over what runs on it. Which model best fits?",
+      "options": ["PAAS", "SAAS", "IAAS", "VPN"],
+      "answer": "PAAS",
+      "explanation": "PAAS manages more of the platform, while the customer controls what runs on it."
+    },
+    "alternate": {
+      "prompt": "Which cloud service model provides a managed platform while allowing the customer to choose what software runs there?",
+      "options": ["PAAS", "SAAS", "IAAS", "VPN"],
+      "answer": "PAAS",
+      "explanation": "PAAS manages more of the platform while the customer decides what software runs on it."
+    }
+  },
 ];
