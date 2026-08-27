@@ -16,7 +16,12 @@ function topicDateValue(date: string): number {
 export function sortStudyTopicsByDate(topics: StudyTopicEntry[]): StudyTopicEntry[] {
   return topics
     .map((topic, index) => ({ topic, index }))
-    .sort((a, b) => topicDateValue(a.topic.date) - topicDateValue(b.topic.date) || a.index - b.index)
+    .sort(
+      (a, b) =>
+        (a.topic.displayOrder !== undefined && b.topic.displayOrder !== undefined
+          ? a.topic.displayOrder - b.topic.displayOrder
+          : topicDateValue(a.topic.date) - topicDateValue(b.topic.date)) || a.index - b.index
+    )
     .map(({ topic }) => topic);
 }
 

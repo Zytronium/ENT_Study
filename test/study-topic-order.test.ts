@@ -30,4 +30,18 @@ describe("study topic ordering", () => {
 
     assert.deepEqual(sortStudyTopicsByDate(topics).map(({ title }) => title), ["First", "Second"]);
   });
+
+  it("uses explicit display order without changing quiz dates", () => {
+    const topics: StudyTopicEntry[] = [
+      { ...topic("Cloud Computing", "8/27/26"), displayOrder: 4 },
+      { ...topic("VPNs", "8/27/26"), displayOrder: 3 },
+      { ...topic("TCP/IP Model", "8/26/26"), displayOrder: 2 },
+    ];
+
+    assert.deepEqual(sortStudyTopicsByDate(topics).map(({ title }) => title), [
+      "TCP/IP Model",
+      "VPNs",
+      "Cloud Computing",
+    ]);
+  });
 });

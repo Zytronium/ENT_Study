@@ -2,6 +2,7 @@
   "slug": "networking-commands",
   "title": "Networking Commands",
   "date": "8/26/26",
+  "displayOrder": 1,
   "homeDescription": "Use simulated Windows and Linux terminals to identify networking commands and interpret their purpose.",
   "studyGuideAnchor": "networking-commands",
   "moduleTag": "DIAGNOSTIC_MODULE",

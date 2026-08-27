@@ -3753,4 +3753,148 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "explanation": "VMware Workstation is an example of a Type 2 hypervisor."
     }
   },
+  {
+    "id": "q-vpn-purpose",
+    "moduleId": "vpns",
+    "moduleName": "VPNs",
+    "category": "Core Concepts",
+    "primary": {
+      "prompt": "What is a primary purpose of a VPN?",
+      "options": ["To connect two sites securely, regardless of cabling or internet provider", "To provide internet access only when both sites use the same ISP", "To physically replace the router at every remote site", "To convert a private network into a public one"],
+      "answer": "To connect two sites securely, regardless of cabling or internet provider",
+      "explanation": "A VPN connects two sites over an encrypted tunnel, independent of the physical cabling or ISP each site uses."
+    },
+    "alternate": {
+      "prompt": "Which technology connects two sites without requiring them to share the same internet provider or cabling?",
+      "options": ["VPN", "VPN concentrator", "IPSec", "Direct ISP connection"],
+      "answer": "VPN",
+      "explanation": "A VPN connects two sites regardless of their cabling or internet provider, unlike a direct ISP-provided link."
+    }
+  },
+  {
+    "id": "q-vpn-privacy",
+    "moduleId": "vpns",
+    "moduleName": "VPNs",
+    "category": "Security",
+    "primary": {
+      "prompt": "How does a VPN protect a user's internet traffic?",
+      "options": ["By encrypting it and hiding it from the ISP", "By broadcasting it to every device on the network", "By blocking it from reaching any remote site", "By giving the ISP full control over it"],
+      "answer": "By encrypting it and hiding it from the ISP",
+      "explanation": "A VPN encrypts traffic and conceals it from the ISP, keeping it private, anonymous, and secure in transit."
+    },
+    "alternate": {
+      "prompt": "Which best describes how a VPN keeps a connection private?",
+      "options": ["It encrypts the traffic and hides it from the ISP", "It shares the traffic with all nearby providers", "It disables encryption to speed up the connection", "It routes traffic outside the internet entirely"],
+      "answer": "It encrypts the traffic and hides it from the ISP",
+      "explanation": "A VPN encrypts traffic and hides it from the ISP, protecting it from being seen or intercepted in transit."
+    }
+  },
+  {
+    "id": "q-vpn-vs-isp",
+    "moduleId": "vpns",
+    "moduleName": "VPNs",
+    "category": "Benefits",
+    "primary": {
+      "prompt": "Why is a VPN typically preferred over having an ISP directly connect two sites?",
+      "options": ["It's provider-independent, user-controlled, and works for remote users", "It requires both sites to use the same internet provider", "It's fully managed and controlled by the internet provider", "It only works between two company campuses"],
+      "answer": "It's provider-independent, user-controlled, and works for remote users",
+      "explanation": "Unlike an ISP-provided link (which requires matching providers, is costly, and doesn't suit remote users), a VPN is controlled by the user, works across different providers, and supports remote connections."
+    },
+    "alternate": {
+      "prompt": "What's a drawback of letting an ISP directly connect two sites instead of using a VPN?",
+      "options": ["Both sites must use the same provider, and it doesn't support remote users", "It's cheaper than a VPN in every case", "It offers stronger encryption than a VPN", "It works better for remote employees than a VPN does"],
+      "answer": "Both sites must use the same provider, and it doesn't support remote users",
+      "explanation": "An ISP-provided connection requires both sites to share a provider, tends to be expensive, poses a security risk, and isn't suited for remote users."
+    }
+  },
+  {
+    "id": "q-vpn-site-to-site",
+    "moduleId": "vpns",
+    "moduleName": "VPNs",
+    "category": "Connection Types",
+    "primary": {
+      "prompt": "A company wants to link its main campus network to a branch office's network. Which VPN type is designed for this?",
+      "options": ["Site-to-Site", "Client-to-Site", "VPN Concentrator", "IPSec"],
+      "answer": "Site-to-Site",
+      "explanation": "Site-to-Site VPNs connect two company networks (e.g., campus to campus) and are typically implemented using routers or firewalls at each location."
+    },
+    "alternate": {
+      "prompt": "Which VPN type is typically implemented using routers at each location to link two company sites?",
+      "options": ["Site-to-Site", "Client-to-Site", "VPN Concentrator", "Direct ISP connection"],
+      "answer": "Site-to-Site",
+      "explanation": "Site-to-Site VPNs connect one company site to another, such as campus to campus, typically via routers."
+    }
+  },
+  {
+    "id": "q-vpn-client-to-site",
+    "moduleId": "vpns",
+    "moduleName": "VPNs",
+    "category": "Connection Types",
+    "primary": {
+      "prompt": "A remote employee needs to securely connect from home to the company network. Which VPN type is designed for this?",
+      "options": ["Client-to-Site", "Site-to-Site", "VPN Concentrator", "Direct ISP connection"],
+      "answer": "Client-to-Site",
+      "explanation": "Client-to-Site (also called remote access) VPNs use client software on the user's device paired with a device such as a router or VPN concentrator at the company site."
+    },
+    "alternate": {
+      "prompt": "Which VPN type relies on client-side software paired with a device at the company site?",
+      "options": ["Client-to-Site", "Site-to-Site", "IPSec", "ISP connection"],
+      "answer": "Client-to-Site",
+      "explanation": "Client-to-Site VPNs connect a remote user, such as someone working from home, to a company site using software on the client end and a router or concentrator on the company end."
+    }
+  },
+  {
+    "id": "q-vpn-concentrator",
+    "moduleId": "vpns",
+    "moduleName": "VPNs",
+    "category": "Devices",
+    "primary": {
+      "prompt": "What is a VPN concentrator?",
+      "options": ["A dedicated device that establishes and manages many simultaneous VPN connections", "A type of internet service provider", "A physical cable that links two company campuses", "The client-side software used to initiate a VPN connection"],
+      "answer": "A dedicated device that establishes and manages many simultaneous VPN connections",
+      "explanation": "A VPN concentrator is a specialty device that creates and manages multiple VPN tunnels at once, commonly used at a company site to support many remote (client-to-site) connections."
+    },
+    "alternate": {
+      "prompt": "Which device is purpose-built to handle a large number of simultaneous VPN tunnels?",
+      "options": ["VPN concentrator", "Internet service provider", "Ethernet cable", "Client operating system"],
+      "answer": "VPN concentrator",
+      "explanation": "A VPN concentrator is a specialty device designed to establish and manage many VPN connections at once."
+    }
+  },
+  {
+    "id": "q-vpn-ipsec-name",
+    "moduleId": "vpns",
+    "moduleName": "VPNs",
+    "category": "IPSec",
+    "primary": {
+      "prompt": "What does the acronym IPSec stand for?",
+      "options": ["Internet Protocol Security", "Internal Packet Security", "Integrated Protocol Sequencing", "IP Session Control"],
+      "answer": "Internet Protocol Security",
+      "explanation": "IPSec stands for Internet Protocol Security, a suite of protocols used to secure IP communications."
+    },
+    "alternate": {
+      "prompt": "Which of these is the correct full name for IPSec?",
+      "options": ["Internet Protocol Security", "Internet Private Security", "Internal Packet Security", "Internet Protocol Server"],
+      "answer": "Internet Protocol Security",
+      "explanation": "IPSec is short for Internet Protocol Security."
+    }
+  },
+  {
+    "id": "q-vpn-ipsec-functions",
+    "moduleId": "vpns",
+    "moduleName": "VPNs",
+    "category": "IPSec",
+    "primary": {
+      "prompt": "Which two core functions does IPSec provide for VPN connections?",
+      "options": ["Authentication and encryption", "Routing and switching", "Cabling and addressing", "Compression and translation"],
+      "answer": "Authentication and encryption",
+      "explanation": "IPSec secures traffic at the network layer by providing authentication (verifying the sender's identity) and encryption (protecting the data's confidentiality)."
+    },
+    "alternate": {
+      "prompt": "Which protocol secures VPN traffic at the network layer through authentication and encryption?",
+      "options": ["IPSec", "TCP", "NAT", "DNS"],
+      "answer": "IPSec",
+      "explanation": "VPNs use IPSec to provide network layer security via authentication and encryption."
+    }
+  }
 ];

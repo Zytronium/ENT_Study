@@ -1,0 +1,105 @@
+{
+  "slug": "vpns",
+  "title": "VPNs",
+  "date": "8/27/26",
+  "displayOrder": 3,
+  "homeDescription": "Review VPN connections, Site to Site and Client to Site designs, concentrators, and IPSec.",
+  "studyGuideAnchor": "vpns",
+  "studyGuideDescription": "Practice identifying VPN connection types and security functions.",
+  "moduleTag": "DIAGNOSTIC_MODULE",
+  "moduleCode": "VPN_CONNECTIONS",
+  "type": "questions",
+  "heading": "[VPN_CHECK]",
+  "description": "Test your knowledge of VPN connections and IPSec security.",
+  "questions": [
+    {
+      "id": "vpn-purpose",
+      "category": "Core Concepts",
+      "prompt": "What is a primary purpose of a VPN?",
+      "options": [
+        "To connect two sites securely, regardless of cabling or internet provider",
+        "To provide internet access only when both sites use the same ISP",
+        "To physically replace the router at every remote site",
+        "To convert a private network into a public one"
+      ],
+      "answer": "To connect two sites securely, regardless of cabling or internet provider",
+      "explanation": "A VPN connects two sites over an encrypted tunnel, independent of the physical cabling or ISP each site uses."
+    },
+    {
+      "id": "vpn-privacy",
+      "category": "Security",
+      "prompt": "How does a VPN protect a user's internet traffic?",
+      "options": [
+        "By encrypting it and hiding it from the ISP",
+        "By broadcasting it to every device on the network",
+        "By blocking it from reaching any remote site",
+        "By giving the ISP full control over it"
+      ],
+      "answer": "By encrypting it and hiding it from the ISP",
+      "explanation": "A VPN encrypts traffic and conceals it from the ISP, keeping it private, anonymous, and secure in transit."
+    },
+    {
+      "id": "vpn-vs-isp",
+      "category": "Benefits",
+      "prompt": "Why is a VPN typically preferred over having an ISP directly connect two sites?",
+      "options": [
+        "It's provider-independent, user-controlled, and works for remote users",
+        "It requires both sites to use the same internet provider",
+        "It's fully managed and controlled by the internet provider",
+        "It only works between two company campuses"
+      ],
+      "answer": "It's provider-independent, user-controlled, and works for remote users",
+      "explanation": "Unlike an ISP-provided link (which requires matching providers, is costly, and doesn't suit remote users), a VPN is controlled by the user, works across different providers, and supports remote connections."
+    },
+    {
+      "id": "vpn-site-to-site",
+      "category": "Connection Types",
+      "prompt": "A company wants to link its main campus network to a branch office's network. Which VPN type is designed for this?",
+      "options": ["Site-to-Site", "Client-to-Site", "VPN Concentrator", "IPSec"],
+      "answer": "Site-to-Site",
+      "explanation": "Site-to-Site VPNs connect two company networks (e.g., campus to campus) and are typically implemented using routers or firewalls at each location."
+    },
+    {
+      "id": "vpn-client-to-site",
+      "category": "Connection Types",
+      "prompt": "A remote employee needs to securely connect from home to the company network. Which VPN type is designed for this?",
+      "options": ["Client-to-Site", "Site-to-Site", "VPN Concentrator", "Direct ISP connection"],
+      "answer": "Client-to-Site",
+      "explanation": "Client-to-Site (also called remote access) VPNs use client software on the user's device paired with a device such as a router or VPN concentrator at the company site."
+    },
+    {
+      "id": "vpn-concentrator",
+      "category": "Devices",
+      "prompt": "What is a VPN concentrator?",
+      "options": [
+        "A dedicated device that establishes and manages many simultaneous VPN connections",
+        "A type of internet service provider",
+        "A physical cable that links two company campuses",
+        "The client-side software used to initiate a VPN connection"
+      ],
+      "answer": "A dedicated device that establishes and manages many simultaneous VPN connections",
+      "explanation": "A VPN concentrator is a specialty device that creates and manages multiple VPN tunnels at once, commonly used at a company site to support many remote (client-to-site) connections."
+    },
+    {
+      "id": "vpn-ipsec-name",
+      "category": "IPSec",
+      "prompt": "What does the acronym IPSec stand for?",
+      "options": ["Internet Protocol Security", "Internal Packet Security", "Integrated Protocol Sequencing", "IP Session Control"],
+      "answer": "Internet Protocol Security",
+      "explanation": "IPSec stands for Internet Protocol Security, a suite of protocols used to secure IP communications."
+    },
+    {
+      "id": "vpn-ipsec-functions",
+      "category": "IPSec",
+      "prompt": "Which two core functions does IPSec provide for VPN connections?",
+      "options": [
+        "Authentication and encryption",
+        "Routing and switching",
+        "Cabling and addressing",
+        "Compression and translation"
+      ],
+      "answer": "Authentication and encryption",
+      "explanation": "IPSec secures traffic at the network layer by providing authentication (verifying the sender's identity) and encryption (protecting the data's confidentiality)."
+    }
+  ]
+}

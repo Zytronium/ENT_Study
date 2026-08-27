@@ -2,6 +2,7 @@
   "slug": "cloud-computing",
   "title": "Cloud Computing",
   "date": "8/27/26",
+  "displayOrder": 4,
   "homeDescription": "Review the three cloud service categories: IAAS, PAAS, and SAAS.",
   "studyGuideAnchor": "cloud-computing-iaas-paas--saas",
   "studyGuideDescription": "Practice identifying IAAS, PAAS, and SAAS cloud service models.",

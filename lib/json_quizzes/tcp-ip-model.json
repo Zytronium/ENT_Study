@@ -2,6 +2,7 @@
   "slug": "tcp-ip-model",
   "title": "TCP/IP Model",
   "date": "8/26/26",
+  "displayOrder": 2,
   "homeDescription": "Match the four TCP/IP Model layers to their definitions, then identify layers from descriptions.",
   "studyGuideAnchor": "tcpip-model",
   "studyGuideDescription": "Practice matching TCP/IP Model layer definitions and identifying layers from descriptions.",

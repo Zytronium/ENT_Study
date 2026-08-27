@@ -2,6 +2,7 @@
   "slug": "virtualization",
   "title": "Virtualization",
   "date": "8/27/26",
+  "displayOrder": 5,
   "homeDescription": "Review virtual machines, shared server resources, and Type 1 and Type 2 hypervisors.",
   "studyGuideAnchor": "virtualization",
   "studyGuideDescription": "Practice identifying virtualization concepts and hypervisor types.",

@@ -129,6 +129,7 @@ type QuizMeta = {
   slug: string;
   title: string;
   date?: string;
+  displayOrder?: number;
   homeDescription: string;
   moduleTag?: string;
   moduleCode?: string;
@@ -166,6 +167,7 @@ export type StudyTopicEntry = {
   href: string;
   title: string;
   date: string;
+  displayOrder?: number;
   description: string;
   offline?: boolean;
 };
@@ -258,6 +260,7 @@ export function jsonQuizToStudyTopic(quiz: JsonQuizDefinition): StudyTopicEntry 
     href: `/${quiz.slug}`,
     title: quiz.title,
     date: quiz.date ?? "",
+    displayOrder: quiz.displayOrder,
     description: quiz.homeDescription,
     offline: quiz.offline ?? false,
   };
