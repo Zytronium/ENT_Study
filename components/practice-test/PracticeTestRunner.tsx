@@ -279,7 +279,7 @@ export default function PracticeTestRunner() {
               <span className="text-slate-300 text-lg sm:text-2xl font-semibold">{selectedLength}-Point Master Exam</span>
             </h1>
             <p className="text-xs sm:text-sm text-slate-400 mt-1 font-mono">
-              Randomized evaluation pulled from all study modules. Includes interactive activities and alternate question formulations.
+              Randomized evaluation pulled from all study modules. Includes some activities like filling out tables.
             </p>
           </div>
 
