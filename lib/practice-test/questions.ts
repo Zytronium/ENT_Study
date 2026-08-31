@@ -1655,15 +1655,15 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
     "moduleName": "Wireless Wi-Fi Standards",
     "category": "Generations & Speeds",
     "primary": {
-      "prompt": "Which IEEE standard is branded as Wi-Fi 3 and provides 54 Mb/s throughput on the 2.4 GHz frequency band?",
+      "prompt": "Which IEEE standard is branded as Wi-Fi 3 and provides 54 Mb/s throughput?",
       "options": [
-        "802.11g (Wi-Fi 3)",
-        "802.11a (Wi-Fi 2)",
-        "802.11b (Wi-Fi 1)",
-        "802.11n (Wi-Fi 4)"
+        "802.11g",
+        "802.11a",
+        "802.11b",
+        "802.11n"
       ],
-      "answer": "802.11g (Wi-Fi 3)",
-      "explanation": "802.11g is Wi-Fi 3, providing 54 Mb/s in the 2.4 GHz frequency band."
+      "answer": "802.11g",
+      "explanation": "802.11g is Wi-Fi 3, providing 54 Mb/s."
     },
     "alternate": {
       "prompt": "IEEE 802.11g operates at what maximum speed and frequency band?",
@@ -1937,23 +1937,23 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
     "primary": {
       "prompt": "Which protocol resolves a known Layer 3 logical IP address to an unknown Layer 2 physical MAC address on a local network segment?",
       "options": [
-        "ARP (Address Resolution Protocol)",
-        "DNS (Domain Name System)",
-        "DHCP (Dynamic Host Configuration Protocol)",
-        "ICMP (Internet Control Message Protocol)"
+        "ARP",
+        "DNS",
+        "DHCP",
+        "ICMP"
       ],
-      "answer": "ARP (Address Resolution Protocol)",
+      "answer": "ARP",
       "explanation": "ARP maps a known IP address to a physical MAC address on the local network."
     },
     "alternate": {
       "prompt": "When a host knows the destination IPv4 address but needs the hardware MAC address to construct a Layer 2 frame, what protocol does it use?",
       "options": [
-        "ARP (Address Resolution Protocol)",
-        "RARP",
+        "ARP",
+        "DHCP",
         "NAT",
         "BGP"
       ],
-      "answer": "ARP (Address Resolution Protocol)",
+      "answer": "ARP",
       "explanation": "ARP broadcasts a request on the local segment to discover the target host's MAC address."
     }
   },
