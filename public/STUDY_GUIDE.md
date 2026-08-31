@@ -604,7 +604,7 @@ Class C is the most commonly used as it's generally for small or home networks.
 
 `127.0.0.1` is a loopback address. A loopback address allows a computer to send web data to itself. This
 is useful, for example, in web development when a developer wants to preview a locally running website without
-hosting it over the network. `0.0.0.0` and `localhost` also work this way. 
+hosting it over the network. `localhost` also works this way. 
 
 `169.254.X.X` addresses are APIPA, or automatic private IP addressing. On Windows, if your
 device has this private IP, it means the DHCP server could not be contacted to assign you a private IP
