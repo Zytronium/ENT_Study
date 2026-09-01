@@ -3896,5 +3896,329 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "answer": "IPSec",
       "explanation": "VPNs use IPSec to provide network layer security via authentication and encryption."
     }
+  },
+  {
+    "id": "q-dhcp-purpose",
+    "moduleId": "dhcp",
+    "moduleName": "DHCP",
+    "category": "Core Concepts",
+    "primary": {
+      "prompt": "What is the primary purpose of DHCP on a network?",
+      "options": ["To automatically assign IP addresses and other network settings to devices", "To translate domain names into IP addresses", "To encrypt traffic between two sites", "To physically connect two network segments"],
+      "answer": "To automatically assign IP addresses and other network settings to devices",
+      "explanation": "DHCP (Dynamic Host Configuration Protocol) automatically assigns IP addresses, subnet masks, default gateways, and DNS servers to clients on a network."
+    },
+    "alternate": {
+      "prompt": "Which protocol automatically hands out IP addresses and other configuration details to devices joining a network?",
+      "options": ["DHCP", "DNS", "FTP", "NAT"],
+      "answer": "DHCP",
+      "explanation": "DHCP automates IP address assignment and related network configuration for connecting devices."
+    }
+  },
+  {
+    "id": "q-dhcp-lease-process",
+    "moduleId": "dhcp",
+    "moduleName": "DHCP",
+    "category": "Lease Process",
+    "primary": {
+      "prompt": "What is the correct order of the DHCP lease process?",
+      "options": ["Discover, Offer, Request, Acknowledge", "Offer, Discover, Acknowledge, Request", "Request, Discover, Offer, Acknowledge", "Discover, Request, Offer, Acknowledge"],
+      "answer": "Discover, Offer, Request, Acknowledge",
+      "explanation": "The DHCP process, commonly abbreviated DORA, follows this order: the client broadcasts a Discover message, the server responds with an Offer, the client sends a Request for that offer, and the server replies with an Acknowledge."
+    },
+    "alternate": {
+      "prompt": "In the DHCP process, what does the client send immediately after receiving a server's Offer?",
+      "options": ["Request", "Acknowledge", "Discover", "Release"],
+      "answer": "Request",
+      "explanation": "After a DHCP server sends an Offer, the client responds with a Request, and the server finishes the process with an Acknowledge."
+    }
+  },
+  {
+    "id": "q-ipv6-address-length",
+    "moduleId": "ipv6",
+    "moduleName": "IPv6",
+    "category": "Addressing Basics",
+    "primary": {
+      "prompt": "How many bits make up an IPv6 address?",
+      "options": ["128 bits", "32 bits", "64 bits", "48 bits"],
+      "answer": "128 bits",
+      "explanation": "IPv6 addresses are 128 bits long, written as eight groups of four hexadecimal digits, compared to the 32-bit addresses used by IPv4."
+    },
+    "alternate": {
+      "prompt": "How many hexadecimal groups are used to represent a full IPv6 address?",
+      "options": ["Eight", "Four", "Six", "Sixteen"],
+      "answer": "Eight",
+      "explanation": "A full IPv6 address is written as eight groups of four hexadecimal digits, separated by colons."
+    }
+  },
+  {
+    "id": "q-ipv6-shorthand",
+    "moduleId": "ipv6",
+    "moduleName": "IPv6",
+    "category": "Address Notation",
+    "primary": {
+      "prompt": "What does a double colon (::) represent when used in an IPv6 address?",
+      "options": ["One or more consecutive groups of all-zero hextets", "A separator between the network and host portions", "The loopback address", "A private address range"],
+      "answer": "One or more consecutive groups of all-zero hextets",
+      "explanation": "The double colon shorthand compresses one contiguous run of all-zero hextets, and can appear only once in an IPv6 address to avoid ambiguity."
+    },
+    "alternate": {
+      "prompt": "Why can the :: shorthand appear only once within a single IPv6 address?",
+      "options": ["Using it more than once would make the original address ambiguous", "It is reserved for the subnet mask", "It represents the MAC address portion", "IPv6 does not allow any zero compression"],
+      "answer": "Using it more than once would make the original address ambiguous",
+      "explanation": "If :: appeared more than once, there would be no way to determine how many zero groups each instance represents, so it's limited to a single use per address."
+    }
+  },
+  {
+    "id": "q-ipv6-link-local",
+    "moduleId": "ipv6",
+    "moduleName": "IPv6",
+    "category": "Address Types",
+    "primary": {
+      "prompt": "Which IPv6 address prefix is used for link-local addresses?",
+      "options": ["fe80::/10", "::1/128", "2000::/3", "fc00::/7"],
+      "answer": "fe80::/10",
+      "explanation": "Link-local IPv6 addresses fall within the fe80::/10 range and are used for communication only on the local network segment, not routed beyond it."
+    },
+    "alternate": {
+      "prompt": "Which type of IPv6 address is automatically assigned to every interface for communication on the local segment only?",
+      "options": ["Link-local address", "Global unicast address", "Multicast address", "Loopback address"],
+      "answer": "Link-local address",
+      "explanation": "Every IPv6-enabled interface automatically gets a link-local address, used for local segment communication and not routed to other networks."
+    }
+  },
+  {
+    "id": "q-firewall-purpose",
+    "moduleId": "firewalls",
+    "moduleName": "Firewalls",
+    "category": "Core Concepts",
+    "primary": {
+      "prompt": "What is the primary function of a firewall?",
+      "options": ["To filter incoming and outgoing traffic based on defined security rules", "To assign IP addresses to devices on a network", "To translate domain names into IP addresses", "To boost wireless signal strength"],
+      "answer": "To filter incoming and outgoing traffic based on defined security rules",
+      "explanation": "A firewall inspects network traffic and allows or blocks it based on a configured set of security rules."
+    },
+    "alternate": {
+      "prompt": "Which network security device enforces rules about which traffic is allowed to enter or leave a network?",
+      "options": ["Firewall", "DHCP server", "DNS server", "Wireless access point"],
+      "answer": "Firewall",
+      "explanation": "Firewalls control traffic flow in and out of a network based on rule sets."
+    }
+  },
+  {
+    "id": "q-firewall-hw-vs-sw",
+    "moduleId": "firewalls",
+    "moduleName": "Firewalls",
+    "category": "Types",
+    "primary": {
+      "prompt": "What is a key difference between a hardware firewall and a software firewall?",
+      "options": ["A hardware firewall protects an entire network, while a software firewall typically protects a single device", "A software firewall requires a dedicated physical appliance", "A hardware firewall can only filter outbound traffic", "A software firewall works only on wireless networks"],
+      "answer": "A hardware firewall protects an entire network, while a software firewall typically protects a single device",
+      "explanation": "Hardware firewalls sit at the network perimeter to protect all connected devices, while software firewalls run on individual hosts to protect just that device."
+    },
+    "alternate": {
+      "prompt": "Which type of firewall is best suited to protecting an entire office network at its point of entry to the internet?",
+      "options": ["Hardware firewall", "Software firewall", "Host-based antivirus", "Personal firewall app"],
+      "answer": "Hardware firewall",
+      "explanation": "A hardware firewall is typically placed at the network edge to filter traffic for every device behind it."
+    }
+  },
+  {
+    "id": "q-wireless-security-wpa3",
+    "moduleId": "wireless-security",
+    "moduleName": "Wireless Security",
+    "category": "Encryption Standards",
+    "primary": {
+      "prompt": "Which wireless security standard offers stronger encryption than WPA2?",
+      "options": ["WPA3", "WEP", "WPS", "AES"],
+      "answer": "WPA3",
+      "explanation": "WPA3 succeeds WPA2 and provides stronger encryption along with improved protection against offline password-guessing attacks."
+    },
+    "alternate": {
+      "prompt": "Which of these wireless encryption protocols is considered the least secure and is now deprecated?",
+      "options": ["WEP", "WPA3", "WPA2", "AES"],
+      "answer": "WEP",
+      "explanation": "WEP (Wired Equivalent Privacy) is an outdated, easily-cracked wireless security protocol, superseded first by WPA, then WPA2 and WPA3."
+    }
+  },
+  {
+    "id": "q-mfa-definition",
+    "moduleId": "network-security-concepts",
+    "moduleName": "Network Security Concepts",
+    "category": "Authentication",
+    "primary": {
+      "prompt": "What does multi-factor authentication (MFA) require a user to provide?",
+      "options": ["Two or more different types of credentials, such as a password and a one-time code", "Only a username and password", "A single biometric scan", "The device's MAC address"],
+      "answer": "Two or more different types of credentials, such as a password and a one-time code",
+      "explanation": "MFA strengthens security by requiring at least two distinct verification factors, such as something you know (password) and something you have (a code from an authenticator app)."
+    },
+    "alternate": {
+      "prompt": "Which authentication approach combines something a user knows with something a user has?",
+      "options": ["Multi-factor authentication", "Single sign-on", "Anonymous authentication", "MAC filtering"],
+      "answer": "Multi-factor authentication",
+      "explanation": "Multi-factor authentication typically pairs a knowledge factor, like a password, with a possession factor, like a phone-based code."
+    }
+  },
+  {
+    "id": "q-routing-static-vs-dynamic",
+    "moduleId": "routing",
+    "moduleName": "Routing",
+    "category": "Static vs Dynamic",
+    "primary": {
+      "prompt": "What is the main difference between static and dynamic routing?",
+      "options": ["Static routes are manually configured, while dynamic routes are automatically learned and updated by routing protocols", "Static routes change automatically, while dynamic routes never change", "Dynamic routing requires no routers at all", "Static routing only works on wireless networks"],
+      "answer": "Static routes are manually configured, while dynamic routes are automatically learned and updated by routing protocols",
+      "explanation": "Static routes are entered manually by an administrator and don't change unless edited, while dynamic routing protocols automatically discover and adjust routes as the network changes."
+    },
+    "alternate": {
+      "prompt": "Which type of routing automatically adapts to network topology changes without administrator intervention?",
+      "options": ["Dynamic routing", "Static routing", "Default routing", "Manual routing"],
+      "answer": "Dynamic routing",
+      "explanation": "Dynamic routing protocols automatically detect and adjust to changes in network topology, unlike static routes which must be updated by hand."
+    }
+  },
+  {
+    "id": "q-routing-default-route",
+    "moduleId": "routing",
+    "moduleName": "Routing",
+    "category": "Default Routes",
+    "primary": {
+      "prompt": "What is the purpose of a default route on a router?",
+      "options": ["To direct traffic that doesn't match any other more specific route in the routing table", "To block all outbound traffic by default", "To assign IP addresses to hosts", "To translate private addresses to public ones"],
+      "answer": "To direct traffic that doesn't match any other more specific route in the routing table",
+      "explanation": "A default route acts as a catch-all, sending traffic that has no matching specific entry in the routing table toward a gateway, commonly used to reach the internet."
+    },
+    "alternate": {
+      "prompt": "Which routing table entry is commonly written as 0.0.0.0/0 and used as a catch-all for unmatched traffic?",
+      "options": ["Default route", "Static route", "Host route", "Loopback route"],
+      "answer": "Default route",
+      "explanation": "The default route (0.0.0.0/0) catches any traffic that doesn't match a more specific route."
+    }
+  },
+  {
+    "id": "q-subnet-mask-purpose",
+    "moduleId": "subnetting",
+    "moduleName": "Subnetting",
+    "category": "Core Concepts",
+    "primary": {
+      "prompt": "What is the purpose of a subnet mask?",
+      "options": ["To distinguish the network portion of an IP address from the host portion", "To encrypt traffic on the local network", "To assign a MAC address to a device", "To translate a domain name into an IP address"],
+      "answer": "To distinguish the network portion of an IP address from the host portion",
+      "explanation": "A subnet mask determines which bits of an IP address identify the network and which bits identify the specific host on that network."
+    },
+    "alternate": {
+      "prompt": "Which value works alongside an IP address to indicate how many bits belong to the network ID?",
+      "options": ["Subnet mask", "Default gateway", "DNS server address", "MAC address"],
+      "answer": "Subnet mask",
+      "explanation": "The subnet mask indicates how many bits of an IP address make up the network portion versus the host portion."
+    }
+  },
+  {
+    "id": "q-snmp-purpose",
+    "moduleId": "network-monitoring",
+    "moduleName": "Network Monitoring",
+    "category": "SNMP",
+    "primary": {
+      "prompt": "What is SNMP primarily used for?",
+      "options": ["Monitoring and managing network devices such as routers, switches, and servers", "Assigning dynamic IP addresses to hosts", "Encrypting VPN tunnel traffic", "Translating hostnames into IP addresses"],
+      "answer": "Monitoring and managing network devices such as routers, switches, and servers",
+      "explanation": "SNMP (Simple Network Management Protocol) allows administrators to collect status information from and manage network devices remotely."
+    },
+    "alternate": {
+      "prompt": "Which protocol lets a network management station query devices like switches and routers for performance and status data?",
+      "options": ["SNMP", "DHCP", "FTP", "NAT"],
+      "answer": "SNMP",
+      "explanation": "SNMP is designed specifically for monitoring and managing network devices from a central management system."
+    }
+  },
+  {
+    "id": "q-hex-conversion-basic",
+    "moduleId": "hexadecimal",
+    "moduleName": "Hexadecimal",
+    "category": "Number Systems",
+    "primary": {
+      "prompt": "What is the decimal value of the hexadecimal number 0xFF?",
+      "options": ["255", "16", "128", "1"],
+      "answer": "255",
+      "explanation": "Hexadecimal FF equals 15 x 16 + 15 = 255 in decimal, which is also the maximum value of a single byte."
+    },
+    "alternate": {
+      "prompt": "How many distinct symbols are used in the hexadecimal number system?",
+      "options": ["16", "10", "8", "2"],
+      "answer": "16",
+      "explanation": "Hexadecimal is base-16, using the digits 0 through 9 and the letters A through F."
+    }
+  },
+  {
+    "id": "q-esd-prevention",
+    "moduleId": "esd-emi-emp",
+    "moduleName": "ESD, EMI, and EMP",
+    "category": "Prevention",
+    "primary": {
+      "prompt": "Which tool is commonly used to prevent electrostatic discharge (ESD) damage when working inside a computer?",
+      "options": ["An anti-static wrist strap", "A surge protector", "A UPS battery backup", "A cable tester"],
+      "answer": "An anti-static wrist strap",
+      "explanation": "An anti-static wrist strap grounds a technician's body to safely discharge static electricity before it can damage sensitive electronic components."
+    },
+    "alternate": {
+      "prompt": "What is the main risk that ESD poses to computer hardware?",
+      "options": ["It can silently damage or destroy sensitive electronic components", "It causes overheating of the power supply", "It corrupts data stored on optical media", "It interferes with wireless signal strength"],
+      "answer": "It can silently damage or destroy sensitive electronic components",
+      "explanation": "Electrostatic discharge can damage circuitry instantly or weaken components in ways that cause failure later, often without visible signs."
+    }
+  },
+  {
+    "id": "q-emi-sources",
+    "moduleId": "esd-emi-emp",
+    "moduleName": "ESD, EMI, and EMP",
+    "category": "EMI",
+    "primary": {
+      "prompt": "Which of these is a common source of electromagnetic interference (EMI) that can disrupt network cabling?",
+      "options": ["Fluorescent lighting and motors running near cables", "Using shielded fiber optic cable", "Running cable through a plenum-rated conduit", "Keeping cable runs short"],
+      "answer": "Fluorescent lighting and motors running near cables",
+      "explanation": "Devices like fluorescent lights, motors, and other electrical equipment generate electromagnetic fields that can interfere with signals in nearby copper cabling."
+    },
+    "alternate": {
+      "prompt": "Why is fiber optic cable immune to electromagnetic interference, unlike copper cable?",
+      "options": ["Fiber optic cable transmits data as light rather than electrical signals", "Fiber optic cable is always shielded with metal", "Fiber optic cable carries less data than copper", "Fiber optic cable is thicker than copper cable"],
+      "answer": "Fiber optic cable transmits data as light rather than electrical signals",
+      "explanation": "Because fiber optic cable carries data as pulses of light instead of electrical current, it is not affected by electromagnetic interference the way copper cabling is."
+    }
+  },
+  {
+    "id": "q-layer2-switch-mac-table",
+    "moduleId": "layer-2-switches",
+    "moduleName": "Layer 2 Switches",
+    "category": "MAC Address Table",
+    "primary": {
+      "prompt": "How does a Layer 2 switch decide which port to forward a frame out of?",
+      "options": ["It looks up the destination MAC address in its MAC address table", "It reads the destination IP address in the packet header", "It broadcasts the frame out of every port automatically", "It checks the port number in the TCP header"],
+      "answer": "It looks up the destination MAC address in its MAC address table",
+      "explanation": "A Layer 2 switch builds and consults a MAC address table that maps MAC addresses to physical ports, forwarding frames only out the correct port when the destination is known."
+    },
+    "alternate": {
+      "prompt": "What does a switch do with a frame if the destination MAC address is not yet in its MAC address table?",
+      "options": ["It floods the frame out of every port except the one it arrived on", "It silently drops the frame", "It converts the frame into a broadcast IP packet", "It sends the frame back to the source only"],
+      "answer": "It floods the frame out of every port except the one it arrived on",
+      "explanation": "When a switch doesn't yet know which port a destination MAC address is on, it floods the frame to all ports except the source port until it learns the correct mapping."
+    }
+  },
+  {
+    "id": "q-wired-vs-wireless-latency",
+    "moduleId": "wired-vs-wireless",
+    "moduleName": "Wired vs Wireless",
+    "category": "Comparison",
+    "primary": {
+      "prompt": "Which is generally true when comparing wired and wireless networking?",
+      "options": ["Wired connections typically offer lower latency and more consistent speeds than wireless", "Wireless connections are always faster than wired connections", "Wired connections cannot be used for gigabit speeds", "Wireless connections never suffer from interference"],
+      "answer": "Wired connections typically offer lower latency and more consistent speeds than wireless",
+      "explanation": "Wired (Ethernet) connections generally provide lower latency and more consistent throughput than wireless connections, which are subject to interference and signal degradation."
+    },
+    "alternate": {
+      "prompt": "What is a common trade-off of choosing wireless networking over a wired connection?",
+      "options": ["Reduced reliability and potential for interference from other devices", "Complete immunity to signal interference", "Guaranteed faster speeds than wired networks", "No need for a router or access point"],
+      "answer": "Reduced reliability and potential for interference from other devices",
+      "explanation": "Wireless networks trade some reliability and consistency for mobility and convenience, since signals can be affected by distance, interference, and obstacles."
+    }
   }
 ];
