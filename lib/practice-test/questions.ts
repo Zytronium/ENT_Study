@@ -4220,5 +4220,565 @@ export const MASTER_QUESTIONS: MasterQuestion[] = [
       "answer": "Reduced reliability and potential for interference from other devices",
       "explanation": "Wireless networks trade some reliability and consistency for mobility and convenience, since signals can be affected by distance, interference, and obstacles."
     }
+  },
+  {
+    "id": "q-wired-vs-wireless-latency",
+    "moduleId": "wired-vs-wireless",
+    "moduleName": "Wired vs Wireless",
+    "category": "Comparison",
+    "primary": {
+      "prompt": "Which is generally true when comparing wired and wireless networking?",
+      "options": [
+        "Wired connections typically offer lower latency and more consistent speeds than wireless",
+        "Wireless connections are always faster than wired connections",
+        "Wired connections cannot be used for gigabit speeds",
+        "Wireless connections never suffer from interference"
+      ],
+      "answer": "Wired connections typically offer lower latency and more consistent speeds than wireless",
+      "explanation": "Wired Ethernet connections generally provide lower latency and more consistent throughput than wireless connections, which can be affected by interference, distance, and obstacles."
+    },
+    "alternate": {
+      "prompt": "What is a common advantage of using Ethernet instead of Wi-Fi?",
+      "options": [
+        "Lower latency and more consistent network performance",
+        "Greater susceptibility to radio interference",
+        "Mobility without requiring a physical cable",
+        "Automatic connectivity from anywhere within radio range"
+      ],
+      "answer": "Lower latency and more consistent network performance",
+      "explanation": "Ethernet generally provides a more stable connection with lower latency because it is not subject to the same wireless interference and signal-strength issues as Wi-Fi."
+    }
+  },
+  {
+    "id": "q-ipv6-address",
+    "moduleId": "ipv6",
+    "moduleName": "IPv6",
+    "category": "Addressing",
+    "primary": {
+      "prompt": "Which feature distinguishes IPv6 from IPv4?",
+      "options": [
+        "IPv6 uses 128-bit addresses",
+        "IPv6 uses only decimal addresses",
+        "IPv6 addresses always contain exactly four octets",
+        "IPv6 cannot route traffic between networks"
+      ],
+      "answer": "IPv6 uses 128-bit addresses",
+      "explanation": "IPv6 uses 128-bit addresses, providing a vastly larger address space than IPv4's 32-bit addresses."
+    },
+    "alternate": {
+      "prompt": "How large is an IPv6 address?",
+      "options": [
+        "128 bits",
+        "32 bits",
+        "48 bits",
+        "64 bits"
+      ],
+      "answer": "128 bits",
+      "explanation": "IPv6 addresses are 128 bits long and are normally written as groups of hexadecimal digits separated by colons."
+    }
+  },
+  {
+    "id": "q-dhcp-purpose",
+    "moduleId": "dhcp",
+    "moduleName": "DHCP",
+    "category": "Network Services",
+    "primary": {
+      "prompt": "A new computer joins a network and automatically receives an IP address, subnet mask, gateway, and DNS server information. Which service is responsible?",
+      "options": [
+        "DHCP",
+        "DNS",
+        "HTTP",
+        "ARP"
+      ],
+      "answer": "DHCP",
+      "explanation": "DHCP automatically provides hosts with network configuration such as an IP address, subnet mask, default gateway, and DNS server information."
+    },
+    "alternate": {
+      "prompt": "Which service can automatically provide a computer with an IP address and default gateway?",
+      "options": [
+        "DHCP",
+        "DNS",
+        "HTTP",
+        "ARP"
+      ],
+      "answer": "DHCP",
+      "explanation": "DHCP dynamically provides hosts with network configuration, reducing the need to manually configure each device."
+    }
+  },
+  {
+    "id": "q-dns-purpose",
+    "moduleId": "dns",
+    "moduleName": "DNS",
+    "category": "Network Services",
+    "primary": {
+      "prompt": "A user enters a website name into a browser, but the computer first needs to determine which IP address corresponds to that name. Which service handles this lookup?",
+      "options": [
+        "DNS",
+        "DHCP",
+        "FTP",
+        "ARP"
+      ],
+      "answer": "DNS",
+      "explanation": "DNS translates human-readable domain names into IP addresses that computers can use to locate hosts."
+    },
+    "alternate": {
+      "prompt": "Which service allows users to access a website by name instead of remembering its IP address?",
+      "options": [
+        "DNS",
+        "DHCP",
+        "FTP",
+        "ARP"
+      ],
+      "answer": "DNS",
+      "explanation": "DNS resolves domain names into IP addresses, allowing applications to locate hosts by name."
+    }
+  },
+  {
+    "id": "q-default-gateway",
+    "moduleId": "ipv4",
+    "moduleName": "IPv4",
+    "category": "Routing",
+    "primary": {
+      "prompt": "A computer needs to send traffic to a server on another network. Which configured address tells the computer where to send that traffic first?",
+      "options": [
+        "The default gateway",
+        "The DNS server",
+        "The local broadcast address",
+        "The computer's own MAC address"
+      ],
+      "answer": "The default gateway",
+      "explanation": "Traffic destined outside the local subnet is normally sent to the host's default gateway, which is typically a router."
+    },
+    "alternate": {
+      "prompt": "Where does a computer normally send packets when the destination is outside its own subnet?",
+      "options": [
+        "The default gateway",
+        "The DNS server",
+        "The local broadcast address",
+        "The computer's own MAC address"
+      ],
+      "answer": "The default gateway",
+      "explanation": "The default gateway is typically the router interface that forwards traffic from the local network toward other networks."
+    }
+  },
+  {
+    "id": "q-ping-purpose",
+    "moduleId": "network-troubleshooting",
+    "moduleName": "Network Troubleshooting",
+    "category": "Troubleshooting Tools",
+    "primary": {
+      "prompt": "A technician wants to determine whether a remote host responds to basic network connectivity tests. Which utility is most appropriate?",
+      "options": [
+        "ping",
+        "format",
+        "mkdir",
+        "chmod"
+      ],
+      "answer": "ping",
+      "explanation": "Ping sends ICMP Echo Request messages and examines the responses to test basic IP connectivity and measure round-trip time."
+    },
+    "alternate": {
+      "prompt": "Which command is commonly used to test basic IP connectivity to another host?",
+      "options": [
+        "ping",
+        "format",
+        "mkdir",
+        "chmod"
+      ],
+      "answer": "ping",
+      "explanation": "The ping utility uses ICMP Echo Request and Echo Reply messages to test basic network reachability."
+    }
+  },
+  {
+    "id": "q-traceroute-purpose",
+    "moduleId": "network-troubleshooting",
+    "moduleName": "Network Troubleshooting",
+    "category": "Troubleshooting Tools",
+    "primary": {
+      "prompt": "A connection to a remote server is slow, and a technician wants to see the intermediate routers traffic passes through. Which utility should be used?",
+      "options": [
+        "traceroute",
+        "DHCP",
+        "ARP",
+        "ipconfig"
+      ],
+      "answer": "traceroute",
+      "explanation": "Traceroute displays the intermediate network hops between a source and destination, helping identify where connectivity or latency problems may occur."
+    },
+    "alternate": {
+      "prompt": "Which tool can help determine where along a network path packets are experiencing a problem?",
+      "options": [
+        "Traceroute",
+        "DHCP",
+        "ARP",
+        "ipconfig"
+      ],
+      "answer": "Traceroute",
+      "explanation": "Traceroute reveals intermediate hops toward a destination, making it useful for locating routing or latency issues."
+    }
+  },
+  {
+    "id": "q-poe-purpose",
+    "moduleId": "power-over-ethernet",
+    "moduleName": "Power over Ethernet",
+    "category": "Ethernet Features",
+    "primary": {
+      "prompt": "A network administrator wants an IP camera to receive both network connectivity and electrical power through a single Ethernet cable. Which technology should be used?",
+      "options": [
+        "PoE",
+        "NAT",
+        "ARP",
+        "DNS"
+      ],
+      "answer": "PoE",
+      "explanation": "Power over Ethernet allows compatible devices such as IP cameras, access points, and VoIP phones to receive power through their Ethernet connection."
+    },
+    "alternate": {
+      "prompt": "A wireless device needs to receive electrical power through the same Ethernet cable used for network traffic. Which technology provides this capability?",
+      "options": [
+        "PoE",
+        "NAT",
+        "ARP",
+        "DNS"
+      ],
+      "answer": "PoE",
+      "explanation": "PoE supplies electrical power through Ethernet cabling while also carrying network traffic."
+    }
+  },
+  {
+    "id": "q-network-hub",
+    "moduleId": "network-devices",
+    "moduleName": "Network Devices",
+    "category": "Device Identification",
+    "primary": {
+      "prompt": "A legacy network device receives an Ethernet signal and sends it out through every other port without examining destination addresses. What type of device is this?",
+      "options": [
+        "Hub",
+        "Switch",
+        "Router",
+        "Firewall"
+      ],
+      "answer": "Hub",
+      "explanation": "A traditional hub operates at the Physical layer and repeats incoming signals to its other ports rather than making intelligent forwarding decisions."
+    },
+    "alternate": {
+      "prompt": "What is a major difference between a traditional hub and an Ethernet switch?",
+      "options": [
+        "A hub repeats traffic to other ports instead of selectively forwarding frames",
+        "A hub performs IP routing while a switch does not",
+        "A hub assigns IP addresses while a switch provides DNS",
+        "A hub can only connect wireless devices"
+      ],
+      "answer": "A hub repeats traffic to other ports instead of selectively forwarding frames",
+      "explanation": "Unlike a switch, a traditional hub does not maintain a MAC address table and simply repeats signals to its other ports."
+    }
+  },
+  {
+    "id": "q-modem-purpose",
+    "moduleId": "modem-router",
+    "moduleName": "Modem vs Router",
+    "category": "Device Roles",
+    "primary": {
+      "prompt": "A home network needs to connect to an ISP's cable or DSL service. Which device provides the interface to that service?",
+      "options": [
+        "Modem",
+        "Ethernet switch",
+        "Patch panel",
+        "Network hub"
+      ],
+      "answer": "Modem",
+      "explanation": "A modem provides the interface between the customer's network and the ISP's access service, such as cable or DSL."
+    },
+    "alternate": {
+      "prompt": "Which device commonly connects a home network to an ISP's cable or DSL service?",
+      "options": [
+        "Modem",
+        "Ethernet switch",
+        "Patch panel",
+        "Network hub"
+      ],
+      "answer": "Modem",
+      "explanation": "A modem provides the interface between the customer's network and the ISP's access service."
+    }
+  },
+  {
+    "id": "q-fiber-vs-copper",
+    "moduleId": "network-media",
+    "moduleName": "Network Media",
+    "category": "Transmission Media",
+    "primary": {
+      "prompt": "A network cable must be installed near equipment that produces substantial electromagnetic interference. Which transmission medium would be the better choice?",
+      "options": [
+        "Fiber-optic cable",
+        "Unshielded twisted-pair cable",
+        "Coaxial cable",
+        "Standard telephone cable"
+      ],
+      "answer": "Fiber-optic cable",
+      "explanation": "Fiber-optic cable transmits data using light rather than electrical signals, making it resistant to electromagnetic interference."
+    },
+    "alternate": {
+      "prompt": "Why might fiber-optic cable be preferred in an area with significant electromagnetic interference?",
+      "options": [
+        "Fiber transmits data using light and is not affected by electromagnetic interference like copper",
+        "Fiber uses thicker copper conductors",
+        "Fiber automatically filters all IP packets",
+        "Fiber creates a stronger Wi-Fi signal"
+      ],
+      "answer": "Fiber transmits data using light and is not affected by electromagnetic interference like copper",
+      "explanation": "Because fiber carries information as light rather than electrical signals, electromagnetic interference does not affect it in the same way it affects copper cabling."
+    }
+  },
+  {
+    "id": "q-full-vs-half-duplex",
+    "moduleId": "ethernet",
+    "moduleName": "Ethernet",
+    "category": "Transmission Modes",
+    "primary": {
+      "prompt": "Two Ethernet devices need to send and receive data simultaneously rather than taking turns. Which transmission mode should be used?",
+      "options": [
+        "Full-duplex",
+        "Half-duplex",
+        "Simplex",
+        "Broadcast"
+      ],
+      "answer": "Full-duplex",
+      "explanation": "Full-duplex communication allows a device to send and receive simultaneously, avoiding the collisions associated with traditional half-duplex Ethernet."
+    },
+    "alternate": {
+      "prompt": "Which transmission mode allows an Ethernet device to send and receive traffic at the same time?",
+      "options": [
+        "Full-duplex",
+        "Half-duplex",
+        "Simplex",
+        "Broadcast"
+      ],
+      "answer": "Full-duplex",
+      "explanation": "Full-duplex Ethernet supports simultaneous transmission and reception."
+    }
+  },
+  {
+    "id": "q-bandwidth-vs-latency",
+    "moduleId": "network-performance",
+    "moduleName": "Network Performance",
+    "category": "Performance",
+    "primary": {
+      "prompt": "A connection is advertised as 1 Gb/s. What does that number primarily describe?",
+      "options": [
+        "The theoretical data-transfer capacity",
+        "The physical length of the cable",
+        "The number of routers between endpoints",
+        "The guaranteed latency of every packet"
+      ],
+      "answer": "The theoretical data-transfer capacity",
+      "explanation": "A 1 Gb/s rating describes the connection's nominal bandwidth or data-transfer capacity, not its guaranteed real-world throughput or latency."
+    },
+    "alternate": {
+      "prompt": "Which term describes the maximum amount of data that a network connection can theoretically transmit per unit of time?",
+      "options": [
+        "Bandwidth",
+        "Latency",
+        "Jitter",
+        "Packet loss"
+      ],
+      "answer": "Bandwidth",
+      "explanation": "Bandwidth describes the theoretical capacity of a network connection, commonly measured in bits per second."
+    }
+  },
+  {
+    "id": "q-access-point-purpose",
+    "moduleId": "wireless-networking",
+    "moduleName": "Wireless Networking",
+    "category": "Device Identification",
+    "primary": {
+      "prompt": "A company has an Ethernet-based LAN and wants employees with laptops and phones to connect to it wirelessly. Which device should be deployed?",
+      "options": [
+        "Wireless access point",
+        "Patch panel",
+        "Cable modem",
+        "DNS server"
+      ],
+      "answer": "Wireless access point",
+      "explanation": "A wireless access point provides wireless connectivity and bridges wireless clients onto the wired LAN."
+    },
+    "alternate": {
+      "prompt": "Which device provides Wi-Fi clients with a connection to an existing wired LAN?",
+      "options": [
+        "Wireless access point",
+        "Patch panel",
+        "Cable modem",
+        "DNS server"
+      ],
+      "answer": "Wireless access point",
+      "explanation": "An access point provides wireless connectivity and bridges wireless clients onto the wired LAN."
+    }
+  },
+  {
+    "id": "q-loopback-address",
+    "moduleId": "ipv4",
+    "moduleName": "IPv4",
+    "category": "Special Addresses",
+    "primary": {
+      "prompt": "A technician wants to test network software on a computer without sending traffic to another device. Which IPv4 address should be used?",
+      "options": [
+        "127.0.0.1",
+        "255.255.255.255",
+        "192.168.1.1",
+        "8.8.8.8"
+      ],
+      "answer": "127.0.0.1",
+      "explanation": "127.0.0.1 is the commonly used IPv4 loopback address. Traffic sent to it stays within the local host."
+    },
+    "alternate": {
+      "prompt": "What happens when a computer sends IPv4 traffic to 127.0.0.1?",
+      "options": [
+        "The traffic is directed back to the local computer",
+        "The traffic is broadcast to every device on the LAN",
+        "The traffic is sent to the default gateway",
+        "The traffic is sent to Google's public DNS service"
+      ],
+      "answer": "The traffic is directed back to the local computer",
+      "explanation": "127.0.0.1 is the IPv4 loopback address and refers back to the local computer."
+    }
+  },
+  {
+    "id": "q-mac-vs-ip-address",
+    "moduleId": "network-addressing",
+    "moduleName": "Network Addressing",
+    "category": "Addressing",
+    "primary": {
+      "prompt": "A router needs to determine where to forward a packet across different networks. Which type of address does it primarily examine?",
+      "options": [
+        "IP address",
+        "MAC address",
+        "SSID",
+        "Ethernet cable serial number"
+      ],
+      "answer": "IP address",
+      "explanation": "Routers use destination IP addresses when making Layer 3 forwarding decisions."
+    },
+    "alternate": {
+      "prompt": "Which statement correctly distinguishes the two common types of network addresses?",
+      "options": [
+        "MAC addresses identify interfaces at Layer 2, while IP addresses provide logical Layer 3 addressing",
+        "MAC addresses are used for Internet routing while IP addresses are used only by switches",
+        "Both addresses serve exactly the same purpose",
+        "IP addresses are permanently assigned to physical network hardware"
+      ],
+      "answer": "MAC addresses identify interfaces at Layer 2, while IP addresses provide logical Layer 3 addressing",
+      "explanation": "MAC addresses are used for local data-link communication, while IP addresses provide logical addressing used to route traffic between networks."
+    }
+  },
+  {
+    "id": "q-ethernet-auto-negotiation",
+    "moduleId": "ethernet",
+    "moduleName": "Ethernet",
+    "category": "Interface Configuration",
+    "primary": {
+      "prompt": "Two connected Ethernet interfaces automatically select a mutually supported speed and duplex setting. Which feature makes this possible?",
+      "options": [
+        "Auto-negotiation",
+        "NAT",
+        "ARP",
+        "DNS"
+      ],
+      "answer": "Auto-negotiation",
+      "explanation": "Ethernet auto-negotiation allows connected interfaces to exchange capabilities and select compatible link parameters."
+    },
+    "alternate": {
+      "prompt": "What happens during Ethernet auto-negotiation?",
+      "options": [
+        "Connected interfaces exchange capabilities and select compatible link settings",
+        "A router assigns the computer a public IP address",
+        "A DNS server resolves the computer's hostname",
+        "A switch converts the Ethernet connection into Wi-Fi"
+      ],
+      "answer": "Connected interfaces exchange capabilities and select compatible link settings",
+      "explanation": "Auto-negotiation allows connected Ethernet interfaces to determine common capabilities such as speed and duplex mode."
+    }
+  },
+  {
+    "id": "q-vlan-purpose",
+    "moduleId": "vlans",
+    "moduleName": "VLANs",
+    "category": "Network Segmentation",
+    "primary": {
+      "prompt": "An organization wants guest computers connected to the same physical switch as employees but logically isolated from the employee network. Which technology can provide this separation?",
+      "options": [
+        "VLANs",
+        "DNS",
+        "ARP",
+        "PoE"
+      ],
+      "answer": "VLANs",
+      "explanation": "VLANs logically divide a switched network into separate broadcast domains without requiring physically separate switches."
+    },
+    "alternate": {
+      "prompt": "Why might an organization place its guest devices on a separate VLAN?",
+      "options": [
+        "To logically isolate guest traffic from other network segments",
+        "To give every guest device the same MAC address",
+        "To eliminate the need for IP addresses",
+        "To increase the physical cable length"
+      ],
+      "answer": "To logically isolate guest traffic from other network segments",
+      "explanation": "Separate VLANs provide logical segmentation, allowing organizations to isolate groups of devices and control communication between them."
+    }
+  },
+  {
+    "id": "q-network-topology-star",
+    "moduleId": "network-topologies",
+    "moduleName": "Network Topologies",
+    "category": "Topology",
+    "primary": {
+      "prompt": "A LAN has eight computers, and each computer has its own dedicated cable running to the same central networking device. Which topology is being used?",
+      "options": [
+        "Star topology",
+        "Bus topology",
+        "Ring topology",
+        "Mesh topology"
+      ],
+      "answer": "Star topology",
+      "explanation": "In a star topology, individual devices have connections to a central networking device, such as a switch."
+    },
+    "alternate": {
+      "prompt": "A network uses a central switch with individual links to each endpoint. What topology does this represent?",
+      "options": [
+        "Star",
+        "Bus",
+        "Ring",
+        "Point-to-point"
+      ],
+      "answer": "Star",
+      "explanation": "A central switch with individual links to each endpoint forms a star topology."
+    }
+  },
+  {
+    "id": "q-wifi-5ghz-vs-24ghz",
+    "moduleId": "wireless-networking",
+    "moduleName": "Wireless Networking",
+    "category": "Wi-Fi Bands",
+    "primary": {
+      "prompt": "A user is close to a wireless router and wants higher potential throughput, while range through walls is less important. Which band would generally be the better choice?",
+      "options": [
+        "5 GHz",
+        "2.4 GHz",
+        "AM radio",
+        "FM radio"
+      ],
+      "answer": "5 GHz",
+      "explanation": "5 GHz Wi-Fi generally offers higher potential throughput and more available channels, while 2.4 GHz typically provides greater range and better obstacle penetration."
+    },
+    "alternate": {
+      "prompt": "Which is a typical trade-off when choosing 5 GHz Wi-Fi instead of 2.4 GHz?",
+      "options": [
+        "Higher potential performance in exchange for shorter effective range",
+        "Lower speed in exchange for longer range",
+        "No support for wireless networking",
+        "Guaranteed immunity from interference"
+      ],
+      "answer": "Higher potential performance in exchange for shorter effective range",
+      "explanation": "5 GHz generally offers higher potential throughput but has shorter range and poorer penetration through obstacles than 2.4 GHz."
+    }
   }
 ];

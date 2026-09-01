@@ -25,3 +25,15 @@ CREATE INDEX IF NOT EXISTS idx_practice_exam_attempts_percentage
 
 CREATE INDEX IF NOT EXISTS idx_practice_exam_attempts_created_at 
   ON practice_exam_attempts (created_at DESC);
+
+CREATE TABLE IF NOT EXISTS practice_speedrun_scores (
+  id SERIAL PRIMARY KEY,
+  display_name VARCHAR(24) NOT NULL CHECK (char_length(trim(display_name)) BETWEEN 1 AND 24),
+  score INTEGER NOT NULL CHECK (score >= 0 AND score <= 10000),
+  total_points INTEGER NOT NULL DEFAULT 10000 CHECK (total_points = 10000),
+  elapsed_ms INTEGER NOT NULL CHECK (elapsed_ms >= 0),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_practice_speedrun_scores_ranking
+  ON practice_speedrun_scores (score DESC, elapsed_ms ASC, created_at ASC);

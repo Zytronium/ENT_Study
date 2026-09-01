@@ -249,6 +249,13 @@ export default function HomeClient({ studyTopics }: { studyTopics: StudyTopicEnt
             <span>[START MASTER TEST]</span>
             <span>→</span>
           </Link>
+          <Link
+            href="/practice-test/speedrun"
+            className="w-full md:w-auto shrink-0 px-5 py-2.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-mono text-xs font-bold transition-all shadow-lg shadow-amber-950/40 flex items-center justify-center gap-2"
+          >
+            <span>[SPEEDRUN QUIZ]</span>
+            <span>→</span>
+          </Link>
         </section>
 
         <section className="terminal-box border-l-4 border-l-emerald-500 shadow-xl">

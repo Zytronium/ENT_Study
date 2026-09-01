@@ -670,6 +670,14 @@ export default function StudyGuideViewer({ initialHtml, tocItems }: StudyGuideVi
               <span style={{ color: '#020617' }}>[START MASTER TEST]</span>
               <span style={{ color: '#020617' }}>&rarr;</span>
             </Link>
+            <Link
+              href="/practice-test/speedrun"
+              className="quiz-action-btn inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded bg-amber-400 hover:bg-amber-300 !text-slate-950 text-xs sm:text-sm font-bold font-mono transition-all shrink-0 !no-underline w-full md:w-auto text-center"
+              style={{ color: '#020617', textDecoration: 'none' }}
+            >
+              <span style={{ color: '#020617' }}>[SPEEDRUN QUIZ]</span>
+              <span style={{ color: '#020617' }}>&rarr;</span>
+            </Link>
           </section>
         </main>
       </div>

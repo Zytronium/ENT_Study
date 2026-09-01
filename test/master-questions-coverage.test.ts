@@ -2,7 +2,7 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { MASTER_QUESTIONS } from "../lib/practice-test/questions";
 import { MASTER_ACTIVITIES } from "../lib/practice-test/registry";
-import { generatePracticeTest } from "../lib/practice-test/generator";
+import { generatePracticeTest, generateSpeedrunQuestions } from "../lib/practice-test/generator";
 import { ModuleId } from "../lib/practice-test/types";
 
 describe("Master Questions Coverage & Quality", () => {
@@ -101,5 +101,12 @@ describe("Master Questions Coverage & Quality", () => {
 
     const test2 = generatePracticeTest();
     assert.ok(test2.length > 0);
+  });
+
+  it("should generate exactly ten question-only speedrun items", () => {
+    const speedrun = generateSpeedrunQuestions();
+    assert.equal(speedrun.length, 10);
+    assert.ok(speedrun.every((item) => item.type === "question"));
+    assert.equal(new Set(speedrun.map((item) => item.id)).size, 10);
   });
 });

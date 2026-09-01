@@ -45,6 +45,28 @@ export interface PracticeTestOptions {
   activityCount?: number;
 }
 
+export function generateSpeedrunQuestions(count = 10): ActivePracticeItem[] {
+  return shuffle(MASTER_QUESTIONS)
+    .slice(0, Math.min(count, MASTER_QUESTIONS.length))
+    .map((q) => {
+      const pickAlternate = Math.random() < 0.5;
+      const wording = pickAlternate ? q.alternate : q.primary;
+      return {
+        type: "question" as const,
+        id: q.id,
+        moduleId: q.moduleId,
+        moduleName: q.moduleName,
+        category: q.category,
+        wordingType: pickAlternate ? "alternate" as const : "primary" as const,
+        prompt: wording.prompt,
+        options: shuffle(wording.options),
+        answer: wording.answer,
+        explanation: wording.explanation,
+        points: 2 as const,
+      };
+    });
+}
+
 export function generatePracticeTest(options?: PracticeTestOptions): ActivePracticeItem[] {
   const targetPoints = options?.totalTargetPoints ?? 60;
   const maxPerModule = options?.maxPerModule ?? Math.max(12, Math.ceil(targetPoints / 5));
