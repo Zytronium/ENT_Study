@@ -77,12 +77,12 @@ export default function SpeedrunQuiz() {
     const correct = answer === question.answer;
     const earned = correct ? Math.round(MAX_SCORE_PER_QUESTION * (1 - responseMs / ANSWER_WINDOW_MS)) : 0;
     const nextScore = score + earned;
-    const nextElapsed = Math.round(elapsedMs + responseMs + promptRevealMs);
+    const nextElapsed = Math.round(elapsedMs + responseMs);
     setScore(nextScore);
     setElapsedMs(nextElapsed);
     setIsShowingAnswers(false);
     setAnswerFeedback({ answer, correct, earned });
-  }, [answerStartedAt, elapsedMs, isShowingAnswers, promptRevealMs, question, score]);
+  }, [answerStartedAt, elapsedMs, isShowingAnswers, question, score]);
 
   useEffect(() => {
     if (!answerFeedback || index < 0) return;
