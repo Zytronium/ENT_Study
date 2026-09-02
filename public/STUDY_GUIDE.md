@@ -433,7 +433,7 @@ approximately 300 bps to 54 Kbps, depending on the modem and connection standard
 
 T1 and T3 are what were used in North America, while E1 and E3 were mostly used in Europe.
 
-## Data-Link Layer
+## The Data-Link Layer
 
 The Data-Link Layer (Layer 2) is responsible for communication between devices over a local network. In IEEE 802 
 networks, the Data-Link Layer is divided into two sublayers:
