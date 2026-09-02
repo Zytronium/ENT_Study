@@ -393,8 +393,8 @@ Speeds and distances shown are advertised speed and distances under perfect lab 
 | Wi-Fi 6 | 802.11ax      | 2.4 GHz + 5 GHz | 14 Gb/s  | 100 ft   |
 
 Wi-Fi 7 will likely not be tested on but is under 802.11be, operates on 2.4 GHz, 5 GHz, AND 6 GHz, 
-and can reach up to 46 Gb/s. Wi-Fi 8 will not eb tested on either as it is not planned to release 
-until 2028; Wi-Fi 8 is under 802.11bn.
+and can reach up to 46 Gb/s. Wi-Fi 8 (802.11bn) will not be tested on either as it is not planned to release 
+until 2028.
 
 ## Wired VS Wireless
 
