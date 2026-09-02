@@ -83,8 +83,7 @@ Routers are devices that provide the **logical connection** to the ISP and conne
 the ISP.
 
 ## EIA/TIA 568B Standard Specification
-The EIA/TIA 568B standard specifies the order of wires in a CAT5/CAT6 cable connector. This order is, from top to 
-bottom, pins 1 to 8:
+The EIA/TIA 568B standard specifies the order of wires in a twisted pair cable RJ45 connector. From pin 1 to 8, this order is:
 
 | Wire Color          | Mnemonic       |
 |---------------------|----------------|
