@@ -242,7 +242,7 @@ function DataLinkContent() {
       moduleTag="DIAGNOSTIC_MODULE"
       moduleCode="LAYER_2_DATA_LINK"
       title="Data-Link Layer"
-      studyGuideHref="/study-guide#data-link-layer"
+      studyGuideHref="/study-guide#the-data-link-layer"
       sections={sections}
       initialHardMode={isMastery}
     />
